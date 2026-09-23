@@ -1,15 +1,35 @@
 import os
 import numpy as np
-from reportlab.lib.pagesizes import letter, A4
+import matplotlib.pyplot as plt
+from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.units import inch
-from reportlab.pdfgen import canvas
 from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, KeepTogether, HRFlowable, PageBreak
+    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, HRFlowable, PageBreak, KeepTogether
 )
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from PIL import Image as PILImage
+
+# -------------------------------------------------------------------------
+# Helper function: Render Crisp LaTeX Equation PNG using Matplotlib
+# -------------------------------------------------------------------------
+def render_latex_equation(latex_str, filepath, fontsize=13, color="#1E3A8A"):
+    plt.figure(figsize=(0.01, 0.01))
+    plt.text(0.5, 0.5, f"${latex_str}$", fontsize=fontsize, color=color,
+             horizontalalignment='center', verticalalignment='center')
+    plt.axis('off')
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    plt.savefig(filepath, dpi=350, bbox_inches='tight', pad_inches=0.04, transparent=True)
+    plt.close()
+    
+    # Return width and height in points for ReportLab
+    with PILImage.open(filepath) as img:
+        w_px, h_px = img.size
+        # at 350 DPI, 1 pt = 350 / 72 pixels
+        scale = 72.0 / 350.0
+        return w_px * scale, h_px * scale
 
 def build_pdf():
     pdf_filename = "Bao_Cao_Nghien_Cuu_RCA_Chatter_CNC.pdf"
@@ -18,8 +38,8 @@ def build_pdf():
         pagesize=A4,
         rightMargin=36,
         leftMargin=36,
-        topMargin=40,
-        bottomMargin=40
+        topMargin=36,
+        bottomMargin=36
     )
     
     # Register Vietnamese Unicode Fonts
@@ -48,99 +68,98 @@ def build_pdf():
     title_style = ParagraphStyle(
         'DocTitle',
         fontName='ArialVN-Bold',
-        fontSize=18,
-        leading=22,
+        fontSize=17,
+        leading=21,
         textColor=colors.HexColor('#0F172A'),
         alignment=1, # Center
-        spaceAfter=8
+        spaceAfter=6
     )
     
     subtitle_style = ParagraphStyle(
         'DocSubtitle',
         fontName='ArialVN-Italic',
-        fontSize=10.5,
-        leading=14,
+        fontSize=10,
+        leading=13.5,
         textColor=colors.HexColor('#475569'),
         alignment=1,
-        spaceAfter=14
+        spaceAfter=10
     )
     
     h1_style = ParagraphStyle(
         'Heading1_Custom',
         fontName='ArialVN-Bold',
-        fontSize=12.5,
-        leading=16,
+        fontSize=12,
+        leading=15,
         textColor=colors.HexColor('#1E3A8A'),
-        spaceBefore=12,
-        spaceAfter=6,
+        spaceBefore=10,
+        spaceAfter=4,
         keepWithNext=True
     )
 
     h2_style = ParagraphStyle(
         'Heading2_Custom',
         fontName='ArialVN-Bold',
-        fontSize=10.5,
-        leading=14,
+        fontSize=10,
+        leading=13,
         textColor=colors.HexColor('#0F766E'),
-        spaceBefore=8,
-        spaceAfter=4,
+        spaceBefore=7,
+        spaceAfter=3,
         keepWithNext=True
     )
     
     body_style = ParagraphStyle(
         'Body_Custom',
         fontName='ArialVN',
-        fontSize=9.2,
-        leading=13.2,
+        fontSize=9.0,
+        leading=12.6,
         textColor=colors.HexColor('#1E293B'),
-        spaceAfter=5
+        spaceAfter=4
     )
 
     bullet_style = ParagraphStyle(
         'Bullet_Custom',
         fontName='ArialVN',
-        fontSize=9.0,
-        leading=12.8,
+        fontSize=8.8,
+        leading=12.2,
         textColor=colors.HexColor('#334155'),
-        leftIndent=14,
-        spaceAfter=3
+        leftIndent=12,
+        spaceAfter=2.5
     )
 
-    callout_style = ParagraphStyle(
-        'Callout_Text',
-        fontName='ArialVN',
-        fontSize=8.8,
-        leading=12.4,
-        textColor=colors.HexColor('#0F172A')
-    )
-    
     table_text = ParagraphStyle(
         'TableText',
         fontName='ArialVN',
-        fontSize=8.2,
-        leading=10.5,
+        fontSize=8.0,
+        leading=10.0,
         alignment=1 # Center
     )
 
     table_header = ParagraphStyle(
         'TableHeader',
         fontName='ArialVN-Bold',
-        fontSize=8.5,
-        leading=11.0,
+        fontSize=8.2,
+        leading=10.5,
         textColor=colors.white,
         alignment=1
     )
 
-    # Compact Document Layout (Target 4 pages)
+    # Pre-render LaTeX Equation Images
+    eq_dir = "math_formulas"
+    w1, h1 = render_latex_equation(r"a_{\mathrm{lim}} = -\frac{1}{2 K_f G(\omega_c)}, \quad T = \frac{2k\pi + \epsilon}{2\pi f_c}, \quad N = \frac{60}{N_{\mathrm{teeth}} T}, \quad \epsilon = 3\pi + 2\psi", f"{eq_dir}/eq_chatter.png", fontsize=11.5)
+    w2, h2 = render_latex_equation(r"\Phi_y(s) = \frac{\omega_{n1}^2 \cos^2(\theta_1)}{k_1 (s^2 + 2\zeta_1 \omega_{n1} s + \omega_{n1}^2)} + \frac{\omega_{n2}^2 \cos^2(\theta_2)}{k_2 (s^2 + 2\zeta_2 \omega_{n2} s + \omega_{n2}^2)}", f"{eq_dir}/eq_tf.png", fontsize=11.0)
+    w3, h3 = render_latex_equation(r"p(R \vert \mathcal{D}) = \frac{p(\mathcal{D} \vert R) p(R)}{\sum_{R^{\prime}} p(\mathcal{D} \vert R^{\prime}) p(R^{\prime})}, \quad p(\mathcal{D} \vert R) = \sum_{G \in [\mathcal{G}^*]} p(\mathcal{D} \vert G, R) p(G \vert R)", f"{eq_dir}/eq_brcd.png", fontsize=11.5)
+    w4, h4 = render_latex_equation(r"H(P) = -\sum_{i=1}^n p(R_i \vert \mathcal{D}_t) \ln p(R_i \vert \mathcal{D}_t)", f"{eq_dir}/eq_entropy.png", fontsize=11.0)
+    w5, h5 = render_latex_equation(r"p(G^*, R^* \vert \mathcal{D}) \geq 1 - M \mathrm{exp}\left\{-n \left(\Delta_{\mathrm{min}}^{\mathrm{eff}}(n) - t_n\right)\right\} \max_{(G,R) \neq (G^*,R^*)} \frac{p(G,R)}{p(G^*,R^*)}", f"{eq_dir}/eq_bound.png", fontsize=11.0)
+
     story = []
     
     # -------------------------------------------------------------------------
     # HEADER / TITLE
     # -------------------------------------------------------------------------
-    story.append(Paragraph("BÁO CÁO NGHIÊN CỨU KHOA HỌC & KỸ THUẬT", ParagraphStyle('Pre', fontName='ArialVN-Bold', fontSize=9.5, textColor=colors.HexColor('#DC2626'), alignment=1, spaceAfter=2)))
+    story.append(Paragraph("BÁO CÁO NGHIÊN CỨU KHOA HỌC & KỸ THUẬT", ParagraphStyle('Pre', fontName='ArialVN-Bold', fontSize=9.0, textColor=colors.HexColor('#DC2626'), alignment=1, spaceAfter=2)))
     story.append(Paragraph("Phân Tích Nguyên Nhân Gốc (Root Cause Analysis - RCA) Hiện Tượng Rung Động Rung Rơ (Chatter) Trong Gia Công CNC Bằng Phương Pháp Suy Luận Nhân Quả Bayes (BRCD)", title_style))
     story.append(Paragraph("Tác giả: <b>Đặng Hải Đăng</b> &bull; Dự án: <b>RCA-for-Chatter-Simulation</b> &bull; Năm thực hiện: 2026<br/>Dựa trên: Lý thuyết Động học Gia công <i>(Altintas)</i> & Phương pháp Học Nhân quả Bayes <i>(ICML 2026 BRCD)</i>", subtitle_style))
-    story.append(HRFlowable(width="100%", thickness=1.2, color=colors.HexColor('#CBD5E1'), spaceAfter=8))
+    story.append(HRFlowable(width="100%", thickness=1.0, color=colors.HexColor('#CBD5E1'), spaceAfter=6))
 
     # -------------------------------------------------------------------------
     # 1. TỔNG QUAN DỰ ÁN & MỤC TIÊU NGHIÊN CỨU
@@ -148,7 +167,7 @@ def build_pdf():
     story.append(Paragraph("1. Tổng Quan & Mục Tiêu Nghiên Cứu (Executive Summary)", h1_style))
     story.append(Paragraph(
         "Hiện tượng <b>rung động tự kích thích (Regenerative Chatter)</b> là một trong những rào cản nghiêm trọng nhất trong gia công cơ khí chính xác CNC, "
-        "dẫn đến giảm sút chất lượng bề mặt chi tiết gia công (Surface Roughness $R_a$), làm mòn sứt dao cắt nghiêm trọng, quá tải trục chính và phát sinh phế phẩm hàng loạt. "
+        "dẫn đến giảm sút chất lượng bề mặt chi tiết gia công (Surface Roughness <i>R<sub>a</sub></i>), làm mòn sứt dao cắt nghiêm trọng, quá tải trục chính và phát sinh phế phẩm hàng loạt. "
         "Trong môi trường công nghiệp thực tế, khi cảm biến telemetry (như cảm biến gia tốc đo rung động RMS, cảm biến áp điện đo lực cắt đỉnh) phát tín hiệu cảnh báo bất thường, "
         "việc tìm đúng <b>Nguyên nhân gốc (Root Cause)</b> là vô cùng thử thách do các hiện tượng hạ lưu có tính lan truyền dây chuyền phức tạp.",
         body_style
@@ -166,16 +185,21 @@ def build_pdf():
     story.append(Paragraph("2. Cơ Sở Động Học Gia Công & Biểu Đồ Búp Ổn Định (Stability Lobes)", h1_style))
     story.append(Paragraph(
         "Cơ chế <b>Regenerative Chatter</b> xuất phát từ hiện tượng lưỡi cắt bào qua bề mặt lượn sóng do lần cắt trước đó để lại. "
-        "Mối quan hệ dịch pha giữa sóng rung động bên trong (inner wave) và sóng bên ngoài (outer wave) được đặc trưng bởi góc pha $\\epsilon = 3\\pi + 2\\psi$, "
-        "trong đó $\\psi = \\text{atan2}(H(\\omega_c), G(\\omega_c))$ xác định từ hàm truyền cấu trúc $FRF = G + jH$. "
-        "Chiều sâu cắt giới hạn tới hạn: $\\displaystyle a_{\\text{lim}} = -\\frac{1}{2 K_f G(\\omega_c)}$ và Chu kỳ quay $T = \\frac{2k\\pi + \\epsilon}{2\\pi f_c}$.",
+        "Mối quan hệ dịch pha giữa sóng rung động bên trong (inner wave) và sóng bên ngoài (outer wave) được đặc trưng bởi góc pha <i>&epsilon;</i> = 3&pi; + 2<i>&psi;</i>, "
+        "trong đó <i>&psi;</i> = atan2(<i>H</i>(<i>&omega;<sub>c</sub></i>), <i>G</i>(<i>&omega;<sub>c</sub></i>)) xác định từ hàm truyền cấu trúc <i>FRF</i> = <i>G</i> + <i>jH</i>.",
         body_style
     ))
     
+    # Equation 1 & 2
+    story.append(Spacer(1, 2))
+    story.append(Table([[Image(f"{eq_dir}/eq_tf.png", width=w2*0.9, height=h2*0.9)]], colWidths=[520], style=[('ALIGN', (0,0), (-1,-1), 'CENTER')]))
+    story.append(Spacer(1, 2))
+    story.append(Table([[Image(f"{eq_dir}/eq_chatter.png", width=w1*0.85, height=h1*0.85)]], colWidths=[520], style=[('ALIGN', (0,0), (-1,-1), 'CENTER')]))
+    story.append(Spacer(1, 2))
+
     if os.path.exists("stability_lobes_reproduced.png"):
-        story.append(Spacer(1, 2))
-        story.append(Image("stability_lobes_reproduced.png", width=7.2*inch, height=2.4*inch))
-        story.append(Paragraph("<b>Hình 1:</b> Tái lập giải tích Biểu đồ Búp Ổn định liên tục: (a) Máy bào 2 bậc tự do 2-DOF Shaping; (b) Phay rãnh Slotting & Phay biên Half-Immersion Down Milling (Altintas Example #1 & #2).", ParagraphStyle('Cap', fontName='ArialVN-Italic', fontSize=7.8, alignment=1, textColor=colors.HexColor('#475569'))))
+        story.append(Image("stability_lobes_reproduced.png", width=7.2*inch, height=2.3*inch))
+        story.append(Paragraph("<b>Hình 1:</b> Tái lập giải tích Biểu đồ Búp Ổn định liên tục: (a) Máy bào 2 bậc tự do 2-DOF Shaping; (b) Phay rãnh Slotting & Phay biên Half-Immersion Down Milling (Altintas Example #1 & #2).", ParagraphStyle('Cap', fontName='ArialVN-Italic', fontSize=7.6, alignment=1, textColor=colors.HexColor('#475569'))))
         story.append(Spacer(1, 4))
 
     # -------------------------------------------------------------------------
@@ -186,16 +210,16 @@ def build_pdf():
         "Trong máy CNC công nghiệp, không gian đo lường không chỉ gói gọn ở nguyên nhân gốc mà bao gồm toàn bộ chuỗi lan truyền vật lý. Đồ thị cấu trúc gồm 3 tầng rõ rệt:",
         body_style
     ))
-    story.append(Paragraph("&bull; <b>Tầng 1: 5 Nguyên nhân gốc (Root Candidates):</b> Độ cứng gá đặt <i>Fixture Clamping ($X_0$)</i>, Độ cản dao gá <i>Toolholder Damping ($X_1$)</i>, Hệ số mòn dao <i>Tool Wear ($X_2$)</i>, Chiều sâu cắt lập trình <i>Depth of Cut ($X_3$)</i>, Tốc độ quay trục chính <i>Spindle RPM ($X_4$)</i>.", bullet_style))
-    story.append(Paragraph("&bull; <b>Tầng 2: 2 Trạng thái Động lực học nội tại (Internal States):</b> Biên ổn định động <i>Stability Limit $a_{\\text{lim}}$ ($X_5$)</i>, Mức độ mất ổn định rung rơ <i>Chatter Severity ($X_6$)</i>.", bullet_style))
-    story.append(Paragraph("&bull; <b>Tầng 3: 7 Cảm biến Đo lường Telemetry (Sensor Telemetry):</b> Độ rung $X_7$ (Vibration RMS), Tần số dao động chủ đạo $X_8$ (Dominant Freq), Tỷ số phổ rung $X_9$ (Spectral Ratio), Lực cắt trung bình $X_{10}$ (Force Mean), Lực cắt cực đại $X_{11}$ (Force Peak), Công suất trục chính $X_{12}$ (Spindle Power), Độ nhám bề mặt $X_{13}$ (Surface Roughness $R_a$).", bullet_style))
+    story.append(Paragraph("&bull; <b>Tầng 1: 5 Nguyên nhân gốc (Root Candidates):</b> Độ cứng gá đặt <i>Fixture Clamping (X<sub>0</sub>)</i>, Độ cản dao gá <i>Toolholder Damping (X<sub>1</sub>)</i>, Hệ số mòn dao <i>Tool Wear (X<sub>2</sub>)</i>, Chiều sâu cắt lập trình <i>Depth of Cut (X<sub>3</sub>)</i>, Tốc độ quay trục chính <i>Spindle RPM (X<sub>4</sub>)</i>.", bullet_style))
+    story.append(Paragraph("&bull; <b>Tầng 2: 2 Trạng thái Động lực học nội tại (Internal States):</b> Biên ổn định động <i>Stability Limit a<sub>lim</sub> (X<sub>5</sub>)</i>, Mức độ mất ổn định rung rơ <i>Chatter Severity (X<sub>6</sub>)</i>.", bullet_style))
+    story.append(Paragraph("&bull; <b>Tầng 3: 7 Cảm biến Đo lường Telemetry (Sensor Telemetry):</b> Độ rung <i>X<sub>7</sub></i> (Vibration RMS), Tần số dao động chủ đạo <i>X<sub>8</sub></i> (Dominant Freq), Tỷ số phổ rung <i>X<sub>9</sub></i> (Spectral Ratio), Lực cắt trung bình <i>X<sub>10</sub></i> (Force Mean), Lực cắt cực đại <i>X<sub>11</sub></i> (Force Peak), Công suất trục chính <i>X<sub>12</sub></i> (Spindle Power), Độ nhám bề mặt <i>X<sub>13</sub></i> (Surface Roughness <i>R<sub>a</sub></i>).", bullet_style))
     
     # -------------------------------------------------------------------------
     # 4. KẾT QUẢ THỰC NGHIỆM ĐỐI SÁNH SOTA (BENCHMARK RESULTS)
     # -------------------------------------------------------------------------
     story.append(Paragraph("4. Kết Quả Thực Nghiệm & Đối Sánh Thuật Toán SOTA (Benchmark Evaluation)", h1_style))
     story.append(Paragraph(
-        "Đánh giá được thực hiện trên <b>2,500 lượt mô phỏng Monte-Carlo</b> độc lập với nhiễu thực tế (nhiễu cảm biến $\\pm 3.5\\%$, biến thiên độ cứng phôi $\\pm 5\\%$, lỗi biên tế vi $\\Delta z \\approx 1.1\\sigma - 1.5\\sigma$). "
+        "Đánh giá được thực hiện trên <b>2,500 lượt mô phỏng Monte-Carlo</b> độc lập với nhiễu thực tế (nhiễu cảm biến &plusmn; 3.5%, biến thiên độ cứng phôi &plusmn; 5%, lỗi biên tế vi &Delta;<i>z</i> &approx; 1.1&sigma; - 1.5&sigma;). "
         "Thuật toán phải tìm đúng nguyên nhân gốc trong <b>toàn bộ 14 biến</b> ứng viên.",
         body_style
     ))
@@ -219,13 +243,13 @@ def build_pdf():
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
         ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor('#CBD5E1')),
         ('ROWBACKGROUNDS', (0,1), (-1,-2), [colors.white, colors.HexColor('#F8FAFC')]),
-        ('TOPPADDING', (0,0), (-1,-1), 3),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('TOPPADDING', (0,0), (-1,-1), 2.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
     ]))
     
-    story.append(Paragraph("<b>Bảng 1:</b> Độ chính xác chẩn đoán Top-1 Accuracy phân theo từng dạng lỗi ($m = 5$ mẫu dữ liệu bất thường)", h2_style))
+    story.append(Paragraph("<b>Bảng 1:</b> Độ chính xác chẩn đoán Top-1 Accuracy phân theo từng dạng lỗi (<i>m</i> = 5 mẫu dữ liệu bất thường)", h2_style))
     story.append(t1)
-    story.append(Spacer(1, 6))
+    story.append(Spacer(1, 4))
 
     # Table 2
     t2_data = [
@@ -244,23 +268,27 @@ def build_pdf():
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
         ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor('#CBD5E1')),
         ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor('#F8FAFC')]),
-        ('TOPPADDING', (0,0), (-1,-1), 3),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('TOPPADDING', (0,0), (-1,-1), 2.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
     ]))
     
-    story.append(Paragraph("<b>Bảng 2:</b> Top-1 Accuracy theo kích thước mẫu can thiệp $m$ (Tiến trình hội tụ theo lý thuyết Theorem 4.4)", h2_style))
+    story.append(Paragraph("<b>Bảng 2:</b> Top-1 Accuracy theo kích thước mẫu can thiệp <i>m</i> (Tiến trình hội tụ theo lý thuyết Theorem 4.4)", h2_style))
     story.append(t2)
-    story.append(Spacer(1, 6))
+    story.append(Spacer(1, 4))
+
+    # Bound equation
+    story.append(Table([[Image(f"{eq_dir}/eq_bound.png", width=w5*0.82, height=h5*0.82)]], colWidths=[520], style=[('ALIGN', (0,0), (-1,-1), 'CENTER')]))
+    story.append(Spacer(1, 4))
 
     if os.path.exists("rca_sota_accuracy_comparison.png"):
-        story.append(Image("rca_sota_accuracy_comparison.png", width=7.2*inch, height=2.1*inch))
-        story.append(Paragraph("<b>Hình 2:</b> Đường cong Top-1, Top-3, và Top-5 Accuracy phân tách rõ ràng, không bị hiệu ứng trần (ceiling effect) tại $1.00$.", ParagraphStyle('Cap2', fontName='ArialVN-Italic', fontSize=7.8, alignment=1, textColor=colors.HexColor('#475569'))))
-        story.append(Spacer(1, 6))
+        story.append(Image("rca_sota_accuracy_comparison.png", width=7.2*inch, height=2.0*inch))
+        story.append(Paragraph("<b>Hình 2:</b> Đường cong Top-1, Top-3, và Top-5 Accuracy phân tách rõ ràng, không bị hiệu ứng trần (ceiling effect) tại 1.00.", ParagraphStyle('Cap2', fontName='ArialVN-Italic', fontSize=7.6, alignment=1, textColor=colors.HexColor('#475569'))))
+        story.append(Spacer(1, 4))
 
     if os.path.exists("rca_fault_breakdown_m5.png"):
-        story.append(Image("rca_fault_breakdown_m5.png", width=7.2*inch, height=2.1*inch))
-        story.append(Paragraph("<b>Hình 3:</b> Biểu đồ cột phân tích Top-1 Accuracy theo từng kịch bản lỗi ở chế độ ít mẫu can thiệp ($m = 5$).", ParagraphStyle('Cap3', fontName='ArialVN-Italic', fontSize=7.8, alignment=1, textColor=colors.HexColor('#475569'))))
-        story.append(Spacer(1, 6))
+        story.append(Image("rca_fault_breakdown_m5.png", width=7.2*inch, height=2.0*inch))
+        story.append(Paragraph("<b>Hình 3:</b> Biểu đồ cột phân tích Top-1 Accuracy theo từng kịch bản lỗi ở chế độ ít mẫu can thiệp (<i>m</i> = 5).", ParagraphStyle('Cap3', fontName='ArialVN-Italic', fontSize=7.6, alignment=1, textColor=colors.HexColor('#475569'))))
+        story.append(Spacer(1, 4))
 
     # -------------------------------------------------------------------------
     # 5. HỘI TỤ BAYESIAN & SUY GIẢM ENTROPY TRỰC TUYẾN
@@ -268,20 +296,26 @@ def build_pdf():
     story.append(Paragraph("5. Tiến Trình Hội Tụ Phân Phối Hậu Nghiệm & Suy Giảm Entropy Shannon", h1_style))
     story.append(Paragraph(
         "Một trong những ưu điểm nổi bật nhất của thuật toán <b>BRCD (Bayesian Root Cause Discovery)</b> là tính chất <i>Anytime Update</i>. "
-        "Khi mỗi mẫu dữ liệu bất thường mới $\\mathcal{D}_t$ được thu thập theo thời gian thực (streaming mode), xác suất hậu nghiệm $P(R^* \\mid \\mathcal{D}_t)$ được cập nhật liên tục thông qua quy tắc Bayes. "
-        "Bắt đầu từ tiên nghiệm đồng đều $P_0 = 0.20$, $H_0 = 1.61$ nats, xác suất hậu nghiệm tăng dần mượt mà và entropy giảm dần.",
+        "Khi mỗi mẫu dữ liệu bất thường mới <b>D</b><sub><i>t</i></sub> được thu thập theo thời gian thực (streaming mode), xác suất hậu nghiệm <i>P</i>(<i>R</i><sup>*</sup> | <b>D</b><sub><i>t</i></sub>) được cập nhật liên tục thông qua quy tắc Bayes.",
         body_style
     ))
     
+    # BRCD & Entropy Equation
+    story.append(Spacer(1, 2))
+    story.append(Table([[Image(f"{eq_dir}/eq_brcd.png", width=w3*0.82, height=h3*0.82)]], colWidths=[520], style=[('ALIGN', (0,0), (-1,-1), 'CENTER')]))
+    story.append(Spacer(1, 2))
+    story.append(Table([[Image(f"{eq_dir}/eq_entropy.png", width=w4*0.82, height=h4*0.82)]], colWidths=[520], style=[('ALIGN', (0,0), (-1,-1), 'CENTER')]))
+    story.append(Spacer(1, 2))
+    
     if os.path.exists("rca_convergence_progress.png"):
-        story.append(Image("rca_convergence_progress.png", width=7.2*inch, height=2.1*inch))
-        story.append(Paragraph("<b>Hình 4:</b> (a) Tiến trình tăng trưởng xác suất hậu nghiệm $P(R^* \\mid \\mathcal{D}_t)$; (b) Đường suy giảm độ bất định Shannon $H(P)$ qua 40 bước streaming.", ParagraphStyle('Cap4', fontName='ArialVN-Italic', fontSize=7.8, alignment=1, textColor=colors.HexColor('#475569'))))
-        story.append(Spacer(1, 6))
+        story.append(Image("rca_convergence_progress.png", width=7.2*inch, height=2.0*inch))
+        story.append(Paragraph("<b>Hình 4:</b> (a) Tiến trình tăng trưởng xác suất hậu nghiệm <i>P</i>(<i>R</i><sup>*</sup> | <b>D</b><sub><i>t</i></sub>); (b) Đường suy giảm độ bất định Shannon <i>H</i>(<i>P</i>) qua 40 bước streaming.", ParagraphStyle('Cap4', fontName='ArialVN-Italic', fontSize=7.6, alignment=1, textColor=colors.HexColor('#475569'))))
+        story.append(Spacer(1, 4))
 
     if os.path.exists("chatter_physical_signatures.png"):
-        story.append(Image("chatter_physical_signatures.png", width=7.2*inch, height=3.2*inch))
-        story.append(Paragraph("<b>Hình 5:</b> Dấu vân tay vật lý (Physical Signatures): Tín hiệu dịch chuyển theo thời gian và Phổ tần số FFT tương ứng với các dạng lỗi khác nhau.", ParagraphStyle('Cap5', fontName='ArialVN-Italic', fontSize=7.8, alignment=1, textColor=colors.HexColor('#475569'))))
-        story.append(Spacer(1, 6))
+        story.append(Image("chatter_physical_signatures.png", width=7.2*inch, height=3.0*inch))
+        story.append(Paragraph("<b>Hình 5:</b> Dấu vân tay vật lý (Physical Signatures): Tín hiệu dịch chuyển theo thời gian và Phổ tần số FFT tương ứng với các dạng lỗi khác nhau.", ParagraphStyle('Cap5', fontName='ArialVN-Italic', fontSize=7.6, alignment=1, textColor=colors.HexColor('#475569'))))
+        story.append(Spacer(1, 4))
 
     # -------------------------------------------------------------------------
     # 6. GIẢI THÍCH KHOA HỌC & KẾT LUẬN
@@ -289,12 +323,12 @@ def build_pdf():
     story.append(Paragraph("6. Thảo Luận Khoa Học & Kết Luận (Discussion & Conclusion)", h1_style))
     story.append(Paragraph(
         "<b>1. Tại sao SimpleRCA và các phương pháp phi nhân quả thất bại?</b> "
-        "Các phương pháp thống kê truyền thống như <code>SimpleRCA</code> chỉ đo độ lệch biên (marginal deviation) ở phân vị thứ 95. Khi rung rơ xảy ra, các biến hạ lưu như Lực cắt đỉnh ($X_{11}$) và Độ nhám bề mặt ($X_{13}$) có biên độ dao động lớn nhất, khiến <code>SimpleRCA</code> gán nhầm triệu chứng hạ lưu thành nguyên nhân gốc (độ chính xác chỉ đạt $0.03$).",
+        "Các phương pháp thống kê truyền thống như <code>SimpleRCA</code> chỉ đo độ lệch biên (marginal deviation) ở phân vị thứ 95. Khi rung rơ xảy ra, các biến hạ lưu như Lực cắt đỉnh (<i>X<sub>11</sub></i>) và Độ nhám bề mặt (<i>X<sub>13</sub></i>) có biên độ dao động lớn nhất, khiến <code>SimpleRCA</code> gán nhầm triệu chứng hạ lưu thành nguyên nhân gốc (độ chính xác chỉ đạt 0.03).",
         body_style
     ))
     story.append(Paragraph(
         "<b>2. Ưu thế cốt lõi của BRCD và suy luận nhân quả:</b> "
-        "Phương pháp nhân quả kiểm tra <i>tính bất biến của cơ chế điều kiện</i> $P(X_i \\mid Pa(X_i))$. Do các biến hạ lưu chỉ thay đổi vì biến cha của chúng thay đổi, mô hình nhân quả nhận diện được cơ chế không đổi và loại bỏ hoàn toàn các nút triệu chứng. Hơn nữa, BRCD áp dụng tích hợp Bayes thay vì kiểm định độc lập có điều kiện đơn lẻ, giúp giữ vững độ chính xác vượt trội ngay cả trong điều kiện cực kỳ khan hiếm mẫu ($m = 5$).",
+        "Phương pháp nhân quả kiểm tra <i>tính bất biến của cơ chế điều kiện</i> <i>P</i>(<i>X<sub>i</sub></i> | <i>Pa</i>(<i>X<sub>i</sub></i>)). Do các biến hạ lưu chỉ thay đổi vì biến cha của chúng thay đổi, mô hình nhân quả nhận diện được cơ chế không đổi và loại bỏ hoàn toàn các nút triệu chứng. Hơn nữa, BRCD áp dụng tích hợp Bayes thay vì kiểm định độc lập có điều kiện đơn lẻ, giúp giữ vững độ chính xác vượt trội ngay cả trong điều kiện cực kỳ khan hiếm mẫu (<i>m</i> = 5).",
         body_style
     ))
     story.append(Paragraph(
@@ -305,7 +339,7 @@ def build_pdf():
 
     # Build Document
     doc.build(story)
-    print(f"Successfully generated academic report PDF: {pdf_filename}")
+    print(f"Successfully generated academic report PDF with rendered LaTeX: {pdf_filename}")
 
 if __name__ == "__main__":
     build_pdf()
