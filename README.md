@@ -4,19 +4,19 @@ An open-source Python research framework for **Machining Chatter Dynamics Simula
 
 ---
 
-## 📌 1. Research Motivation & Problem Statement
+## 📌 1. Research Motivation & Problem Formulation
 
-In CNC machining and advanced manufacturing, **regenerative chatter** is an unstable, self-excited vibration between the cutting tool and workpiece. It causes poor surface finish, dimensional errors, accelerated tool wear, and potential damage to spindle bearings.
+In CNC milling and high-speed machining, **regenerative chatter** is an unstable self-excited vibration between the cutting tool and workpiece. Identifying the root cause of chatter in real-time is critical for zero-defect manufacturing:
 
 ```
-                           [Root Causes: R]
+                           [Root Physical Faults: R]
   ┌───────────────────────┬────────────────────────┬──────────────────────┐
-  │ Stiffness Loss (k)    │ Damping Loss (zeta)    │ Tool Flank Wear (Kt) │
-  │ (Fixture/bearing play)│ (Slender tool overhang)│ (Excessive friction) │
+  │ 1. STIFFNESS (k)      │ 2. DAMPING (zeta)      │ 3. TOOL WEAR (Kt)    │
+  │ (Fixture/bearing play)│ (Slender tool overhang)│ (Flank wear friction)│
   └───────────────────────┴────────────────────────┴──────────────────────┘
   ┌────────────────────────────────────────────────┬──────────────────────┐
-  │ Excessive Cut Depth (a >> a_lim)               │ Unstable Spindle RPM │
-  │ (CAM programming overload)                     │ (Lobe pocket valley) │
+  │ 4. DEPTH OVERLOAD (a >> a_lim)                 │ 5. RPM MISMATCH      │
+  │ (CAM programming error)                        │ (Lobe pocket valley) │
   └────────────────────────────────────────────────┴──────────────────────┘
                                      │
                                      ▼
@@ -41,7 +41,7 @@ In industrial production, collecting **annotated ground-truth failure datasets**
 
 ---
 
-## 🔬 2. Causal Architecture of the CNC Machining System
+## 🔬 2. Causal Graph Architecture
 
 The 14-node Causal Directed Acyclic Graph (DAG) is constructed strictly from the governing equations of metal cutting mechanics (*Altintas, 2012*):
 
@@ -77,71 +77,101 @@ The 14-node Causal Directed Acyclic Graph (DAG) is constructed strictly from the
 
 ## 📊 3. SOTA Benchmark Experimental Results
 
-We evaluate 6 leading Root Cause Analysis algorithms across different anomalous sample sizes ($m \in [5, 10, 20, 50, 100]$):
+We evaluate 6 leading Root Cause Analysis algorithms across $N = 2,500$ independent Monte-Carlo simulations (500 runs per sample size $m \in [5, 10, 20, 50, 100]$):
 
-### Quantitative Comparison Table:
+### Table 1: Detailed Breakdown by Fault Mode ($m = 5$ Samples)
+*(Format matching Table 4 & Table 5 in the BRCD ICML 2026 Paper)*
 
-| Algorithm | Method Class | Top-1 ($m=5$) | MRR ($m=5$) | Top-1 ($m=20$) | MRR ($m=20$) | Top-1 ($m=100$) | MRR ($m=100$) |
+| Fault Scenario | Metric | BRCD (Ours) | RCD | RCG | BARO | SimpleRCA | SmoothTraversal |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **BRCD (Ours)** | **Bayesian Causal (ICML '26)** | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** |
-| **RCD** | Constraint-based PC / CI (NeurIPS '22) | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** |
-| **RCG** | Conditional Mutual Info (UAI '25) | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** |
-| **SmoothTraversal** | Causal Graph Traversal (NeurIPS '25) | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** |
-| **BARO** | Multivariate Robust IQR (FSE '24) | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 | 1.00 |
-| **SimpleRCA** | Marginal 95th Percentile (2025) | 0.69 | 0.83 | 0.67 | 0.80 | 0.61 | 0.75 |
+| **STIFFNESS** | Top-1 | **1.00** | **1.00** | **1.00** | **1.00** | 0.53 | **1.00** |
+| | Top-3 | **1.00** | **1.00** | **1.00** | **1.00** | 0.98 | **1.00** |
+| | Top-5 | **1.00** | **1.00** | **1.00** | **1.00** | 1.00 | **1.00** |
+| | MRR | **1.00** | **1.00** | **1.00** | **1.00** | 0.74 | **1.00** |
+| **DAMPING** | Top-1 | **1.00** | **1.00** | **1.00** | **1.00** | 0.00 | **1.00** |
+| | Top-3 | **1.00** | **1.00** | **1.00** | **1.00** | 0.93 | **1.00** |
+| | Top-5 | **1.00** | **1.00** | **1.00** | **1.00** | 1.00 | **1.00** |
+| | MRR | **1.00** | **1.00** | **1.00** | **1.00** | 0.44 | **1.00** |
+| **TOOL_WEAR** | Top-1 | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** |
+| | Top-3 | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** |
+| | MRR | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** |
+| **DEPTH_OVERLOAD** | Top-1 | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** |
+| | Top-3 | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** |
+| | MRR | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** |
+| **RPM_MISMATCH** | Top-1 | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** |
+| | Top-3 | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** |
+| | MRR | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** | **1.00** |
+| **AVERAGE** | **Top-1** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **0.71 ± 0.02** | **1.00 ± 0.00** |
+| | **Top-3** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **0.98 ± 0.01** | **1.00 ± 0.00** |
+| | **Top-5** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** |
+| | **MRR** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **0.84 ± 0.01** | **1.00 ± 0.00** |
 
 ---
 
-## 📈 4. Visualizations & Validation
+### Table 2: Overall Top-1 Accuracy across Interventional Sample Sizes ($\text{mean} \pm \text{stderr}$)
+*(Format matching Table 2 & Table 3 in the BRCD ICML 2026 Paper)*
 
-### (a) SOTA Accuracy Comparison (ICML Format)
-Accuracy@1, Accuracy@3, and Accuracy@5 as a function of the interventional sample size $m$:
+| Algorithm | $m = 5$ | $m = 10$ | $m = 20$ | $m = 50$ | $m = 100$ |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **BRCD (Ours)** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** |
+| **RCD** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** |
+| **RCG** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** |
+| **BARO** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** |
+| **SimpleRCA** | 0.71 ± 0.02 | 0.68 ± 0.02 | 0.64 ± 0.02 | 0.63 ± 0.02 | 0.64 ± 0.02 |
+| **SmoothTraversal** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** |
+
+---
+
+## 📈 4. Visualizations & Convergence Validation
+
+### (a) Online Iterative Posterior Convergence & Shannon Entropy Decay
+Demonstrating the anytime Bayesian updating property: as new streaming anomaly samples $t = 1 \dots 40$ arrive, posterior probability $P(R^* \mid \mathcal{D}_t)$ rapidly concentrates to $1.0$, while diagnostic uncertainty entropy $H(P)$ collapses to $0.0$:
+![Iterative Convergence](rca_convergence_progress.png)
+
+### (b) Per-Fault Mode Diagnosis Breakdown ($m = 5$ Samples)
+Demonstrates why heuristic methods (like SimpleRCA) fail on subtle damping and stiffness faults, while Causal Bayesian methods (**BRCD**) achieve perfect diagnosis:
+![Fault Breakdown](rca_fault_breakdown_m5.png)
+
+### (c) SOTA Accuracy Comparison across Sample Sizes
+Accuracy@1, Accuracy@3, and Accuracy@5 curves with standard error bars:
 ![SOTA Accuracy Comparison](rca_sota_accuracy_comparison.png)
 
-### (b) Analytical Stability Lobe Diagrams (Altintas / Assignment 4 Reproduction)
+### (d) Analytical Stability Lobe Diagrams (Altintas Reproduction)
 Open-source Python reproduction of Example #1 (2-DOF Shaping) and Example #2 (Multi-DOF Milling):
 ![Stability Lobes](stability_lobes_reproduced.png)
 
-### (c) Physical Signatures Under Distinct Fault Modes
+### (e) Physical Signatures Under Distinct Fault Modes
 Time-domain vibration waveforms and FFT spectra showing distinct physical fingerprints:
-* **Stiffness Degradation ($k$ drops 50%)**: Natural resonance shifts from $250\text{ Hz} \to 177\text{ Hz}$.
-* **Excessive Depth ($a \gg a_{\lim}$)**: Violent regenerative growth into non-linear tool fly-out limit cycles.
 ![Physical Signatures](chatter_physical_signatures.png)
 
 ---
 
-## 💡 5. Scientific Insights & Feasibility Assessment
+## 💡 5. Scientific Validation & Discussion
 
-1. **Why Causal Bayesian RCA Excels in Machining**:
-   - Machine tool dynamics follow strict physical conservation laws. Under soft interventions, only the true root cause mechanism shifts ($F \to R^*$), while all non-intervened mechanisms $p(X_j \mid Pa(X_j))$ remain invariant.
-   - **BRCD** leverages this modularity property, achieving high Top-1 accuracy even with scarce failure samples ($m = 5$).
-2. **Physical Distinguishability (Identifiability)**:
-   - **Fixture/bearing looseness ($k$)**: The only fault that shifts structural resonance frequency $f_n = \frac{1}{2\pi}\sqrt{k/m}$.
-   - **Tool flank wear ($K_t$)**: Directly scales cutting forces without shifting natural frequencies.
-   - **CAM depth overload ($a$)**: Produces excessive mean force and violent chatter limit cycles simultaneously.
-3. **Pure Physics vs. Black-Box GANs**:
-   - Rather than using black-box neural networks (which can generate physically inconsistent telemetry), **Physics-Informed Boundary Sampling** provides explainable, reproducible, and physically faithful synthetic datasets.
+1. **Theoretical Consistency**:
+   - The observed exponential decay of entropy $H(P)$ and fast concentration of $P(R^* \mid \mathcal{D}_t)$ validates **Theorem 4.3 & 4.4 (Posterior Consistency & Exponential Concentration Bound)** from the BRCD paper.
+2. **Failure Modes of Heuristic Baselines**:
+   - `SimpleRCA` achieves $0\%$ Top-1 accuracy on `DAMPING` degradation because damping loss does not produce massive static mean shifts, but rather subtle regenerative amplification. Non-causal percentile methods confuse downstream symptoms with root causes.
+3. **Physical Identifiability**:
+   - Machine dynamics inherently satisfy **Interventional Faithfulness**: stiffness $k$ shifts structural resonance $f_n = \frac{1}{2\pi}\sqrt{k/m}$; tool wear $K_t$ scales cutting forces; depth overload $a$ triggers large limit cycles.
 
 ---
 
-## 🛠️ 6. Code Structure & Usage
+## 🛠️ 6. Code Structure & Reproducibility
 
-### File Structure:
-* [`chatter_simulation.py`](file:///Users/danghaidang04/CodeSpace/RCA/chatter_simulation.py): Analytical stability lobe solver (Example 1 & Example 2).
-* [`rca_chatter_bayesian.py`](file:///Users/danghaidang04/CodeSpace/RCA/rca_chatter_bayesian.py): Time-domain DDE solver + Bayesian Network RCA diagnostic engine.
-* [`benchmark_rca_chatter.py`](file:///Users/danghaidang04/CodeSpace/RCA/benchmark_rca_chatter.py): Complete benchmark comparing BRCD, RCD, RCG, BARO, SimpleRCA, SmoothTraversal across sample sizes.
-* [`brcd_causal.py`](file:///Users/danghaidang04/CodeSpace/RCA/brcd_causal.py): Causal mechanism invariance implementation of BRCD (ICML 2026).
+### Files:
+* [`run_full_paper_benchmark.py`](file:///Users/danghaidang04/CodeSpace/RCA/run_full_paper_benchmark.py): Large-scale Monte-Carlo benchmark ($2,500$ runs) + online streaming convergence experiment.
+* [`benchmark_rca_chatter.py`](file:///Users/danghaidang04/CodeSpace/RCA/benchmark_rca_chatter.py): Core benchmark script for SOTA algorithms.
+* [`chatter_simulation.py`](file:///Users/danghaidang04/CodeSpace/RCA/chatter_simulation.py): Analytical Stability Lobe Diagram solver (Example 1 & Example 2).
+* [`rca_chatter_bayesian.py`](file:///Users/danghaidang04/CodeSpace/RCA/rca_chatter_bayesian.py): Time-domain DDE solver + initial Bayesian Network demonstration.
 
-### Quick Start:
+### Run All Experiments:
 ```bash
 # 1. Install dependencies
 pip install numpy scipy matplotlib pandas networkx
 
-# 2. Run SOTA RCA Benchmark
-python benchmark_rca_chatter.py
-
-# 3. Run Chatter Physical Simulation & Stability Lobes
-python rca_chatter_bayesian.py
+# 2. Run the Full Large-Scale Benchmark & Convergence Experiments
+python run_full_paper_benchmark.py
 ```
 
 ---
