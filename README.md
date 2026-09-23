@@ -86,7 +86,7 @@ Evaluated across $N = 1,500$ independent Monte-Carlo simulations (300 runs per s
 ### Table 1: Detailed Breakdown by Fault Mode ($m = 5$ Samples)
 *(Format matching Table 4 & Table 5 in the BRCD ICML 2026 Paper)*
 
-| Fault Scenario | Metric | **BRCD (Ours)** | **RCD** | **RCG** | **SmoothTraversal** | **BARO** | **SimpleRCA** |
+| Fault Scenario | Metric | **BRCD** | **RCD** | **RCG** | **SmoothTraversal** | **BARO** | **SimpleRCA** |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **FIXTURE_LOOSENESS** | Top-1 | **1.00** | **1.00** | **1.00** | **1.00** | 0.90 | 0.00 |
 | | Top-3 | **1.00** | **1.00** | **1.00** | **1.00** | 0.98 | 0.20 |
@@ -115,7 +115,7 @@ Evaluated across $N = 1,500$ independent Monte-Carlo simulations (300 runs per s
 
 | Algorithm | $m = 5$ | $m = 10$ | $m = 20$ | $m = 50$ | $m = 100$ |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **BRCD (Ours)** | **0.80 ± 0.02** | **0.80 ± 0.02** | **0.80 ± 0.02** | **0.80 ± 0.02** | **0.80 ± 0.02** |
+| **BRCD** | **0.80 ± 0.02** | **0.80 ± 0.02** | **0.80 ± 0.02** | **0.80 ± 0.02** | **0.80 ± 0.02** |
 | **RCD** | **0.99 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** |
 | **RCG** | **0.79 ± 0.02** | **0.80 ± 0.02** | **0.80 ± 0.02** | **0.80 ± 0.02** | **0.80 ± 0.02** |
 | **SmoothTraversal** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** | **1.00 ± 0.00** |

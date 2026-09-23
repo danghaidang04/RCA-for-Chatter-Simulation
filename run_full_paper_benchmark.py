@@ -364,7 +364,7 @@ def run_large_scale_experiment():
 
     system = AdvancedChatterSystem()
     algorithms = {
-        "BRCD (Ours)": BRCD(system),
+        "BRCD": BRCD(system),
         "RCD": RCD(system),
         "RCG": RCG(system),
         "BARO": BARO(system),
@@ -502,7 +502,7 @@ def run_large_scale_experiment():
     fig, axes = plt.subplots(1, 3, figsize=(13.0, 3.8), dpi=300, sharey=True)
     
     palette = {
-        "BRCD (Ours)": "#D90429",       # Crimson
+        "BRCD": "#D90429",              # Crimson
         "RCD": "#1D4ED8",               # Royal Blue
         "RCG": "#2A9D8F",               # Emerald Teal
         "BARO": "#EAB308",              # Amber Yellow
