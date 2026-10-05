@@ -31,6 +31,63 @@ def render_latex_equation(latex_str, filepath, fontsize=13, color="#1E3A8A"):
         scale = 72.0 / 350.0
         return w_px * scale, h_px * scale
 
+def draw_system_input_output_diagram(filepath):
+    """Draw the main non-GAN system data flow and its 14 outputs."""
+    from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
+
+    fig, ax = plt.subplots(figsize=(15, 8.6), dpi=220)
+    ax.set_xlim(0, 15)
+    ax.set_ylim(0, 8.2)
+    ax.axis("off")
+
+    def box(x, y, w, h, title, body, face, edge="#1E3A8A", title_color="white"):
+        patch = FancyBboxPatch(
+            (x, y), w, h, boxstyle="round,pad=0.04,rounding_size=0.10",
+            linewidth=1.4, edgecolor=edge, facecolor=face
+        )
+        ax.add_patch(patch)
+        ax.text(x + w / 2, y + h - 0.24, title, ha="center", va="top",
+                fontsize=8.4, fontweight="bold", color="#0F172A")
+        ax.text(x + 0.14, y + h - 0.56, body, ha="left", va="top",
+                fontsize=5.65, color="#0F172A", linespacing=1.12,
+                clip_on=True)
+
+    def arrow(x1, y1, x2, y2, color="#475569"):
+        ax.add_patch(FancyArrowPatch(
+            (x1, y1), (x2, y2), arrowstyle="-|>", mutation_scale=13,
+            linewidth=1.4, color=color, connectionstyle="arc3,rad=0.0"
+        ))
+
+    ax.text(7.5, 8.28, "So do dau vao - dau ra cua he thong chatter",
+            ha="center", va="top", fontsize=12.5, fontweight="bold", color="#0F172A")
+
+    box(0.25, 4.90, 2.45, 2.65, "1. Physical inputs",
+        "k: stiffness index\\nzeta: damping ratio\\nKt: cutting coefficient\\na: cut depth\\nrpm: normalized speed\\nUnits: SI not calibrated", "#DCFCE7")
+    box(3.15, 4.90, 2.55, 2.65, "2. Input sampling",
+        "Nominal data: natural variation\\nIntervention data: selected\\nroot-cause shift\\n\\nOptional Gaussian noise\\nfor process/sensors", "#DBEAFE")
+    box(6.15, 2.20, 3.10, 5.35, "5. forward_physics(...)",
+        "a_lim = 0.85*k*zeta/Kt*lobe_factor\\nlobe_factor = 1 - 0.45 sin(4 pi rpm)\\ndiff = a - a_lim\\nchatter = softplus(14*diff)*0.28\\nadd Gaussian noise to telemetry\\nnoise_scale = 1.0 or 1.1", "#FDE68A")
+    box(9.75, 4.45, 4.95, 3.10, "4. Output matrix D (N x 14)",
+        "Inputs: k, zeta, Kt, a, rpm\\na_lim; Chatter Severity\\nVibration RMS (um); Dominant Freq (Hz)\\nSpectral Ratio; Force Mean (N)\\nForce Peak (N); Spindle Power (W)\\nSurface Roughness Ra (um)", "#FEE2E2")
+    box(9.75, 1.35, 4.95, 2.35, "5. Decision layer",
+        "D_obs: 5,000 nominal samples\\nD_int: m anomalous samples\\nAnomaly detection: compare with normal\\nRCA: rank 5 candidates\\nBRCD / RCD / RCG / BARO / ...", "#F3E8FF")
+
+    arrow(2.70, 6.15, 3.15, 6.15)
+    arrow(5.70, 6.15, 6.15, 6.15)
+    arrow(9.25, 5.85, 9.75, 5.85)
+    arrow(12.23, 4.47, 12.23, 3.70)
+
+    ax.text(2.91, 6.43, "sample / intervene", fontsize=6.2, color="#475569")
+    ax.text(5.82, 6.43, "5 physical values", fontsize=6.2, color="#475569")
+    ax.text(9.40, 6.05, "N rows", fontsize=6.2, color="#475569")
+    ax.text(12.37, 4.08, "telemetry", fontsize=6.2, color="#475569")
+    ax.text(7.5, 0.52,
+            "Main diagram: no GAN is required. "
+            "The forward model is algebraic, not an ODE/DDE integrator.",
+            ha="center", va="center", fontsize=7.5, fontweight="bold", color="#991B1B")
+    plt.savefig(filepath, bbox_inches="tight", facecolor="white")
+    plt.close(fig)
+
 def build_pdf():
     pdf_filename = "Bao_Cao_Nghien_Cuu_RCA_Chatter_CNC.pdf"
     doc = SimpleDocTemplate(
@@ -145,6 +202,8 @@ def build_pdf():
 
     # Pre-render LaTeX Equation Images
     eq_dir = "math_formulas"
+    diagram_path = "system_input_output_detailed.png"
+    draw_system_input_output_diagram(diagram_path)
     w1, h1 = render_latex_equation(r"a_{\mathrm{lim}} = -\frac{1}{2 K_f G(\omega_c)}, \quad T = \frac{2k\pi + \epsilon}{2\pi f_c}, \quad N = \frac{60}{N_{\mathrm{teeth}} T}, \quad \epsilon = 3\pi + 2\psi", f"{eq_dir}/eq_chatter.png", fontsize=11.5)
     w2, h2 = render_latex_equation(r"\Phi_y(s) = \frac{\omega_{n1}^2 \cos^2(\theta_1)}{k_1 (s^2 + 2\zeta_1 \omega_{n1} s + \omega_{n1}^2)} + \frac{\omega_{n2}^2 \cos^2(\theta_2)}{k_2 (s^2 + 2\zeta_2 \omega_{n2} s + \omega_{n2}^2)}", f"{eq_dir}/eq_tf.png", fontsize=11.0)
     w3, h3 = render_latex_equation(r"p(R \vert \mathcal{D}) = \frac{p(\mathcal{D} \vert R) p(R)}{\sum_{R^{\prime}} p(\mathcal{D} \vert R^{\prime}) p(R^{\prime})}, \quad p(\mathcal{D} \vert R) = \sum_{G \in [\mathcal{G}^*]} p(\mathcal{D} \vert G, R) p(G \vert R)", f"{eq_dir}/eq_brcd.png", fontsize=11.5)
@@ -213,6 +272,126 @@ def build_pdf():
     story.append(Paragraph("&bull; <b>Tầng 1: 5 Nguyên nhân gốc (Root Candidates):</b> Độ cứng gá đặt <i>Fixture Clamping (X<sub>0</sub>)</i>, Độ cản dao gá <i>Toolholder Damping (X<sub>1</sub>)</i>, Hệ số mòn dao <i>Tool Wear (X<sub>2</sub>)</i>, Chiều sâu cắt lập trình <i>Depth of Cut (X<sub>3</sub>)</i>, Tốc độ quay trục chính <i>Spindle RPM (X<sub>4</sub>)</i>.", bullet_style))
     story.append(Paragraph("&bull; <b>Tầng 2: 2 Trạng thái Động lực học nội tại (Internal States):</b> Biên ổn định động <i>Stability Limit a<sub>lim</sub> (X<sub>5</sub>)</i>, Mức độ mất ổn định rung rơ <i>Chatter Severity (X<sub>6</sub>)</i>.", bullet_style))
     story.append(Paragraph("&bull; <b>Tầng 3: 7 Cảm biến Đo lường Telemetry (Sensor Telemetry):</b> Độ rung <i>X<sub>7</sub></i> (Vibration RMS), Tần số dao động chủ đạo <i>X<sub>8</sub></i> (Dominant Freq), Tỷ số phổ rung <i>X<sub>9</sub></i> (Spectral Ratio), Lực cắt trung bình <i>X<sub>10</sub></i> (Force Mean), Lực cắt cực đại <i>X<sub>11</sub></i> (Force Peak), Công suất trục chính <i>X<sub>12</sub></i> (Spindle Power), Độ nhám bề mặt <i>X<sub>13</sub></i> (Surface Roughness <i>R<sub>a</sub></i>).", bullet_style))
+
+    # -------------------------------------------------------------------------
+    # 3B. ĐẶC TẢ ĐẦU VÀO, ĐẦU RA VÀ GIỚI HẠN MÔ HÌNH
+    # -------------------------------------------------------------------------
+    story.append(Paragraph("3B. Đặc Tả Đầu Vào, Đầu Ra, Ổn Định, Nhiễu & Anomaly Detection", h1_style))
+    story.append(Paragraph(
+        "Phần này mô tả đúng theo triển khai trong <code>gan_chatter_rca_benchmark.py</code>, không suy diễn thêm một bộ giải phương trình vi phân chưa có trong mã.",
+        body_style
+    ))
+    story.append(Paragraph(
+        "<b>Đầu vào vật lý của hàm <code>forward_physics</code>:</b> "
+        "<i>k</i> là độ cứng chuẩn hóa (không gắn đơn vị SI trong benchmark), "
+        "<i>&zeta</i> là hệ số cản chuẩn hóa (không thứ nguyên), "
+        "<i>K<sub>t</sub></i> là hệ số lực cắt chuẩn hóa (không gắn đơn vị SI trong benchmark), "
+        "<i>a</i> là chiều sâu cắt chuẩn hóa (không gắn đơn vị SI trong benchmark), "
+        "và <i>rpm</i> là tốc độ trục chính chuẩn hóa quanh 0.50 (vì vậy nhãn RPM ở đây không phải giá trị vòng/phút thực). "
+        "Các giá trị nền được lấy xấp xỉ: <i>k</i>, <i>&zeta;</i>, <i>K<sub>t</sub></i> quanh 1.0; <i>a</i>, <i>rpm</i> quanh 0.50. "
+        "Các biến của mô hình chính chỉ gồm năm tham số vật lý ở trên. Phần GAN trong file benchmark là mã tạo dữ liệu tổng hợp/đánh giá cũ, không thuộc luồng vận hành chính và không cần dùng để chạy mô hình vật lý.",
+        body_style
+    ))
+    input_table = Table([
+        [Paragraph("<b>Biến</b>", table_header), Paragraph("<b>Vai trò</b>", table_header), Paragraph("<b>Đơn vị trong mã</b>", table_header), Paragraph("<b>Ghi chú</b>", table_header)],
+        [Paragraph("k", table_text), Paragraph("Độ cứng", table_text), Paragraph("Chuẩn hóa; không xác định", table_text), Paragraph("Nền &asymp; 1.0", table_text)],
+        [Paragraph("&zeta;", table_text), Paragraph("Hệ số cản", table_text), Paragraph("Không thứ nguyên", table_text), Paragraph("Nền &asymp; 1.0", table_text)],
+        [Paragraph("K<sub>t</sub>", table_text), Paragraph("Hệ số lực cắt", table_text), Paragraph("Chuẩn hóa; không xác định", table_text), Paragraph("Nền &asymp; 1.0", table_text)],
+        [Paragraph("a", table_text), Paragraph("Chiều sâu cắt", table_text), Paragraph("Chuẩn hóa; không xác định", table_text), Paragraph("Nền &asymp; 0.50", table_text)],
+        [Paragraph("rpm", table_text), Paragraph("Tốc độ trục chính", table_text), Paragraph("Chỉ số chuẩn hóa, không phải RPM thực", table_text), Paragraph("Nền &asymp; 0.50", table_text)],
+    ], colWidths=[55, 115, 155, 150])
+    input_table.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,0), colors.HexColor('#1E3A8A')),
+        ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor('#CBD5E1')),
+        ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor('#F8FAFC')]),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+    ]))
+    story.append(input_table)
+    story.append(Paragraph(
+        "<b>Đầu ra:</b> hàm trả về ma trận <i>N &times; 14</i>. Năm cột đầu lặp lại đầu vào; cột 5 là <i>a<sub>lim</sub></i> (biên chiều sâu cắt ổn định, cùng thang chuẩn hóa với <i>a</i>); cột 6 là <i>Chatter Severity</i> (chỉ số mô phỏng, không có đơn vị); bảy cột còn lại lần lượt là Vibration RMS (&micro;m theo chú thích trong các phiên bản benchmark), Dominant Frequency (Hz), Spectral Ratio (không thứ nguyên), Force Mean (N), Force Peak (N), Spindle Power (W), Surface Roughness R<sub>a</sub> (&micro;m).",
+        body_style
+    ))
+    if os.path.exists(diagram_path):
+        story.append(Image(diagram_path, width=7.25*inch, height=3.95*inch))
+        story.append(Paragraph(
+            "<b>Hình 2:</b> Sơ đồ chi tiết luồng dữ liệu chính không sử dụng GAN: "
+            "tham số đầu vào, lấy mẫu/can thiệp, mô hình vật lý đại số, đầu ra telemetry và lớp quyết định.",
+            ParagraphStyle('CapDiagram', fontName='ArialVN-Italic', fontSize=7.6, alignment=1,
+                           textColor=colors.HexColor('#475569'))
+        ))
+    story.append(Paragraph(
+        "<b>Có phải hệ phương trình vi phân không?</b> Không phải trong mô hình chính hiện tại. "
+        "Mã hiện tại tính <i>a<sub>lim</sub></i>, <i>Chatter Severity</i> và telemetry bằng các công thức đại số (sin, log1p-exp, sigmoid và hồi quy tuyến tính), rồi cộng nhiễu Gaussian; không có <code>solve_ivp</code>, <code>odeint</code> hay bước thời gian <i>t</i>. "
+        "Các hàm truyền và biểu đồ búp ổn định trong <code>chatter_simulation.py</code> cũng là tính toán miền tần số/giải tích. Nếu mở rộng sang mô hình trạng thái ODE, cần viết hệ <i>dx/dt = f(t,x,u)</i> và dùng bộ giải như <code>scipy.integrate.solve_ivp</code>; nếu có trễ tái sinh thì phải dùng DDE solver phù hợp. Đây là đề xuất mở rộng, không phải chức năng đã chạy trong benchmark.",
+        body_style
+    ))
+    story.append(Paragraph(
+        "<b>Tiêu chí ổn định trong mô hình hiện tại:</b> điều kiện vật lý được mã hóa là <i>a &le; a<sub>lim</sub></i>; khi <i>a - a<sub>lim</sub></i> tăng, chỉ số chatter tăng theo hàm mềm. "
+        "Đây không phải chứng minh ổn định tiệm cận của một hệ động lực học. Do có nhiễu, ngay cả trường hợp <i>a &lt; a<sub>lim</sub></i> vẫn có thể cho telemetry lệch nhẹ. "
+        "Vì vậy cần đặt ngưỡng vận hành cụ thể trên các đầu ra (ví dụ biên an toàn <i>a<sub>lim</sub> - a</i>, RMS rung, lực đỉnh, công suất và độ nhám) theo dữ liệu chuẩn hoặc yêu cầu máy; mã hiện tại chưa định nghĩa một bộ ngưỡng pass/fail duy nhất.",
+        body_style
+    ))
+    story.append(Paragraph(
+        "<b>Anomaly detection và RCA không đồng nhất:</b> đầu ra vượt ngưỡng chuẩn là bài toán phát hiện bất thường (anomaly detection). Sau khi phát hiện, việc xếp hạng <i>Stiffness_k</i>, <i>Damping_zeta</i>, <i>Tool_Wear_Kt</i>, <i>Cut_Depth_a</i> hoặc <i>Spindle_RPM</i> là RCA. "
+        "Trong luồng chính, bất thường được xác định bằng cách so sánh đầu ra với dữ liệu/giới hạn bình thường hoặc bằng một can thiệp root-cause được chỉ định. GAN chỉ là thành phần tạo dữ liệu tổng hợp của benchmark cũ; bộ RCA được đánh giá bằng Top-1/Top-3/Top-5 và MRR, chứ không phải một bộ phân loại anomaly độc lập.",
+        body_style
+    ))
+    story.append(Paragraph(
+        "<b>Nhiễu được mô phỏng thế nào?</b> Mỗi kênh cộng một mẫu Gaussian độc lập với độ lệch chuẩn cố định theo công thức trong mã; <code>noise_scale=1.0</code> dùng cho dữ liệu quan sát, còn <code>noise_scale=1.1</code> dùng cho dữ liệu can thiệp. "
+        "Nhiễu làm đầu ra dao động quanh giá trị kỳ vọng; nó không tự tạo ra một lỗi vật lý có nguyên nhân. Chạy <code>noise_scale=0</code> chỉ loại bỏ các hạng nhiễu Gaussian trong hàm này, không bảo đảm “auto ổn định”: nếu <i>a &gt; a<sub>lim</sub></i> thì công thức vẫn sinh chatter; ngược lại <i>a &le; a<sub>lim</sub></i> chỉ cho trạng thái an toàn theo surrogate, không phải chứng minh của hệ CNC thực.",
+        body_style
+    ))
+    story.append(Paragraph(
+        "<b>Nguồn kiểm chứng:</b> [S1] mã mô hình và tên biến: <code>gan_chatter_rca_benchmark.py</code>, hàm <code>forward_physics</code>; [S2] mô hình giải tích miền tần số: <code>chatter_simulation.py</code>; [S3] tài liệu SciPy về <code>solve_ivp</code>: https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html; [S4] tài liệu nền tảng cục bộ được lưu trong <code>30078_Root_Cause_Analysis_of_F.pdf</code> và <code>ENME 619L01 - Josmar Cristello - Assignment 4.pdf</code>. Các đơn vị chỉ được ghi là SI khi mã hoặc chú thích mã xác định; các biến chuẩn hóa được đánh dấu rõ là chưa có đơn vị SI.",
+        body_style
+    ))
+
+    # -------------------------------------------------------------------------
+    # 3C. ĐỐI CHIẾU VỚI CHATTER STABILITY OF MACHINING OPERATIONS
+    # -------------------------------------------------------------------------
+    story.append(Paragraph("3C. Đối Chiếu Với Bài Báo <i>Chatter Stability of Machining Operations</i>", h1_style))
+    story.append(Paragraph(
+        "Bài báo của Altintas, Stepan, Budak, Schmitz và Kilic (Journal of Manufacturing Science and Engineering, 2020, DOI: 10.1115/1.4047391) là nguồn nền tảng phù hợp để nâng cấp mô hình. "
+        "Bài báo phân biệt rõ mô hình động lực học có trễ trong miền thời gian với lời giải stability lobe trong miền tần số. "
+        "Điểm này củng cố kết luận ở mục 3B: mô hình chính hiện tại là surrogate đại số, chưa phải bộ giải DDE.",
+        body_style
+    ))
+    story.append(Paragraph(
+        "<b>Phần có thể sử dụng trực tiếp làm cơ sở lý thuyết:</b> "
+        "Với cắt trực giao, Eq. (15) của bài báo mô tả hệ bậc hai có độ cứng <i>k</i>, khối lượng <i>m</i>, tần số riêng <i>&omega;<sub>n</sub></i> và hệ số cản <i>&zeta;</i>; Eq. (21) đưa trễ tái sinh vào dưới dạng <i>r(t-T)-r(t)</i>. "
+        "Trong miền tần số, Eq. (19) cho giới hạn chiều sâu cắt và tốc độ trục chính từ FRF, trong đó <i>G(&omega;<sub>c</sub>)</i> là phần thực của FRF và điều kiện tồn tại là <i>G &lt; 0</i>. "
+        "Đối với phay, Eq. (39)--(44) đưa thêm ma trận định hướng, số răng <i>N</i>, chu kỳ răng <i>T = 2&pi;/(N&Omega;)</i> và trị riêng phức &Lambda;. Đây là cơ sở vật lý chặt chẽ hơn công thức surrogate hiện tại.",
+        body_style
+    ))
+    story.append(Paragraph(
+        "<b>Đối chiếu với mã hiện tại:</b> "
+        "<code>chatter_simulation.py</code> đã có phần tử tương tự về mặt ý tưởng: FRF của các mode, <i>k</i>, <i>&zeta;</i>, tần số riêng, hệ số lực cắt <i>K<sub>t</sub></i>, số răng và công thức sinh các điểm stability lobe. "
+        "Tuy nhiên, <code>gan_chatter_rca_benchmark.py</code> không gọi các đại lượng FRF đó; nó thay thế giới hạn vật lý bằng <i>a<sub>lim</sub> = 0.85 k &zeta; / K<sub>t</sub> &times; lobe_factor</i>, trong đó <i>rpm</i> là biến chuẩn hóa. "
+        "Vì vậy không được mô tả kết quả surrogate hiện tại là kết quả trực tiếp từ Eq. (19) hoặc Eq. (44) của bài báo.",
+        body_style
+    ))
+    story.append(Paragraph(
+        "<b>Các phần có thể dùng để phát triển phiên bản vật lý tiếp theo:</b> "
+        "(1) thay <i>a<sub>lim</sub></i> surrogate bằng stability lobe phụ thuộc FRF và tốc độ thực; "
+        "(2) bổ sung <i>K<sub>r</sub></i>, số răng <i>N</i>, đường kính/điều kiện ăn dao và góc vào-ra; "
+        "(3) nếu cần tín hiệu theo thời gian, triển khai DDE Eq. (21) hoặc phương trình phay Eq. (47), sau đó đánh giá biên độ, RMS, phổ và lực; "
+        "(4) dùng tiêu chuẩn ổn định đúng của bài báo: nghiệm biên có phần thực bằng 0 trong miền liên tục, hoặc trị riêng của ánh xạ có modulus nhỏ hơn 1 trong mô hình rời rạc/bán rời rạc. "
+        "Không nên tự thêm nhiễu vào phương trình vật lý nếu chưa xác định nguồn nhiễu; nên tách rõ nhiễu lực/quá trình, biến thiên tham số và nhiễu đo cảm biến.",
+        body_style
+    ))
+    story.append(Paragraph(
+        "<b>Giá trị cho anomaly detection/RCA:</b> bài báo không phải tài liệu về RCA, nhưng cung cấp các biến và chỉ dấu vật lý để xây dựng feature đáng tin cậy: biên an toàn <i>a<sub>lim</sub> - a</i>, tần số chatter <i>&omega;<sub>c</sub></i>, quan hệ giữa tooth-passing frequency và mode riêng, biên độ/rms rung và lực. "
+        "Các feature này có thể làm đầu ra quan sát cho RCA; còn việc phát hiện vượt ngưỡng là anomaly detection và việc truy nguyên <i>k</i>, <i>&zeta;</i>, <i>K<sub>t</sub></i>, <i>a</i> hoặc tốc độ là RCA.",
+        body_style
+    ))
+    story.append(Paragraph(
+        "<b>Nguồn trích dẫn bổ sung:</b> Altintas, Y., Stepan, G., Budak, E., Schmitz, T., &amp; Kilic, Z. M., “Chatter Stability of Machining Operations,” <i>Journal of Manufacturing Science and Engineering</i>, 142(11), 110801, 2020, DOI: 10.1115/1.4047391. "
+        "Trong bản PDF cục bộ <code>chatter paper.pdf</code>: Eq. (15), (19)--(21) ở tr. 4--5; Eq. (39)--(47) ở tr. 9; phần kết luận và các bất định đo lường/mô hình ở tr. 17. Các số trang này là số trang in của bài báo.",
+        body_style
+    ))
     
     # -------------------------------------------------------------------------
     # 4. KẾT QUẢ THỰC NGHIỆM ĐỐI SÁNH SOTA (BENCHMARK RESULTS)

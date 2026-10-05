@@ -1,5 +1,15 @@
 # Physics-Informed Root Cause Analysis (RCA) of Machining Chatter via Causal Bayesian Discovery
 
+## Primary chatter-stability source
+
+The theoretical reference used for the machining-dynamics comparison is: Y. Altintas,
+G. Stepan, E. Budak, T. Schmitz, and Z. M. Kilic, **“Chatter Stability of Machining
+Operations,”** *Journal of Manufacturing Science and Engineering*, 142(11), 110801,
+2020, DOI: [10.1115/1.4047391](https://doi.org/10.1115/1.4047391). The paper's
+delay-differential and frequency-domain stability equations are a theoretical basis.
+The main system flow does not require GAN; the legacy benchmark script contains an
+optional synthetic-data generator only.
+
 An open-source Python research framework for **Machining Chatter Dynamics Simulation** (reproducing Yusuf Altintas's regenerative chatter models without MATLAB) and **Self-Supervised Root Cause Analysis (RCA)** benchmarking using state-of-the-art causal discovery methods (**BRCD**, **RCD**, **RCG**, **BARO**, **SimpleRCA**, **Smooth Traversal**).
 
 ---
@@ -37,7 +47,7 @@ In CNC milling and high-speed machining, **regenerative chatter** is an unstable
 3. Simple heuristic methods (like percentile shift) get confused by **downstream symptoms** (such as high surface roughness or peak forces), incorrectly blaming symptoms instead of root causes.
 
 ### Our Solution:
-1. **Open-Source Physical Simulator**: Re-implements Yusuf Altintas's analytical Stability Lobe Diagrams (SLDs) and time-domain Delay Differential Equation (DDE) dynamics in pure Python (`numpy`, `scipy`).
+1. **Open-Source Physical Simulator**: Re-implements Yusuf Altintas's analytical Stability Lobe Diagrams (SLDs) and frequency-domain calculations in pure Python (`numpy`, `scipy`). The main forward model is an algebraic surrogate with optional Gaussian noise; it does **not** currently integrate an ODE/DDE time-domain model. The GAN code in `gan_chatter_rca_benchmark.py` is optional legacy synthetic-data code, not a required system component.
 2. **Physics-Informed Boundary Sampling**: Injects subtle, borderline physical parameter perturbations ($\Delta z \approx 1.5\sigma - 2.5\sigma$) with environmental confounding and sensor noise.
 3. **Causal RCA Benchmarking**: Formulates the CNC machining process as a **14-node Causal DAG** where the candidate search space spans all observed metrics, testing if causal methods can isolate the true origin amidst noisy downstream cascading symptoms.
 
