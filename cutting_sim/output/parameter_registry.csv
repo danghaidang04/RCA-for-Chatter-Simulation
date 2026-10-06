@@ -1,0 +1,16 @@
+parameter,value / bound,tier,context (valid only for),verification,source
+"tool diameter, flutes, flute length, overall length","6.35 mm, 2, 38.1 mm, 101.6 mm",FIXED,Kennametal 2SE0250IX150A (exact part),verified (read from catalog table p.5),Kennametal GOmill GP catalog
+helix angle β,30°,FIXED,Kennametal GOmill GP series (2-flute),medium: from series feature list (p.3); not stated per part number,Kennametal GOmill GP catalog p.3; sensitivity to β will be reported
+tool substrate/coating,"carbide KC633M, TiAlN PVD",FIXED,Kennametal GOmill GP,medium,"Kennametal GOmill GP catalog p.3, p.5 (no numeric use)"
+"N, ae, feed F, direction",from label.csv,FIXED,"machine imi_vm20i, lab","verified (N and F equal mtc Spindle_Speed/Feed_Rate, ratio 1.000)","Kim et al., Sci. Data 2026 (MSM) + own check"
+axial depth ap = engaged depth,38.1 mm (= flute length),FIXED,assumes Z0 = workpiece top (NC: G01 Z-1.5 in),assumption (not measured),NC program of dataset 5/6; catalog flute length
+workpiece AA 6061; wet cutting (coolant flood),—,FIXED,laboratory machines imi_vm20i/vmx30ui ONLY (tmf_vf10 is dry),verified (stated in paper),"Kim et al., Sci. Data 2026"
+"sampling: accelerometer 51.2 kHz, audio 48 kHz",—,FIXED,imi_vm20i high-frequency accelerometers,verified (stated in paper),"Kim et al., Sci. Data 2026"
+analysis window 0.3 s,"own design choice, identical for real and simulated features",FIXED,feature extraction,design choice,—
+"model structure: regenerative DDE, shear+edge force, ZOA lobes",—,FIXED,milling dynamics,model structure,"Altintas et al., J. Manuf. Sci. Eng. 142(11):110801 (2020)"
+"Kt, Kr, Kte, Kre (AA 6061, this tool, wet)",search bounds only,LEARNED,—,NO usable source (rejected: steel-like values; dry-cutting AA6061 value unverified),—
+"tool-tip FRF: fn_x, fn_y, ζ, modal stiffness k",bounds from cantilever-beam estimate (numerical only),LEARNED,—,NO source for this tool/holder/stick-out (Altintas Ex.2 FRF rejected: different machine and tool),"Aran & Budak 2011 opened: method only, no numbers"
+spindle imbalance U,search bounds only,LEARNED,—,"NO source (rotor mass, balance grade unknown)",—
+"sensor gains, noise floors, rpm-dependence",search bounds only,LEARNED,—,"NO source (sensors uncalibrated: mic dBFS, accelerometer mm/s^2)",—
+"runout; between-cut variability σ (Kt, runout, roughness)",search bounds only,LEARNED,—,NO source,—
+chip-thickness cap 0.3 mm; roughness noise base 0.02 µm,numerical choices,ASSUMED,—,own assumption,—

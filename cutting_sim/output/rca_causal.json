@@ -1,0 +1,1429 @@
+{
+ "soft_sensor_rmse": {
+  "Stiffness_est": 0.08511542597328517,
+  "Damping_est": 0.1654033651309641,
+  "ToolWear_est": 0.08452648347516296,
+  "CutDepth_est": 0.2869291070675476,
+  "SpindleRPM_est": 0.00497358294499973
+ },
+ "results": {
+  "in-distribution (DDE danh \u0111\u1ecbnh)": {
+   "BRCD": {
+    "5": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.96,
+      0.99,
+      0.99
+     ],
+     "TOOL_WEAR": [
+      0.78,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.99,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.63,
+      0.83,
+      0.89
+     ]
+    },
+    "10": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.99,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.9,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.6,
+      0.82,
+      0.85
+     ]
+    },
+    "20": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.99,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.44,
+      0.64,
+      0.66
+     ]
+    },
+    "50": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.99,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.27,
+      0.52,
+      0.58
+     ]
+    }
+   },
+   "RCD": {
+    "5": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.95,
+      0.99,
+      0.99
+     ],
+     "TOOL_WEAR": [
+      0.86,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.93,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.22,
+      0.57,
+      0.68
+     ]
+    },
+    "10": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.99,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.89,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.1,
+      0.27,
+      0.39
+     ]
+    },
+    "20": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.94,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.6,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.02,
+      0.12,
+      0.14
+     ]
+    },
+    "50": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.84,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.09,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.0,
+      0.02,
+      0.02
+     ]
+    }
+   },
+   "RCG": {
+    "5": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.95,
+      0.99,
+      0.99
+     ],
+     "TOOL_WEAR": [
+      0.8,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.99,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.6,
+      0.8,
+      0.85
+     ]
+    },
+    "10": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.99,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.94,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.57,
+      0.77,
+      0.81
+     ]
+    },
+    "20": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.99,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.46,
+      0.62,
+      0.66
+     ]
+    },
+    "50": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.26,
+      0.43,
+      0.53
+     ]
+    }
+   },
+   "SmoothTraversal": {
+    "5": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.96,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.81,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.99,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "10": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.99,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.93,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "20": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.98,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "50": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      1.0,
+      1.0,
+      1.0
+     ]
+    }
+   },
+   "BARO": {
+    "5": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.76,
+      0.98,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.67,
+      0.99,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.99,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.98,
+      1.0,
+      1.0
+     ]
+    },
+    "10": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.91,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.8,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "20": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.92,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "50": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.98,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      1.0,
+      1.0,
+      1.0
+     ]
+    }
+   },
+   "SimpleRCA": {
+    "5": {
+     "STIFFNESS": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "DAMPING": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "TOOL_WEAR": [
+      0.74,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.98,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.93,
+      0.97,
+      0.97
+     ]
+    },
+    "10": {
+     "STIFFNESS": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "DAMPING": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "TOOL_WEAR": [
+      0.62,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.98,
+      1.0,
+      1.0
+     ]
+    },
+    "20": {
+     "STIFFNESS": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "DAMPING": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "TOOL_WEAR": [
+      0.6,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "50": {
+     "STIFFNESS": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "DAMPING": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "TOOL_WEAR": [
+      0.42,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      1.0,
+      1.0,
+      1.0
+     ]
+    }
+   }
+  },
+  "tham s\u1ed1 DDE L\u1ec6CH (ki\u1ec3m tra b\u1ec1n)": {
+   "BRCD": {
+    "5": {
+     "STIFFNESS": [
+      0.93,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.29,
+      0.83,
+      0.9
+     ],
+     "TOOL_WEAR": [
+      0.58,
+      0.9,
+      0.97
+     ],
+     "DEPTH_OVERLOAD": [
+      0.63,
+      0.86,
+      0.93
+     ],
+     "RPM_MISMATCH": [
+      0.5,
+      0.85,
+      0.88
+     ]
+    },
+    "10": {
+     "STIFFNESS": [
+      0.97,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.25,
+      0.79,
+      0.89
+     ],
+     "TOOL_WEAR": [
+      0.64,
+      0.98,
+      0.99
+     ],
+     "DEPTH_OVERLOAD": [
+      0.71,
+      0.98,
+      0.99
+     ],
+     "RPM_MISMATCH": [
+      0.33,
+      0.7,
+      0.77
+     ]
+    },
+    "20": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.3,
+      0.92,
+      0.99
+     ],
+     "TOOL_WEAR": [
+      0.62,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.9,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.27,
+      0.68,
+      0.74
+     ]
+    },
+    "50": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.28,
+      0.97,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.86,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.96,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.11,
+      0.55,
+      0.61
+     ]
+    }
+   },
+   "RCD": {
+    "5": {
+     "STIFFNESS": [
+      0.97,
+      0.99,
+      1.0
+     ],
+     "DAMPING": [
+      0.38,
+      0.77,
+      0.89
+     ],
+     "TOOL_WEAR": [
+      0.59,
+      0.9,
+      0.97
+     ],
+     "DEPTH_OVERLOAD": [
+      0.21,
+      0.82,
+      0.88
+     ],
+     "RPM_MISMATCH": [
+      0.1,
+      0.54,
+      0.68
+     ]
+    },
+    "10": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.26,
+      0.76,
+      0.9
+     ],
+     "TOOL_WEAR": [
+      0.58,
+      0.98,
+      0.99
+     ],
+     "DEPTH_OVERLOAD": [
+      0.09,
+      0.92,
+      0.98
+     ],
+     "RPM_MISMATCH": [
+      0.01,
+      0.35,
+      0.45
+     ]
+    },
+    "20": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.16,
+      0.9,
+      0.94
+     ],
+     "TOOL_WEAR": [
+      0.35,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.0,
+      0.92,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.0,
+      0.1,
+      0.18
+     ]
+    },
+    "50": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.0,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.07,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.0,
+      0.82,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.0,
+      0.0,
+      0.02
+     ]
+    }
+   },
+   "RCG": {
+    "5": {
+     "STIFFNESS": [
+      0.94,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.28,
+      0.76,
+      0.88
+     ],
+     "TOOL_WEAR": [
+      0.58,
+      0.88,
+      0.96
+     ],
+     "DEPTH_OVERLOAD": [
+      0.61,
+      0.81,
+      0.88
+     ],
+     "RPM_MISMATCH": [
+      0.5,
+      0.79,
+      0.87
+     ]
+    },
+    "10": {
+     "STIFFNESS": [
+      0.98,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.25,
+      0.74,
+      0.87
+     ],
+     "TOOL_WEAR": [
+      0.65,
+      0.97,
+      0.99
+     ],
+     "DEPTH_OVERLOAD": [
+      0.7,
+      0.95,
+      0.98
+     ],
+     "RPM_MISMATCH": [
+      0.36,
+      0.64,
+      0.75
+     ]
+    },
+    "20": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.37,
+      0.88,
+      0.96
+     ],
+     "TOOL_WEAR": [
+      0.65,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.84,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.28,
+      0.64,
+      0.68
+     ]
+    },
+    "50": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.32,
+      0.97,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.84,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.93,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.11,
+      0.51,
+      0.55
+     ]
+    }
+   },
+   "SmoothTraversal": {
+    "5": {
+     "STIFFNESS": [
+      0.94,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.28,
+      0.9,
+      0.98
+     ],
+     "TOOL_WEAR": [
+      0.55,
+      0.94,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.64,
+      0.9,
+      0.94
+     ],
+     "RPM_MISMATCH": [
+      0.99,
+      1.0,
+      1.0
+     ]
+    },
+    "10": {
+     "STIFFNESS": [
+      0.98,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.28,
+      0.91,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.58,
+      0.97,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.7,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "20": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.37,
+      0.98,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.64,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.86,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      1.0,
+      1.0,
+      1.0
+     ]
+    },
+    "50": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.31,
+      1.0,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.81,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.93,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      1.0,
+      1.0,
+      1.0
+     ]
+    }
+   },
+   "BARO": {
+    "5": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.09,
+      0.77,
+      0.89
+     ],
+     "TOOL_WEAR": [
+      0.2,
+      0.88,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.31,
+      0.88,
+      0.93
+     ],
+     "RPM_MISMATCH": [
+      0.51,
+      1.0,
+      1.0
+     ]
+    },
+    "10": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.05,
+      0.74,
+      0.99
+     ],
+     "TOOL_WEAR": [
+      0.11,
+      0.92,
+      0.99
+     ],
+     "DEPTH_OVERLOAD": [
+      0.18,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.41,
+      1.0,
+      1.0
+     ]
+    },
+    "20": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.01,
+      0.91,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.01,
+      0.97,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.07,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.43,
+      1.0,
+      1.0
+     ]
+    },
+    "50": {
+     "STIFFNESS": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "DAMPING": [
+      0.0,
+      0.95,
+      1.0
+     ],
+     "TOOL_WEAR": [
+      0.0,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.32,
+      1.0,
+      1.0
+     ]
+    }
+   },
+   "SimpleRCA": {
+    "5": {
+     "STIFFNESS": [
+      0.0,
+      0.0,
+      0.01
+     ],
+     "DAMPING": [
+      0.0,
+      0.0,
+      0.02
+     ],
+     "TOOL_WEAR": [
+      0.52,
+      0.88,
+      0.98
+     ],
+     "DEPTH_OVERLOAD": [
+      0.76,
+      0.9,
+      0.97
+     ],
+     "RPM_MISMATCH": [
+      0.83,
+      0.97,
+      0.97
+     ]
+    },
+    "10": {
+     "STIFFNESS": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "DAMPING": [
+      0.0,
+      0.0,
+      0.01
+     ],
+     "TOOL_WEAR": [
+      0.44,
+      0.97,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.91,
+      0.99,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.84,
+      0.99,
+      0.99
+     ]
+    },
+    "20": {
+     "STIFFNESS": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "DAMPING": [
+      0.0,
+      0.0,
+      0.01
+     ],
+     "TOOL_WEAR": [
+      0.27,
+      0.98,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      0.99,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.92,
+      1.0,
+      1.0
+     ]
+    },
+    "50": {
+     "STIFFNESS": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "DAMPING": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "TOOL_WEAR": [
+      0.06,
+      1.0,
+      1.0
+     ],
+     "DEPTH_OVERLOAD": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "RPM_MISMATCH": [
+      0.95,
+      1.0,
+      1.0
+     ]
+    }
+   }
+  }
+ },
+ "edges": [
+  [
+   "Stiffness_est",
+   "acc_res"
+  ],
+  [
+   "Stiffness_est",
+   "chatter_acc"
+  ],
+  [
+   "Stiffness_est",
+   "log10_acc"
+  ],
+  [
+   "Damping_est",
+   "acc_res"
+  ],
+  [
+   "Damping_est",
+   "chatter_acc"
+  ],
+  [
+   "Damping_est",
+   "chatter_mic"
+  ],
+  [
+   "ToolWear_est",
+   "mic_dB"
+  ],
+  [
+   "ToolWear_est",
+   "mic_low"
+  ],
+  [
+   "ToolWear_est",
+   "log10_acc"
+  ],
+  [
+   "ToolWear_est",
+   "acc_low"
+  ],
+  [
+   "CutDepth_est",
+   "log10_acc"
+  ],
+  [
+   "CutDepth_est",
+   "mic_dB"
+  ],
+  [
+   "CutDepth_est",
+   "acc_low"
+  ],
+  [
+   "CutDepth_est",
+   "acc_high"
+  ],
+  [
+   "CutDepth_est",
+   "mic_high"
+  ],
+  [
+   "SpindleRPM_est",
+   "acc_low"
+  ],
+  [
+   "SpindleRPM_est",
+   "chatter_acc"
+  ],
+  [
+   "SpindleRPM_est",
+   "chatter_mic"
+  ],
+  [
+   "SpindleRPM_est",
+   "mic_low"
+  ]
+ ],
+ "nodes": [
+  "Stiffness_est",
+  "Damping_est",
+  "ToolWear_est",
+  "CutDepth_est",
+  "SpindleRPM_est",
+  "log10_acc",
+  "mic_dB",
+  "chatter_acc",
+  "chatter_mic",
+  "acc_low",
+  "acc_res",
+  "acc_high",
+  "mic_low",
+  "mic_high"
+ ]
+}

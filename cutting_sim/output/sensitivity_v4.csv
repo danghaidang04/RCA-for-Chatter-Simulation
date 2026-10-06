@@ -1,0 +1,17 @@
+,log10 acc,mic dB,chat_acc,chat_mic,max,tier
+ln g_acc,69.49,0.0,0.157,0.0,69.49,ảnh hưởng mạnh
+ln noise_acc,0.003,0.0,0.002,0.0,0.003,yếu
+ln g_mic,0.0,42.15,0.0,0.102,42.15,ảnh hưởng mạnh
+ln noise_mic,0.0,0.568,0.0,0.256,0.568,ảnh hưởng mạnh
+fn_x [Hz],9.058,6.381,4.194,3.861,9.058,ảnh hưởng mạnh
+fn_y [Hz],11.776,8.069,4.334,3.834,11.776,ảnh hưởng mạnh
+zeta,14.62,10.16,5.368,5.217,14.62,ảnh hưởng mạnh
+ln k_modal [N/m],28.323,19.679,3.278,3.203,28.323,ảnh hưởng mạnh
+ln Kt [N/m2],13.501,9.547,2.007,1.996,13.501,ảnh hưởng mạnh
+ln Kr/Kt,9.855,6.906,3.152,3.139,9.855,ảnh hưởng mạnh
+ln Kte [N/m],2.384,1.71,0.657,0.67,2.384,ảnh hưởng mạnh
+ln Kre [N/m],7.384,5.17,2.697,2.676,7.384,ảnh hưởng mạnh
+ln U_imb [kg m],5.337,3.75,6.385,6.193,6.385,ảnh hưởng mạnh
+acc_rpm_exp,0.0,0.0,0.0,0.0,0.0,yếu
+mic_rpm_exp,0.0,0.0,0.0,0.0,0.0,yếu
+ln runout [m],0.045,0.031,0.043,0.038,0.045,yếu

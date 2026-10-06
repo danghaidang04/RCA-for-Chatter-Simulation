@@ -1,0 +1,6 @@
+
+# dữ liệu thô MSM và file dẫn xuất lớn
+data/
+cutting_sim/output/real_windows*.npz
+cutting_sim/__pycache__/
+cutting_sim/output/*.log

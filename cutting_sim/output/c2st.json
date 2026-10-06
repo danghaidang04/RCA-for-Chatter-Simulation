@@ -1,0 +1,26 @@
+{
+ "normal/uncalibrated": {
+  "c2st_acc": 1.0,
+  "std": 0.0
+ },
+ "normal/machine-fit (A)": {
+  "c2st_acc": 0.9551851851851852,
+  "std": 0.022017576218817548
+ },
+ "normal/machine + \u03c3 (A+C)": {
+  "c2st_acc": 0.9433333333333334,
+  "std": 0.031461867528289326
+ },
+ "anomaly/uncalibrated": {
+  "c2st_acc": 1.0,
+  "std": 0.0
+ },
+ "anomaly/machine-fit (A)": {
+  "c2st_acc": 0.96,
+  "std": 0.038873012632301994
+ },
+ "anomaly/machine + \u03c3 (A+C)": {
+  "c2st_acc": 0.9600000000000002,
+  "std": 0.04898979485566355
+ }
+}

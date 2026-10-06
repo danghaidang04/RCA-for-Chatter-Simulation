@@ -1,0 +1,231 @@
+{
+ "rows": [
+  {
+   "truth": "NORMAL",
+   "level": "none",
+   "top1": 1.0,
+   "top3": 1.0
+  },
+  {
+   "truth": "STIFFNESS",
+   "level": "small",
+   "top1": 0.0,
+   "top3": 0.0
+  },
+  {
+   "truth": "STIFFNESS",
+   "level": "medium",
+   "top1": 0.0,
+   "top3": 0.16666666666666666
+  },
+  {
+   "truth": "STIFFNESS",
+   "level": "large",
+   "top1": 0.25,
+   "top3": 0.25
+  },
+  {
+   "truth": "DAMPING",
+   "level": "small",
+   "top1": 0.0,
+   "top3": 1.0
+  },
+  {
+   "truth": "DAMPING",
+   "level": "medium",
+   "top1": 0.0,
+   "top3": 1.0
+  },
+  {
+   "truth": "DAMPING",
+   "level": "large",
+   "top1": 1.0,
+   "top3": 1.0
+  },
+  {
+   "truth": "TOOL_WEAR",
+   "level": "small",
+   "top1": 0.08333333333333333,
+   "top3": 1.0
+  },
+  {
+   "truth": "TOOL_WEAR",
+   "level": "medium",
+   "top1": 1.0,
+   "top3": 1.0
+  },
+  {
+   "truth": "TOOL_WEAR",
+   "level": "large",
+   "top1": 0.25,
+   "top3": 1.0
+  },
+  {
+   "truth": "DEPTH_OVERLOAD",
+   "level": "small",
+   "top1": 0.0,
+   "top3": 0.3333333333333333
+  },
+  {
+   "truth": "DEPTH_OVERLOAD",
+   "level": "medium",
+   "top1": 0.5833333333333334,
+   "top3": 1.0
+  },
+  {
+   "truth": "DEPTH_OVERLOAD",
+   "level": "large",
+   "top1": 1.0,
+   "top3": 1.0
+  },
+  {
+   "truth": "RPM_MISMATCH",
+   "level": "small",
+   "top1": 0.0,
+   "top3": 0.0
+  },
+  {
+   "truth": "RPM_MISMATCH",
+   "level": "medium",
+   "top1": 0.0,
+   "top3": 0.0
+  },
+  {
+   "truth": "RPM_MISMATCH",
+   "level": "large",
+   "top1": 0.0,
+   "top3": 0.75
+  }
+ ],
+ "evidence_rate": {
+  "NORMAL_none": {
+   "High_Vibration": 0.0,
+   "Chatter_Regenerative_Peak": 0.0,
+   "Resonance_Frequency_Shift": 0.0,
+   "High_Cutting_Force": 0.0,
+   "Programmed_Depth_High": 0.0,
+   "RPM_In_Lobe_Valley": 0.0
+  },
+  "STIFFNESS_small": {
+   "High_Vibration": 0.0,
+   "Chatter_Regenerative_Peak": 0.0,
+   "Resonance_Frequency_Shift": 0.0,
+   "High_Cutting_Force": 0.0,
+   "Programmed_Depth_High": 0.0,
+   "RPM_In_Lobe_Valley": 0.0
+  },
+  "STIFFNESS_medium": {
+   "High_Vibration": 0.08333333333333333,
+   "Chatter_Regenerative_Peak": 0.0,
+   "Resonance_Frequency_Shift": 0.16666666666666666,
+   "High_Cutting_Force": 0.0,
+   "Programmed_Depth_High": 0.0,
+   "RPM_In_Lobe_Valley": 0.0
+  },
+  "STIFFNESS_large": {
+   "High_Vibration": 1.0,
+   "Chatter_Regenerative_Peak": 0.16666666666666666,
+   "Resonance_Frequency_Shift": 0.25,
+   "High_Cutting_Force": 1.0,
+   "Programmed_Depth_High": 0.0,
+   "RPM_In_Lobe_Valley": 0.0
+  },
+  "DAMPING_small": {
+   "High_Vibration": 0.0,
+   "Chatter_Regenerative_Peak": 0.0,
+   "Resonance_Frequency_Shift": 0.0,
+   "High_Cutting_Force": 0.0,
+   "Programmed_Depth_High": 0.0,
+   "RPM_In_Lobe_Valley": 0.0
+  },
+  "DAMPING_medium": {
+   "High_Vibration": 0.0,
+   "Chatter_Regenerative_Peak": 0.0,
+   "Resonance_Frequency_Shift": 0.0,
+   "High_Cutting_Force": 0.08333333333333333,
+   "Programmed_Depth_High": 0.0,
+   "RPM_In_Lobe_Valley": 0.0
+  },
+  "DAMPING_large": {
+   "High_Vibration": 1.0,
+   "Chatter_Regenerative_Peak": 1.0,
+   "Resonance_Frequency_Shift": 0.0,
+   "High_Cutting_Force": 1.0,
+   "Programmed_Depth_High": 0.0,
+   "RPM_In_Lobe_Valley": 0.0
+  },
+  "TOOL_WEAR_small": {
+   "High_Vibration": 0.0,
+   "Chatter_Regenerative_Peak": 0.0,
+   "Resonance_Frequency_Shift": 0.0,
+   "High_Cutting_Force": 0.08333333333333333,
+   "Programmed_Depth_High": 0.0,
+   "RPM_In_Lobe_Valley": 0.0
+  },
+  "TOOL_WEAR_medium": {
+   "High_Vibration": 0.0,
+   "Chatter_Regenerative_Peak": 0.0,
+   "Resonance_Frequency_Shift": 0.0,
+   "High_Cutting_Force": 1.0,
+   "Programmed_Depth_High": 0.0,
+   "RPM_In_Lobe_Valley": 0.0
+  },
+  "TOOL_WEAR_large": {
+   "High_Vibration": 1.0,
+   "Chatter_Regenerative_Peak": 0.75,
+   "Resonance_Frequency_Shift": 0.0,
+   "High_Cutting_Force": 1.0,
+   "Programmed_Depth_High": 0.0,
+   "RPM_In_Lobe_Valley": 0.0
+  },
+  "DEPTH_OVERLOAD_small": {
+   "High_Vibration": 0.0,
+   "Chatter_Regenerative_Peak": 0.0,
+   "Resonance_Frequency_Shift": 0.0,
+   "High_Cutting_Force": 0.3333333333333333,
+   "Programmed_Depth_High": 0.6666666666666666,
+   "RPM_In_Lobe_Valley": 0.0
+  },
+  "DEPTH_OVERLOAD_medium": {
+   "High_Vibration": 0.5833333333333334,
+   "Chatter_Regenerative_Peak": 0.0,
+   "Resonance_Frequency_Shift": 0.0,
+   "High_Cutting_Force": 1.0,
+   "Programmed_Depth_High": 1.0,
+   "RPM_In_Lobe_Valley": 0.0
+  },
+  "DEPTH_OVERLOAD_large": {
+   "High_Vibration": 1.0,
+   "Chatter_Regenerative_Peak": 0.6666666666666666,
+   "Resonance_Frequency_Shift": 0.0,
+   "High_Cutting_Force": 1.0,
+   "Programmed_Depth_High": 1.0,
+   "RPM_In_Lobe_Valley": 0.0
+  },
+  "RPM_MISMATCH_small": {
+   "High_Vibration": 0.0,
+   "Chatter_Regenerative_Peak": 0.0,
+   "Resonance_Frequency_Shift": 0.0,
+   "High_Cutting_Force": 0.0,
+   "Programmed_Depth_High": 0.0,
+   "RPM_In_Lobe_Valley": 0.0
+  },
+  "RPM_MISMATCH_medium": {
+   "High_Vibration": 0.0,
+   "Chatter_Regenerative_Peak": 0.0,
+   "Resonance_Frequency_Shift": 0.0,
+   "High_Cutting_Force": 0.08333333333333333,
+   "Programmed_Depth_High": 0.0,
+   "RPM_In_Lobe_Valley": 0.0
+  },
+  "RPM_MISMATCH_large": {
+   "High_Vibration": 0.0,
+   "Chatter_Regenerative_Peak": 0.08333333333333333,
+   "Resonance_Frequency_Shift": 0.0,
+   "High_Cutting_Force": 0.9166666666666666,
+   "Programmed_Depth_High": 0.0,
+   "RPM_In_Lobe_Valley": 0.75
+  }
+ },
+ "env_min_mm": 3.220726210833222
+}
