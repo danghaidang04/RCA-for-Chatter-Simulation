@@ -1,0 +1,21 @@
+\begin{tabular}{p{5.2cm}p{1.8cm}p{6.5cm}}
+\toprule
+Parameter & Tier & Verification \\
+\midrule
+tool diameter, flutes, flute length, overall length & FIXED & verified (read from catalog table p.5) \\
+helix angle $\beta$ & FIXED & medium: from series feature list (p.3); not stated per part number \\
+tool substrate/coating & FIXED & medium \\
+N, ae, feed F, direction & FIXED & verified (N and F equal mtc Spindle\_Speed/Feed\_Rate, ratio 1.000) \\
+axial depth ap = engaged depth & FIXED & assumption (not measured) \\
+workpiece AA 6061; wet cutting (coolant flood) & FIXED & verified (stated in paper) \\
+sampling: accelerometer 51.2 kHz, audio 48 kHz & FIXED & verified (stated in paper) \\
+analysis window 0.3 s & FIXED & design choice \\
+model structure: regenerative DDE, shear+edge force, ZOA lobes & FIXED & model structure \\
+Kt, Kr, Kte, Kre (AA 6061, this tool, wet) & LEARNED & NO usable source (rejected: steel-like values; dry-cutting AA6061 value unverified) \\
+tool-tip FRF: fn\_x, fn\_y, $\zeta$, modal stiffness k & LEARNED & NO source for this tool/holder/stick-out (Altintas Ex.2 FRF rejected: different machine and tool) \\
+spindle imbalance U & LEARNED & NO source (rotor mass, balance grade unknown) \\
+sensor gains, noise floors, rpm-dependence & LEARNED & NO source (sensors uncalibrated: mic dBFS, accelerometer mm/s\^{}2) \\
+runout; between-cut variability $\sigma$ (Kt, runout, roughness) & LEARNED & NO source \\
+chip-thickness cap 0.3 mm; roughness noise base 0.02 $\mu$m & ASSUMED & own assumption \\
+\bottomrule
+\end{tabular}

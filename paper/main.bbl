@@ -1,0 +1,102 @@
+\begin{thebibliography}{9}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Altintas et~al.(2020)Altintas, Stepan, Budak, Schmitz, and
+  Kilic]{altintas2020}
+Yusuf Altintas, Gabor Stepan, Erhan Budak, Tony Schmitz, and Zekai~Murat Kilic.
+\newblock Chatter stability of machining operations.
+\newblock \emph{Journal of Manufacturing Science and Engineering}, 142\penalty0
+  (11), August 2020.
+\newblock ISSN 1528-8935.
+\newblock \doi{10.1115/1.4047391}.
+\newblock URL \url{http://dx.doi.org/10.1115/1.4047391}.
+
+\bibitem[Cranmer et~al.(2020)Cranmer, Brehmer, and Louppe]{cranmer2020}
+Kyle Cranmer, Johann Brehmer, and Gilles Louppe.
+\newblock The frontier of simulation-based inference.
+\newblock \emph{Proceedings of the National Academy of Sciences}, 117\penalty0
+  (48):\penalty0 30055–30062, May 2020.
+\newblock ISSN 1091-6490.
+\newblock \doi{10.1073/pnas.1912789117}.
+\newblock URL \url{http://dx.doi.org/10.1073/pnas.1912789117}.
+
+\bibitem[Ikram et~al.(2022)Ikram, Chakraborty, Mitra, Saini, Bagchi, and
+  Kocaoglu]{ikram2022rcd}
+Azam Ikram, Sarthak Chakraborty, Subrata Mitra, Shiv Saini, Saurabh Bagchi, and
+  Murat Kocaoglu.
+\newblock Root cause analysis of failures in microservices through causal
+  discovery.
+\newblock In \emph{Advances in Neural Information Processing Systems 35},
+  NeurIPS 2022, page 31158–31170. Neural Information Processing Systems
+  Foundation, Inc. (NeurIPS), 2022.
+\newblock \doi{10.52202/068431-2259}.
+\newblock URL \url{http://dx.doi.org/10.52202/068431-2259}.
+
+\bibitem[Kennedy and O’Hagan(2001)]{kennedy2001}
+Marc~C. Kennedy and Anthony O’Hagan.
+\newblock Bayesian calibration of computer models.
+\newblock \emph{Journal of the Royal Statistical Society Series B: Statistical
+  Methodology}, 63\penalty0 (3):\penalty0 425–464, 2001.
+\newblock ISSN 1467-9868.
+\newblock \doi{10.1111/1467-9868.00294}.
+\newblock URL \url{http://dx.doi.org/10.1111/1467-9868.00294}.
+
+\bibitem[Kim et~al.(2026)Kim, Sim, Li, Mostafiz, Van~Meter, Jun, Bertino, and
+  Shakouri]{kim2026msm}
+Eunseob Kim, Yuseop Sim, Adrian~Shuai Li, Mir~Imtiaz Mostafiz, Zachary
+  Van~Meter, Martin Byung-Guk Jun, Elisa Bertino, and Ali Shakouri.
+\newblock Multi-sensor and mtconnect dataset of metal cutting anomaly in
+  milling from laboratory and industry settings.
+\newblock \emph{Scientific Data}, 13\penalty0 (1), April 2026.
+\newblock ISSN 2052-4463.
+\newblock \doi{10.1038/s41597-026-07255-7}.
+\newblock URL \url{http://dx.doi.org/10.1038/s41597-026-07255-7}.
+
+\bibitem[Orchard et~al.(2025)Orchard, Okati, Garrido~Mejia, Blöbaum, and
+  Janzing]{orchard2025}
+William~Roy Orchard, Nastaran Okati, Sergio Garrido~Mejia, Patrick Blöbaum,
+  and Dominik Janzing.
+\newblock Root cause analysis of outliers with missing structural knowledge.
+\newblock In \emph{Advances in Neural Information Processing Systems 38},
+  NeurIPS 2025, page 179490–179527. Neural Information Processing Systems
+  Foundation, Inc. (NeurIPS), 2025.
+\newblock \doi{10.52202/085713-5399}.
+\newblock URL \url{http://dx.doi.org/10.52202/085713-5399}.
+
+\bibitem[Pham et~al.(2024)Pham, Ha, and Zhang]{pham2024baro}
+Luan Pham, Huong Ha, and Hongyu Zhang.
+\newblock Baro: Robust root cause analysis for microservices via multivariate
+  bayesian online change point detection.
+\newblock \emph{Proceedings of the ACM on Software Engineering}, 1\penalty0
+  (FSE):\penalty0 2214–2237, 2024.
+\newblock ISSN 2994-970X.
+\newblock \doi{10.1145/3660805}.
+\newblock URL \url{http://dx.doi.org/10.1145/3660805}.
+
+\bibitem[Shrivastava et~al.(2017)Shrivastava, Pfister, Tuzel, Susskind, Wang,
+  and Webb]{shrivastava2017}
+Ashish Shrivastava, Tomas Pfister, Oncel Tuzel, Joshua Susskind, Wenda Wang,
+  and Russell Webb.
+\newblock Learning from simulated and unsupervised images through adversarial
+  training.
+\newblock In \emph{2017 IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, page 2242–2251. IEEE, 2017.
+\newblock \doi{10.1109/cvpr.2017.241}.
+\newblock URL \url{http://dx.doi.org/10.1109/cvpr.2017.241}.
+
+\bibitem[Tobin et~al.(2017)Tobin, Fong, Ray, Schneider, Zaremba, and
+  Abbeel]{tobin2017}
+Josh Tobin, Rachel Fong, Alex Ray, Jonas Schneider, Wojciech Zaremba, and
+  Pieter Abbeel.
+\newblock Domain randomization for transferring deep neural networks from
+  simulation to the real world.
+\newblock In \emph{2017 IEEE/RSJ International Conference on Intelligent Robots
+  and Systems (IROS)}, page 23–30. IEEE, 2017.
+\newblock \doi{10.1109/iros.2017.8202133}.
+\newblock URL \url{http://dx.doi.org/10.1109/iros.2017.8202133}.
+
+\end{thebibliography}

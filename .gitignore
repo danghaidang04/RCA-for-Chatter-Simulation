@@ -4,3 +4,9 @@ data/
 cutting_sim/output/real_windows*.npz
 cutting_sim/__pycache__/
 cutting_sim/output/*.log
+
+paper/*.aux
+paper/*.log
+paper/*.bbl
+paper/*.blg
+paper/*.out

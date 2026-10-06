@@ -1,0 +1,55 @@
+This is BibTeX, Version 0.99e (TeX Live 2026)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: plainnat.bst
+Database file #1: refs.bib
+Warning--string name "july" is undefined
+--line 7 of file refs.bib
+Warning--string name "sept" is undefined
+--line 11 of file refs.bib
+Warning--string name "july" is undefined
+--line 13 of file refs.bib
+Warning--string name "sept" is undefined
+--line 15 of file refs.bib
+You've used 9 entries,
+            2773 wiz_defined-function locations,
+            681 strings with 7828 characters,
+and the built_in function-call counts, 6473 in all, are:
+= -- 629
+> -- 423
+< -- 5
++ -- 141
+- -- 132
+* -- 533
+:= -- 948
+add.period$ -- 54
+call.type$ -- 9
+change.case$ -- 71
+chr.to.int$ -- 9
+cite$ -- 18
+duplicate$ -- 294
+empty$ -- 413
+format.name$ -- 143
+if$ -- 1424
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 9
+newline$ -- 76
+num.names$ -- 36
+pop$ -- 117
+preamble$ -- 1
+purify$ -- 62
+quote$ -- 0
+skip$ -- 290
+stack$ -- 0
+substring$ -- 209
+swap$ -- 112
+text.length$ -- 4
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 99
+warning$ -- 0
+while$ -- 34
+width$ -- 0
+write$ -- 176
+(There were 4 warnings)
