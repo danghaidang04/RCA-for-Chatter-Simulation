@@ -55,3 +55,13 @@ python real_features.py 5 6 ; python real_windows.py 5 6
 python rca_gain2.py   # hệ số khuếch đại theo độ lớn
 python rca_causal.py  # RCA nhân quả (cần output/real_windows.npz)
 ```
+
+## 6. Nhật ký tiến độ khi tạm dừng (16:57, 6/10/2026)
+- Bản thảo paper: `paper/main.pdf` (10 trang, biên dịch sạch; nhánh `cutting-sim-experiments`). Số liệu trong bảng sinh tự động từ JSON (`paper/make_tables.py`).
+- Đang chạy nền lúc ghi (có thể bị dừng nếu máy/phiên đóng; kết quả sẽ nằm trong `cutting_sim/output/` nếu chạy xong):
+  1. `rca_ablation.py` (3 hạt giống x gain 0.3/1/3; nút vật lý không nhãn vs cảm biến mềm; đồ thị physics/shuffled/none) -> `output/rca_ablation.json`, log `output/rca_ablation.log`. Dự kiến xong ~17:10.
+  2. Tải dataset 14 (dao D khỏe) -> sau đó chuỗi `chain2.sh` tự chạy `real_windows.py real_windows_defect.npz 3 14` và `real_defect_check.py` -> `output/real_defect_check.json`. Dự kiến ~17:15-17:20.
+- Nếu các tiến trình bị dừng: chạy lại thủ công theo mục 4 (việc cần làm) và mục 5 (tái lập). Dataset 3 (dao hỏng D*) đã tải đủ; dataset 14 cần tải lại file `*_acc.csv` (1.17 GB) nếu bị dở.
+- Sau khi có kết quả: cập nhật mục Experiments/Limitations trong `paper/main.tex`, chạy `python paper/make_tables.py` rồi `pdflatex+bibtex` trong `paper/`.
+- Chưa làm (không được nói đã làm trong paper): kiểm chứng nguyên nhân gốc thật, ablation (đang chạy), nguồn BRCD/RCG/SimpleRCA (cần thêm bản ghi thư mục), mẫu tạp chí đích.
+- Việc bên ngoài: thu hồi token Kaggle đã dán trong cuộc trò chuyện.
