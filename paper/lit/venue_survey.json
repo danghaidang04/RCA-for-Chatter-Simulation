@@ -1,0 +1,242 @@
+{
+ "Journal of Manufacturing Processes": {
+  "10.1016/j.jmapro.2026.09.028": [
+   "Hierarchical severity-aware multi-task learning framework for progressive fault diagnosis in semiconducto",
+   2026
+  ],
+  "10.1016/j.jmapro.2026.04.072": [
+   "Transfer learning for cross-machine quality prediction in injection molding",
+   2026
+  ],
+  "10.1016/j.jmapro.2025.05.037": [
+   "Meta-transfer learning for predicting position-dependent milling stability across varying overhang length",
+   2025
+  ],
+  "10.1016/j.jmapro.2024.03.019": [
+   "Fault diagnosis of injection molding machine non-return valve based on data-driven model",
+   2024
+  ],
+  "10.1016/j.jmapro.2024.02.001": [
+   "Improving milling force predictions: A hybrid approach integrating physics-based simulation and machine l",
+   2024
+  ],
+  "10.1016/j.jmapro.2025.07.018": [
+   "Chatter-free process parameter optimization for robotic machining of pockets with the spiral tool path",
+   2025
+  ],
+  "10.1016/j.jmapro.2025.06.023": [
+   "Digital twin with dynamic mechanistic simulation core for milling tool wear prediction",
+   2025
+  ],
+  "10.1016/j.jmapro.2026.08.081": [
+   "Digital twin-driven instantaneous milling force prediction method: Integrating the effects of workpiece c",
+   2026
+  ],
+  "10.1016/j.jmapro.2025.03.019": [
+   "Stability analysis of finite amplitude chatter in turning considering tool wear and process damping effec",
+   2025
+  ],
+  "10.1016/j.jmapro.2025.05.028": [
+   "Research on the online monitoring method of cutting tool wear based on the mechanism-data fusion concept ",
+   2025
+  ]
+ },
+ "Journal of Manufacturing Systems": {
+  "10.1016/j.jmsy.2025.12.011": [
+   "Physics-informed multi-task heterogeneous transfer learning network for robust milling tool wear and RUL ",
+   2026
+  ],
+  "10.1016/j.jmsy.2026.04.037": [
+   "Research on tool wear monitoring based on digital twin and contrastive learning",
+   2026
+  ],
+  "10.1016/j.jmsy.2025.02.021": [
+   "Tool digital twin based on knowledge embedding for precision CNC machine tools: Wear prediction for colla",
+   2025
+  ],
+  "10.1016/j.jmsy.2024.06.004": [
+   "Digital twin-based anomaly detection for real-time tool condition monitoring in machining",
+   2024
+  ],
+  "10.1016/j.jmsy.2025.01.005": [
+   "Digital twin technology in modern machining: A comprehensive review of research on machining errors",
+   2025
+  ]
+ },
+ "Mechanical Systems and Signal Processing": {
+  "10.1016/j.ymssp.2025.112379": [
+   "KDN: A class-added continual learning framework for cross-machine fault diagnosis with limited samples",
+   2025
+  ],
+  "10.1016/j.ymssp.2025.113744": [
+   "A unified Cross-Modal adaptive contrastive learning framework for acoustic fault diagnosis of rolling bea",
+   2026
+  ],
+  "10.1016/j.ymssp.2025.113350": [
+   "Blaschke learning machine: A novel and efficient continual learning classifier toward intelligent fault d",
+   2025
+  ],
+  "10.1016/j.ymssp.2024.111327": [
+   "Multi-label deep transfer learning method for coupling fault diagnosis",
+   2024
+  ],
+  "10.1016/j.ymssp.2026.114273": [
+   "FedMAPS: A federated meta-learning framework with adaptive cross-domain contrastive learning for few-shot",
+   2026
+  ],
+  "10.1016/j.ymssp.2024.112032": [
+   "A semi-supervised learning method combining tool wear laws for machining tool wear states monitoring",
+   2025
+  ],
+  "10.1016/j.ymssp.2026.114249": [
+   "Research on an online monitoring system for tool wear status based on digital twin",
+   2026
+  ],
+  "10.1016/j.ymssp.2025.112736": [
+   "An intelligent tool wear monitoring model based on knowledge-data-driven physical-informed neural network",
+   2025
+  ],
+  "10.1016/j.ymssp.2026.114293": [
+   "Machining condition variation decoupling adversarial domain adaptation network: A multi-target domain too",
+   2026
+  ],
+  "10.1016/j.ymssp.2024.111630": [
+   "Digital-twin-driven intelligent tracking error compensation of ultra-precision machining",
+   2024
+  ],
+  "10.1016/j.ymssp.2026.113982": [
+   "A data-mechanism-based digital twin system for intelligent contour error compensation of ultra-precision ",
+   2026
+  ]
+ },
+ "International Journal of Machine Tools and Manufacture": {
+  "10.1016/j.ijmachtools.2024.104148": [
+   "On wear of TiAlN coated tools with and without NbN overlayer in machining titanium alloys",
+   2024
+  ],
+  "10.1016/j.ijmachtools.2025.104296": [
+   "A novel computational approach using receptance coupling substructure analysis for prediction of tool tip",
+   2025
+  ],
+  "10.1016/j.ijmachtools.2024.104244": [
+   "Micro-zone cutting temperature measurement using a nitrogen-extracted boron and hydrogen co-doped diamond",
+   2025
+  ],
+  "10.1016/j.ijmachtools.2024.104211": [
+   "Optimal milling cutter helix selection for period doubling chatter suppression",
+   2024
+  ],
+  "10.1016/j.ijmachtools.2026.104447": [
+   "Effect of forced vibrations on the chatter stability of milling with serrated end mills",
+   2026
+  ]
+ },
+ "Journal of Intelligent Manufacturing": {
+  "10.1007/s10845-024-02489-x": [
+   "Hard task-based dual-aligned meta-transfer learning for cross-domain few-shot fault diagnosis",
+   2024
+  ],
+  "10.1007/s10845-024-02365-8": [
+   "A multi scale meta-learning network for cross domain fault diagnosis with limited samples",
+   2024
+  ],
+  "10.1007/s10845-026-02810-w": [
+   "Robust energy centric machine learning assisted fault detection &amp; diagnosis: an extrusion case",
+   2026
+  ],
+  "10.1007/s10845-025-02609-1": [
+   "Deep meta-learning-based multi-signal data fusion approach for fault diagnosis",
+   2025
+  ],
+  "10.1007/s10845-026-02998-x": [
+   "StatGraph-Net: a multichannel statistical-graph framework for compound fault diagnosis in milling machine",
+   2026
+  ],
+  "10.1007/s10845-024-02560-7": [
+   "Multi-stage tool wear prediction method based on multi-dimensional digital twin",
+   2025
+  ],
+  "10.1007/s10845-026-02825-3": [
+   "Tool wear state monitoring for smart machining: A deep learning method with embedded physical knowledge",
+   2026
+  ],
+  "10.1007/s10845-026-02953-w": [
+   "Neural CDE-driven multi-sensor fusion framework for continuous-time prediction of tool wear and surface i",
+   2026
+  ],
+  "10.1007/s10845-024-02353-y": [
+   "In-process surface quality monitoring of the slender workpiece machining with digital twin approach",
+   2024
+  ],
+  "10.1007/s10845-025-02652-y": [
+   "A responsive digital twin approach for machining based on biomimetic perception and cognition",
+   2025
+  ]
+ },
+ "Robotics and Computer-Integrated Manufacturing": {
+  "10.1016/j.rcim.2026.103235": [
+   "A tool wear prediction model integrating mechanism-data fusion with transfer learning for machine tool di",
+   2026
+  ],
+  "10.1016/j.rcim.2026.103441": [
+   "Noise-resilient meta-learning on the Grassmann manifold for few-shot fault diagnosis of industrial robots",
+   2027
+  ],
+  "10.1016/j.rcim.2026.103434": [
+   "Industrial robot fault detection and diagnosis for intelligent maintenance: A review of data, methods, an",
+   2027
+  ],
+  "10.1016/j.rcim.2026.103303": [
+   "A fusion prediction model of tool wear based on physical information and machine learning in five-axis mi",
+   2026
+  ],
+  "10.1016/j.rcim.2025.102992": [
+   "Transfer learning and augmented data-driven parameter prediction for robotic welding",
+   2025
+  ],
+  "10.1016/j.rcim.2026.103363": [
+   "An executable machine-tool-level digital twin for closed-loop CNC milling",
+   2027
+  ],
+  "10.1016/j.rcim.2024.102902": [
+   "Digital Twin-driven multi-scale characterization of machining quality: current status, challenges, and fu",
+   2025
+  ],
+  "10.1016/j.rcim.2024.102908": [
+   "Digital twin-driven virtual commissioning for robotic machining enhanced by machine learning",
+   2025
+  ],
+  "10.1016/j.rcim.2025.103077": [
+   "Digital-twin-assisted multi-stage machining of thin-wall structures using interchangeable robotic and hum",
+   2026
+  ],
+  "10.1016/j.rcim.2024.102715": [
+   "Chatter prediction for parallel mirror milling of thin-walled parts by dual-robot collaborative machining",
+   2024
+  ],
+  "10.1016/j.rcim.2023.102609": [
+   "Knowledge graph and function block based Digital Twin modeling for robotic machining of large-scale compo",
+   2024
+  ]
+ },
+ "Journal of Manufacturing Science and Engineering": {
+  "10.1115/1.4069196": [
+   "Time-Series Data-Driven Machine Learning of Milling Chattering",
+   2025
+  ]
+ },
+ "CIRP Journal of Manufacturing Science and Technology": {
+  "10.1016/j.cirpj.2026.09.003": [
+   "Surface roughness-driven inverse design of milling processes using machine learning",
+   2026
+  ],
+  "10.1016/j.cirpj.2024.09.014": [
+   "Physics-supported Bayesian machine learning for chatter prediction with process damping in milling",
+   2024
+  ],
+  "10.1016/j.cirpj.2024.01.005": [
+   "Digital twin assisted intelligent machining process monitoring and control",
+   2024
+  ]
+ }
+}
