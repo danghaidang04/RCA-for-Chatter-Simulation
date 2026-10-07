@@ -6,8 +6,9 @@
 >
 > **Please read the caveats before relying on any number in this README or in the manuscript draft:**
 > - The benchmark tables further below (14-node SCM, accuracies up to 1.00) were produced by an SCM that generates both the training and the test data; they do not measure real diagnostic ability.
-> - In the new experiments, accuracy drops from 0.80-0.98 (shared generator) to 0.35-0.71 (shifted simulator parameters, m=10).
-> - The simulated healthy baseline is still distinguishable from real data (classifier two-sample test, balanced accuracy about 0.82; 0.5 would be indistinguishable). No real root-cause validation has been completed.
+> - In the new experiments, accuracy drops from 0.80-0.98 (shared generator) to 0.35-0.71 (shifted simulator parameters, m=10). Ablations show that the causal graph has no effect on the results and that label-free nodes give near-chance accuracy, i.e. this benchmark does not test causal reasoning.
+> - A comparison with a real defective tool shows large low-frequency and tonal shifts that none of the simulated faults reproduces.
+> - The simulated healthy baseline is still distinguishable from real data (classifier two-sample test, balanced accuracy about 0.82; 0.5 would be indistinguishable). The RCA ranking has not been validated on real root causes.
 > - Status, known issues and TODO: [`cutting_sim/STATUS.md`](cutting_sim/STATUS.md). Parameter provenance: `cutting_sim/output/parameter_registry.md`.
 > - Raw data (`data/msm/`) is not in the repository; download MSM from Kaggle (DOI 10.34740/kaggle/ds/8392825, CC BY 4.0).
 

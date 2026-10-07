@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.1)  6 OCT 2026 16:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.1)  7 OCT 2026 09:38
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -465,41 +465,41 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 {/Users/danghaidang04/Library/texlive/2026basic/texmf-var/fonts/map/pdftex/updm
 ap/pdftex.map}] [2]
-<figures/exp1_lobes_validation.png, id=138, 722.7pt x 375.804pt>
+<figures/exp1_lobes_validation.png, id=145, 722.7pt x 375.804pt>
 File: figures/exp1_lobes_validation.png Graphic file (type png)
 <use figures/exp1_lobes_validation.png>
 Package pdftex.def Info: figures/exp1_lobes_validation.png  used on input line 
-85.
+88.
 (pdftex.def)             Requested size: 366.40834pt x 190.53358pt.
- [3 <./figures/exp1_lobes_validation.png>]
-<figures/real_psd_examples.png, id=154, 939.51pt x 325.215pt>
+ [3]
+<figures/real_psd_examples.png, id=161, 939.51pt x 325.215pt>
 File: figures/real_psd_examples.png Graphic file (type png)
 <use figures/real_psd_examples.png>
-Package pdftex.def Info: figures/real_psd_examples.png  used on input line 102.
+Package pdftex.def Info: figures/real_psd_examples.png  used on input line 105.
 
 (pdftex.def)             Requested size: 446.26582pt x 154.47375pt.
- [4 <./figures/real_psd_examples.png>] (./tables/tab_c2st.tex) [5] (./tables/ta
-b_cls.tex)
+ [4 <./figures/exp1_lobes_validation.png> <./figures/real_psd_examples.png>] (.
+/tables/tab_c2st.tex) [5] (./tables/tab_cls.tex)
 (./tables/tab_causal.tex)
-<figures/rca_causal.png, id=174, 867.24pt x 289.08pt>
+<figures/rca_causal.png, id=182, 867.24pt x 289.08pt>
 File: figures/rca_causal.png Graphic file (type png)
 <use figures/rca_causal.png>
-Package pdftex.def Info: figures/rca_causal.png  used on input line 161.
+Package pdftex.def Info: figures/rca_causal.png  used on input line 164.
 (pdftex.def)             Requested size: 446.26582pt x 148.75655pt.
- (./tables/tab_sweep.tex)
-Overfull \hbox (7.78958pt too wide) in paragraph at lines 175--176
-\T1/cmr/m/n/10.95 same type was planned but the data down-load was in-ter-rupte
-d. [][\T1/cmr/bx/n/10.95 TODO: \T1/cmr/m/n/10.95 run real_defect_check
+ [6] (./tables/tab_sweep.tex)
+(./tables/tab_ablation.tex)
+Overfull \hbox (14.03221pt too wide) in paragraph at lines 1--185
+ [][] 
  []
 
-[6] [7 <./figures/rca_causal.png>]
-Overfull \hbox (16.24184pt too wide) in paragraph at lines 189--190
+[7 <./figures/rca_causal.png>] (./tables/tab_realshift.tex) [8] [9]
+Overfull \hbox (16.24184pt too wide) in paragraph at lines 220--221
  []\T1/cmr/bx/n/10.95 Code and data.[] \T1/cmr/m/n/10.95 Code: \T1/cmtt/m/n/10.
 95 cutting_sim/ \T1/cmr/m/n/10.95 in the project repos-i-tory (branch \T1/cmtt/
 m/n/10.95 cutting-sim-experiments\T1/cmr/m/n/10.95 );
  []
 
-(./main.bbl [8]) (./tables/tab_registry.tex
+(./main.bbl [10]) (./tables/tab_registry.tex
 Underfull \hbox (badness 5077) in paragraph at lines 8--9
 []|\T1/cmr/m/n/10 verified (N and F equal mtc Spin-
  []
@@ -529,50 +529,55 @@ Underfull \hbox (badness 1490) in paragraph at lines 17--18
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[9] [10] (./main.aux)
+[11] [12] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 880B5D5527BFBA3EAB3FDA9B21BF73C9;3364.
+(rerunfilecheck)             Checksum: C4C90AB6E3B4D894A353DBFEBCD54061;3867.
  ) 
 Here is how much of TeX's memory you used:
- 12830 strings out of 469006
- 198264 string characters out of 5454814
- 628138 words of memory out of 5000000
- 41294 multiletter control sequences out of 15000+600000
- 646113 words of font info for 87 fonts, out of 8000000 for 9000
+ 12868 strings out of 469006
+ 198874 string characters out of 5454814
+ 635665 words of memory out of 5000000
+ 41314 multiletter control sequences out of 15000+600000
+ 649109 words of font info for 95 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 75i,11n,79p,514b,568s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,12n,79p,514b,564s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </Users/danghaidang04/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/jk
 nappen/ec/tcrm1095.600pk> </Users/danghaidang04/Library/texlive/2026basic/texmf
--var/fonts/pk/ljfour/jknappen/ec/ecrm0800.600pk> </Users/danghaidang04/Library/
-texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1095.600pk> </Users
+-var/fonts/pk/ljfour/jknappen/ec/ecti0900.600pk> </Users/danghaidang04/Library/
+texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm0900.600pk> </Users
 /danghaidang04/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/
-ectt1095.600pk> </Users/danghaidang04/Library/texlive/2026basic/texmf-var/fonts
-/pk/ljfour/jknappen/ec/ecbx1095.600pk> </Users/danghaidang04/Library/texlive/20
-26basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1095.600pk> </Users/danghaida
-ng04/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.6
+ecrm0800.600pk> </Users/danghaidang04/Library/texlive/2026basic/texmf-var/fonts
+/pk/ljfour/jknappen/ec/ecti1095.600pk> </Users/danghaidang04/Library/texlive/20
+26basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1095.600pk> </Users/danghaida
+ng04/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1095.6
 00pk> </Users/danghaidang04/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour
-/jknappen/ec/ecrm1000.600pk> </Users/danghaidang04/Library/texlive/2026basic/te
-xmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1000.600pk> </Users/danghaidang04/Libra
-ry/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </Us
+/jknappen/ec/ecrm1095.600pk> </Users/danghaidang04/Library/texlive/2026basic/te
+xmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </Users/danghaidang04/Libra
+ry/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </Us
 ers/danghaidang04/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/
-ec/ecbx1200.600pk> </Users/danghaidang04/Library/texlive/2026basic/texmf-var/fo
-nts/pk/ljfour/jknappen/ec/ecti1200.600pk> </Users/danghaidang04/Library/texlive
-/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1728.600pk></usr/local/tex
-live/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local
-/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/lo
-cal/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr
-/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></u
-sr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
-></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.
-pfb>
-Output written on main.pdf (10 pages, 577945 bytes).
+ec/ecbx1000.600pk> </Users/danghaidang04/Library/texlive/2026basic/texmf-var/fo
+nts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </Users/danghaidang04/Library/texlive
+/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </Users/dangha
+idang04/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti120
+0.600pk> </Users/danghaidang04/Library/texlive/2026basic/texmf-var/fonts/pk/ljf
+our/jknappen/ec/ecrm1728.600pk></usr/local/texlive/2026basic/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026basic/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2026basic/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2026basic/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026basic/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2026basic/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2026basic/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026bas
+ic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2026
+basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb>
+Output written on main.pdf (12 pages, 633299 bytes).
 PDF statistics:
- 759 PDF objects out of 1000 (max. 8388607)
- 276 compressed objects within 3 object streams
- 63 named destinations out of 1000 (max. 500000)
- 168 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 889 PDF objects out of 1000 (max. 8388607)
+ 315 compressed objects within 4 object streams
+ 69 named destinations out of 1000 (max. 500000)
+ 184 words of extra memory for PDF output out of 10000 (max. 10000000)
 

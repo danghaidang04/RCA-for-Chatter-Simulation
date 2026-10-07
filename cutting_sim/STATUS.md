@@ -65,3 +65,8 @@ python rca_causal.py  # RCA nhân quả (cần output/real_windows.npz)
 - Sau khi có kết quả: cập nhật mục Experiments/Limitations trong `paper/main.tex`, chạy `python paper/make_tables.py` rồi `pdflatex+bibtex` trong `paper/`.
 - Chưa làm (không được nói đã làm trong paper): kiểm chứng nguyên nhân gốc thật, ablation (đang chạy), nguồn BRCD/RCG/SimpleRCA (cần thêm bản ghi thư mục), mẫu tạp chí đích.
 - Việc bên ngoài: thu hồi token Kaggle đã dán trong cuộc trò chuyện.
+
+## 7. Cập nhật sau khi chạy xong (7/10/2026)
+- `rca_ablation.py` XONG: đồ thị physics/shuffled/none cho kết quả như nhau (đồ thị không có vai trò); nút vật lý không nhãn gần mức đoán bừa; gain x3 làm tệ hơn khi tham số DDE lệch. Xem `paper/main.tex` mục Ablations.
+- `real_defect_check.py` XONG (dao D* hỏng vs D khỏe, thép 4140): mô phỏng KHÔNG tái tạo được dịch chuyển băng thấp (+3.9/+4.0 sd) và chỉ số phi đồng bộ (-3.7/-1.2 sd) của dao hỏng thật. Giả thuyết (chưa kiểm): thiếu cơ chế sứt rãnh (lực 1 lần/vòng).
+- Việc còn lại chính: (a) mô hình hóa cơ chế dao sứt/không đối xứng rãnh và kiểm lại với D*; (b) thiết kế lại benchmark để nguyên nhân gốc không phải gốc đồ thị được ước lượng có giám sát (hiện benchmark không kiểm tra suy luận nhân quả); (c) nền nhiễu C2ST; (d) bản ghi thư mục BRCD/RCG/SimpleRCA; (e) chọn mẫu tạp chí.

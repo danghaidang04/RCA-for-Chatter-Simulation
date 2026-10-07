@@ -1,0 +1,21 @@
+\begin{tabular}{p{5.6cm}cccccc}
+\toprule
+Variant & BRCD & RCD & RCG & Smooth & BARO & Simple \\
+\midrule
+\multicolumn{7}{l}{\textit{Same generator}} \\
+Supervised nodes, physics graph, gain $\times1$ (main setting) & 0.92$\pm$0.01 & 0.81$\pm$0.03 & 0.92$\pm$0.01 & 0.99$\pm$0.00 & 0.91$\pm$0.07 & 0.54$\pm$0.00 \\
+Supervised nodes, \emph{shuffled} graph & 0.92$\pm$0.02 & 0.81$\pm$0.03 & 0.92$\pm$0.01 & 0.99$\pm$0.00 & 0.91$\pm$0.07 & 0.54$\pm$0.00 \\
+Supervised nodes, \emph{no edges} & 0.92$\pm$0.00 & 0.81$\pm$0.02 & 0.92$\pm$0.00 & 0.99$\pm$0.00 & 0.91$\pm$0.07 & 0.54$\pm$0.00 \\
+\emph{Label-free} nodes, physics graph & 0.09$\pm$0.01 & 0.10$\pm$0.04 & 0.07$\pm$0.01 & 0.29$\pm$0.08 & 0.29$\pm$0.08 & 0.20$\pm$0.00 \\
+Supervised nodes, physics graph, gain $\times0.3$ & 0.85$\pm$0.02 & 0.78$\pm$0.04 & 0.85$\pm$0.02 & 0.88$\pm$0.05 & 0.65$\pm$0.18 & 0.51$\pm$0.01 \\
+Supervised nodes, physics graph, gain $\times3$ & 0.85$\pm$0.02 & 0.76$\pm$0.05 & 0.84$\pm$0.02 & 0.99$\pm$0.01 & 0.97$\pm$0.01 & 0.53$\pm$0.04 \\
+\midrule
+\multicolumn{7}{l}{\textit{Shifted DDE parameters}} \\
+Supervised nodes, physics graph, gain $\times1$ (main setting) & 0.60$\pm$0.05 & 0.43$\pm$0.05 & 0.60$\pm$0.07 & 0.71$\pm$0.07 & 0.39$\pm$0.05 & 0.45$\pm$0.01 \\
+Supervised nodes, \emph{shuffled} graph & 0.60$\pm$0.05 & 0.42$\pm$0.05 & 0.59$\pm$0.06 & 0.71$\pm$0.07 & 0.40$\pm$0.05 & 0.45$\pm$0.01 \\
+Supervised nodes, \emph{no edges} & 0.58$\pm$0.06 & 0.42$\pm$0.05 & 0.58$\pm$0.06 & 0.70$\pm$0.06 & 0.39$\pm$0.06 & 0.45$\pm$0.01 \\
+\emph{Label-free} nodes, physics graph & 0.09$\pm$0.01 & 0.14$\pm$0.04 & 0.07$\pm$0.01 & 0.27$\pm$0.03 & 0.37$\pm$0.02 & 0.20$\pm$0.00 \\
+Supervised nodes, physics graph, gain $\times0.3$ & 0.54$\pm$0.03 & 0.45$\pm$0.05 & 0.53$\pm$0.03 & 0.59$\pm$0.03 & 0.48$\pm$0.02 & 0.42$\pm$0.02 \\
+Supervised nodes, physics graph, gain $\times3$ & 0.27$\pm$0.07 & 0.22$\pm$0.01 & 0.26$\pm$0.07 & 0.28$\pm$0.09 & 0.22$\pm$0.01 & 0.32$\pm$0.07 \\
+\bottomrule
+\end{tabular}

@@ -21,8 +21,9 @@ We build a regenerative-milling simulator (delay-differential equations with hel
 Fault effects (stiffness, damping, tool wear, depth, spindle speed) are injected through the simulator and scaled by an effect-size calibration against real anomalous cuts.
 We then evaluate six causal RCA algorithms on a 14-node graph following a root-cause-ranking protocol.
 When diagnostic nodes and test faults come from the same generator, top-1 accuracy at $m{=}10$ interventional samples is 0.52--0.98 (0.80--0.98 for five of six algorithms); when the simulator's physical parameters are shifted at test time it falls to 0.35--0.71, and the ordering of methods changes.
-The simulated healthy baseline is still distinguishable from real data (classifier two-sample test, balanced accuracy $0.82\pm0.04$), and no real root-cause validation was completed.
-We therefore present the results as a measurement of how strongly simulated RCA benchmarks depend on generator assumptions, not as evidence of real-world diagnostic accuracy.
+Ablations show that this accuracy comes from supervised estimates of the root-cause nodes, not from the causal graph: replacing the graph by a shuffled or an empty one leaves every algorithm unchanged, and label-free nodes drop accuracy to near chance.
+The simulated healthy baseline is still distinguishable from real data (classifier two-sample test, balanced accuracy $0.82\pm0.04$), and a comparison with a real defective tool shows large shifts at low frequencies and in non-synchronous indices that none of the simulated faults reproduces.
+We therefore present the results as a measurement of how strongly simulated RCA benchmarks depend on generator assumptions and node construction, not as evidence of real-world diagnostic accuracy.
 \end{abstract}
 
 \section{Introduction}
@@ -42,11 +43,13 @@ Both conditions are hard to check: real root causes are unavailable, and nodes o
 (3) We inject simulated faults and calibrate their scale by effect size on real anomalous cuts.
 (4) We run six causal RCA algorithms and test them with and without a mismatch between the generator used to build the nodes and the one used to generate the faults.
 
-\paragraph{Main finding.}
-The accuracy that causal RCA methods reach in this benchmark depends strongly on whether the generator is shared: top-1 accuracy at $m{=}10$ drops from $0.80$--$0.98$ (five of six algorithms) to $0.35$--$0.71$ (all six) under moderate shifts of the simulator's stiffness, damping and force coefficients, and the ranking of the algorithms changes.
+\paragraph{Main findings.}
+(i) Top-1 accuracy at $m{=}10$ drops from $0.80$--$0.98$ (five of six algorithms) to $0.35$--$0.71$ (all six) under moderate shifts of the simulator's stiffness, damping and force coefficients, and the ranking of the algorithms changes.
+(ii) The causal graph is irrelevant in this benchmark: shuffled and empty graphs give the same accuracy as the physical graph, and nodes built without simulator labels give near-chance accuracy, so the benchmark measures the quality of supervised node estimators rather than causal reasoning.
+(iii) A real defective tool shifts low-frequency energy and non-synchronous indices by several standard deviations, and none of the simulated faults reproduces this.
 
 \paragraph{What we do not show.}
-We have no validation on real root causes, the simulated healthy baseline is distinguishable from real data, and the ablations that would separate the effect of the causal graph from that of the diagnostic nodes were not completed (Section~\ref{sec:limits}).
+We have no validation of the RCA ranking on real root causes (the real defective-tool data test only the signature of one cause, on a different tool than the one simulated), and the simulated healthy baseline is distinguishable from real data (Section~\ref{sec:limits}).
 
 \section{Related Work}
 \paragraph{Regenerative chatter and milling simulation.}
@@ -170,20 +173,48 @@ Since the gain is set by an assumption, any single accuracy figure from this ben
 \caption{Top-1 accuracy of classifiers on simulated data versus fault gain relative to the calibrated value.}\label{tab:sweep}
 \end{table}
 
+\subsection{What drives the accuracy? Ablations}\label{sec:ablation}
+Table~\ref{tab:ablation} reports $m{=}10$ top-1 accuracy averaged over five root causes, with mean $\pm$ standard deviation over three seeds (each seed changes the cut split and the generated data; 60 draws per fault).
+Three observations follow.
+First, replacing the physical causal graph by a graph with random edges of the same out-degrees, or by an empty graph, changes no algorithm's accuracy beyond the seed spread (for example BRCD $0.92\pm0.01$, $0.92\pm0.02$ and $0.92\pm0.00$ in the shared-generator setting, and $0.60\pm0.05$, $0.60\pm0.05$ and $0.58\pm0.06$ when shifted).
+Because every root-cause node is a graph root, the conditional models of the causal methods cannot add information about those nodes, and the methods act as marginal shift detectors on the node estimates.
+Second, replacing the supervised soft sensors by label-free spectral summaries (spectral centroid and peakiness of the 1--3.2~kHz band, low and high microphone bands) reduces accuracy to $0.07$--$0.29$ (shared generator) and $0.07$--$0.37$ (shifted), against a chance level of $0.07$; the simplest method reaches exactly $0.20$, consistent with only the controller-measured spindle-speed node remaining informative (one of five causes), which we did not test directly.
+Third, under shifted simulator parameters a larger fault gain does not help: accuracy falls from $0.60$ to $0.27$ for BRCD and from $0.71$ to $0.28$ for Smooth Traversal when the gain is multiplied by 3, because the soft sensors, trained on nominal parameters, mis-estimate the larger and distorted effects.
+\begin{table}[t]\centering\footnotesize
+\input{tables/tab_ablation.tex}
+\caption{Ablation of the causal RCA benchmark at $m{=}10$: top-1 accuracy (mean $\pm$ s.d.\ over 3 seeds) for the node construction, the graph and the fault gain; chance $=0.07$.}\label{tab:ablation}
+\end{table}
+
+\subsection{Comparison with a real defective tool}\label{sec:real}
+Cuts with a documented root cause exist in MSM, but for tools other than the one simulated.
+We compare the intentionally defective end mill D$^*$ (12 cuts, 36 windows; dataset 3) with the healthy tool of the same type (64 cuts, 192 windows; dataset 14), both 12.7~mm four-flute on AISI~4140.
+The cutting conditions of the two sets do not coincide, so we fit a ridge model of each sensor node on the conditions using the healthy cuts only (out-of-sample over cuts), express the defective windows as residuals in units of the healthy residual standard deviation, and bootstrap the cuts for 95\% intervals.
+We compare this shift vector with the shift vector of each simulated fault (Table~\ref{tab:realshift}).
+The real defective tool raises all node levels, with the largest shifts at low frequency ($+3.9$ and $+4.0$ standard deviations for the 50--600~Hz bands of the accelerometer and the microphone) and in the 1--3.2~kHz accelerometer band ($+6.3$), and lowers both non-synchronous indices ($-3.7$ and $-1.2$), i.e.\ the spectrum becomes more tonal.
+No simulated fault produces a low-frequency shift (all within $\pm0.1$) or a comparable change of the non-synchronous indices ($-0.3$ to $+0.5$); the simulated shifts consist of increases of broadband and high-frequency levels.
+The cosine similarity between the real and the simulated shift vectors is $0.55$--$0.62$ for all five causes; tool wear is the most similar in 89\% of bootstrap resamples, but the absolute differences between causes are small, since the similarity is dominated by the common ``louder'' direction.
+We therefore cannot claim that the simulator reproduces the signature of a defective tool, and the missing low-frequency and tonal components point to a mechanism absent from our fault models (we did not model flute chipping, which creates a strong once-per-revolution component; this is a hypothesis we have not tested).
+The two tools differ (12.7~mm, four flutes, steel versus the simulated 6.35~mm, two flutes, aluminium), so this comparison tests only the direction and sign of the shifts in standardised units.
+\begin{table}[t]\centering\footnotesize
+\input{tables/tab_realshift.tex}
+\caption{Shift of each sensor node in units of the healthy standard deviation: real defective tool D$^*$ (with 95\% bootstrap intervals over cuts) versus the five simulated faults.}\label{tab:realshift}
+\end{table}
+
 \section{Limitations and What Remains}\label{sec:limits}
 \begin{itemize}
-\item \textbf{No real root-cause validation.} Real cuts with documented causes (defective tools, clamp failures, depth) are on other tools; the comparison of a defective tool with a healthy one of the same type was planned but the data download was interrupted. \todo{run real\_defect\_check on datasets 3 and 14.}
-\item \textbf{Circularity.} The soft sensors are trained on simulator labels, the spindle-speed node uses the latent factor, and the causal graph was written to match the fault model. The shifted setting reduces but does not remove this. A label-free node variant, shuffled and empty graphs, and three-seed confidence intervals were implemented but not run to completion. \todo{run rca\_ablation.}
+\item \textbf{No validation of the RCA ranking on real root causes.} The only real comparison (Section~\ref{sec:real}) concerns the signature of one cause on a tool different from the simulated one, and the simulator fails to reproduce its largest components. Clamp-failure and depth cases are single cuts on other tools and were not analysed.
+\item \textbf{The benchmark does not test causal reasoning.} Graph ablations show no effect (Section~\ref{sec:ablation}), and node construction decides the result; a benchmark in which root causes are not graph roots with supervised estimates, or in which the graph carries information, would be needed to compare causal algorithms.
 \item \textbf{Baseline realism.} The healthy baseline is distinguishable from real data (balanced accuracy 0.78--0.90 across variants and splits) and we could not measure a floor.
 \item \textbf{Assumed quantities.} Fault severity ranges, gains, nominal physical parameters and the causal graph are assumptions; force coefficients and tool-tip dynamics for this tool had no verified source.
 \item \textbf{Scope.} One tool, one workpiece material, one machine, 73 cuts, mostly up- versus down-milling as the real abnormal signal.
-\item \textbf{Single split.} The RCA results use one cut split and one generation seed and carry no confidence intervals.
+\item \textbf{Seeds.} The main causal and classification tables use one cut split and one generation seed; only the ablation (Table~\ref{tab:ablation}) reports spread over three seeds, and the soft-sensor training uses supervision from the simulator.
 \item \textbf{Open hypothesis.} We suspect that the 1.5--2.3~kHz cluster is a tool-structure mode excited when a harmonic of the tooth-passing frequency is close to it; adding a harmonic-proximity feature did not give a clear improvement.
 \end{itemize}
 
 \section{Conclusion}
 A simulator grounded in real healthy spectra lets us run causal RCA algorithms on machining faults with known causes, but the resulting accuracy depends on how much the diagnostic nodes share with the generator, and falls from near 1.0 to 0.35--0.71 under moderate mismatch of the simulator's physical parameters.
-This is a measurement of the dependence of a simulated benchmark on its assumptions, not a claim about real machining diagnosis, which requires the real-cause validation and ablations listed above.
+Ablations show that the causal graph plays no role in this benchmark, that label-free node estimates give near-chance accuracy, and that the simulator does not reproduce the low-frequency and tonal signature of a real defective tool.
+This is a measurement of the dependence of a simulated benchmark on its assumptions and on node construction, not a claim about real machining diagnosis.
 
 \paragraph{Code and data.}
 Code: \texttt{cutting\_sim/} in the project repository (branch \texttt{cutting-sim-experiments}); data: MSM \citep{kim2026msm} (CC BY 4.0). \todo{release instructions}

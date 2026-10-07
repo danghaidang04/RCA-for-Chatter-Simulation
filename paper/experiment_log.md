@@ -14,6 +14,10 @@ A physics-based milling simulator grounded in real multi-sensor data shows that 
 | E6 | Causal RCA algorithms rank true root-cause node | 14 nodes, m in {5,10,20,50}, 100 trials x 5 faults; in-distribution vs shifted DDE parameters | m=10 top-1: ST 0.98->0.71, BRCD 0.90->0.58, RCG 0.90->0.59, BARO 0.94->0.35, RCD 0.80->0.39, SimpleRCA 0.52->0.44 | output/rca_causal.json |
 | E7 | Difficulty depends on assumed gain | gain x0.3/1/3 | GB 0.698/0.882/0.943 | output/rca_sweep.json |
 
+## Completed after the first draft
+- E8 Ablation (3 seeds, m=10): shuffled/empty graph gives the same accuracy as the physical graph (BRCD 0.92/0.92/0.92 in-dist; 0.60/0.60/0.58 shifted); label-free nodes give 0.07-0.29 (in-dist) and 0.07-0.37 (shifted); gain x3 under shifted parameters lowers BRCD 0.60->0.27. Files: output/rca_ablation.json, rca_ablation.log.
+- E9 Real defective tool D* (dataset 3, 12 cuts) vs healthy D (dataset 14, 64 cuts), AISI 4140: real shifts of low-frequency bands (+3.9, +4.0 sd) and non-synchronous indices (-3.7, -1.2 sd) are not reproduced by any simulated fault (sim low-band shifts within +-0.1; non-sync -0.3..+0.5); cosine 0.55-0.62 for all causes; TOOL_WEAR most similar in 89% of bootstrap resamples. Files: output/real_defect_check.json.
+
 ## Failed / negative experiments (report in paper)
 - Direct DDE parameter calibration with CMA-ES (v2, v3, v4): loss plateaued ~3 (standardised units); stopped by the stop-on-nonconvergence rule. Earlier low MMD values (0.013-0.022) coexisted with large mismatch in condition dependence (mic vs rpm correlation +0.85 real, 0.00 simulated).
 - Feature-window mismatch (real 4 s vs simulated 0.18 s) inflated apparent noise mismatch; fixed by 0.3 s windows in both.
@@ -27,7 +31,6 @@ A physics-based milling simulator grounded in real multi-sensor data shows that 
 - Per-cause top-1 at m=10 (in rca_causal.log).
 
 ## Not done (do not claim in paper)
-- Real root-cause validation (tool defect D*/D pair, clamp failure, depth cases): data download interrupted.
-- Ablations over proxy type (supervised vs label-free), graph (true/shuffled/none), multiple seeds with confidence intervals (rca_ablation.py interrupted, no results).
+- Validation of the RCA RANKING on real root causes (only the signature of one cause was compared; clamp failure and depth cases are single cuts on other tools).
 - Verification of BRCD/RCG/SimpleRCA references by the author (user states sources are correct; not independently verified here).
 - Mode-harmonic hypothesis (1.5-2.3 kHz cluster) is unproven.

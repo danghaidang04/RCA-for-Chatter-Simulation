@@ -25,4 +25,21 @@ def esc(t):
     return t
 rows = [f"{esc(p)} & {esc(t)} & {esc(v)} \\\\" for p, t, v in reg.values]
 open("tables/tab_registry.tex", "w").write("\\begin{tabular}{p{5.2cm}p{1.8cm}p{6.5cm}}\n\\toprule\nParameter & Tier & Verification \\\\\n\\midrule\n" + "\n".join(rows) + "\n\\bottomrule\n\\end{tabular}\n")
+# --- ablation (3 hạt giống), m=10
+ab = json.load(open(f"{O}/rca_ablation.json")); AL = ["BRCD", "RCD", "RCG", "SmoothTraversal", "BARO", "SimpleRCA"]
+NAME = {"soft|physics|x1.0": "Supervised nodes, physics graph, gain $\\times1$ (main setting)", "soft|shuffled|x1.0": "Supervised nodes, \\emph{shuffled} graph", "soft|none|x1.0": "Supervised nodes, \\emph{no edges}",
+        "physical|physics|x1.0": "\\emph{Label-free} nodes, physics graph", "soft|physics|x0.3": "Supervised nodes, physics graph, gain $\\times0.3$", "soft|physics|x3.0": "Supervised nodes, physics graph, gain $\\times3$"}
+rows = []
+for sc, title in (("in", "Same generator"), ("shift", "Shifted DDE parameters")):
+    rows.append(f"\\multicolumn{{7}}{{l}}{{\\textit{{{title}}}}} \\\\")
+    for k, lab in NAME.items(): rows.append(f"{lab} & " + " & ".join(f"{np.mean(ab[f'{k}|{sc}|m10'][a]):.2f}$\\pm${np.std(ab[f'{k}|{sc}|m10'][a]):.2f}" for a in AL) + " \\\\")
+    rows.append("\\midrule")
+open("tables/tab_ablation.tex", "w").write("\\begin{tabular}{p{5.6cm}cccccc}\n\\toprule\nVariant & BRCD & RCD & RCG & Smooth & BARO & Simple \\\\\n\\midrule\n" + "\n".join(rows[:-1]) + "\n\\bottomrule\n\\end{tabular}\n")
+# --- dao hỏng thật vs mô phỏng
+rs = json.load(open(f"{O}/real_defect_check.json")); order = ["log10_acc", "mic_dB", "chatter_acc", "chatter_mic", "acc_low", "acc_res", "acc_high", "mic_low", "mic_high"]
+LAB = {"log10_acc": "log acc.\\ rms", "mic_dB": "mic.\\ level", "chatter_acc": "non-sync.\\ (acc)", "chatter_mic": "non-sync.\\ (mic)", "acc_low": "acc.\\ 50--600\\,Hz", "acc_res": "acc.\\ 1--3.2\\,kHz", "acc_high": "acc.\\ $>$3.2\\,kHz", "mic_low": "mic.\\ 50--600\\,Hz", "mic_high": "mic.\\ $>$3.2\\,kHz"}
+fa = ["STIFFNESS", "DAMPING", "TOOL_WEAR", "DEPTH_OVERLOAD", "RPM_MISMATCH"]
+rows = [f"{LAB[n]} & {rs['real_shift'][n]:+.1f} [{rs['real_shift_ci95'][n][0]:+.1f}, {rs['real_shift_ci95'][n][1]:+.1f}] & " + " & ".join(f"{rs['sim_shift'][f][n]:+.1f}" for f in fa) + " \\\\" for n in order]
+rows.append("\\midrule\ncosine with real shift & -- & " + " & ".join(f"{rs['cosine_with_sim'][f]:.2f}" for f in fa) + " \\\\")
+open("tables/tab_realshift.tex", "w").write("\\begin{tabular}{lcccccc}\n\\toprule\n & Real defective tool & Stiff. & Damp. & Wear & Depth & RPM \\\\\n\\midrule\n" + "\n".join(rows) + "\n\\bottomrule\n\\end{tabular}\n")
 print("tables written")

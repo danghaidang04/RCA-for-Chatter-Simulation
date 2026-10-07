@@ -42,7 +42,10 @@ def main():
     for b in boot:
         for c, v in sim_vec.items(): bc[c].append(cos(b, v))
     print("tỉ lệ bootstrap mà từng nguyên nhân là giống nhất:", {c: float(np.mean([max(bc, key=lambda k: bc[k][i]) == c for i in range(len(boot))])) for c in sims})
-    json.dump({"real_shift": dict(zip(rc.SENS, real_vec.tolist())), "cosine_with_sim": sims}, open(f"{rd.OUT}/real_defect_check.json", "w"), indent=1)
+    json.dump({"real_shift": dict(zip(rc.SENS, real_vec.tolist())), "real_shift_ci95": {n: [float(np.percentile(boot[:, j], 2.5)), float(np.percentile(boot[:, j], 97.5))] for j, n in enumerate(rc.SENS)},
+               "sim_shift": {c: dict(zip(rc.SENS, v.tolist())) for c, v in sim_vec.items()}, "cosine_with_sim": sims,
+               "bootstrap_most_similar": {c: float(np.mean([max(bc, key=lambda k: bc[k][i]) == c for i in range(len(boot))])) for c in sims},
+               "n_windows": {"defective_D*": int(bad.sum()), "healthy_D": int(healthy.sum())}, "n_cuts": {"defective_D*": int(len(ub)), "healthy_D": int(len(np.unique(cid)))}}, open(f"{rd.OUT}/real_defect_check.json", "w"), indent=1)
 
 
 if __name__ == "__main__":
