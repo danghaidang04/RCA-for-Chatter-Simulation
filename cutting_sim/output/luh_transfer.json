@@ -1,0 +1,68 @@
+{
+ "raw": {
+  "E1 new tool, same machine": {
+   "GB": 0.9636221541180239,
+   "LR": 0.9979019559108546,
+   "MAE_VB": 9.168536897014272
+  },
+  "E2 unseen machine, trained on 2 machines": {
+   "GB": 0.9899472261562359,
+   "LR": 0.978099501305372,
+   "MAE_VB": 9.226495105502353
+  },
+  "E3 unseen machine, trained on 1 machine": {
+   "GB": 0.9824183701830704,
+   "LR": 0.9763457748514738,
+   "MAE_VB": 11.310696423400605
+  },
+  "_E2_per_machine_GB_AUROC": [
+   0.995,
+   0.999,
+   0.976
+  ]
+ },
+ "machine-relative": {
+  "E1 new tool, same machine": {
+   "GB": 0.9636221541180239,
+   "LR": 0.9979019559108546,
+   "MAE_VB": 9.168536897014272
+  },
+  "E2 unseen machine, trained on 2 machines": {
+   "GB": 0.9549390602384847,
+   "LR": 0.9856560105259339,
+   "MAE_VB": 17.671419421759108
+  },
+  "E3 unseen machine, trained on 1 machine": {
+   "GB": 0.9415657498537219,
+   "LR": 0.9808726504844945,
+   "MAE_VB": 28.39898714681544
+  },
+  "_E2_per_machine_GB_AUROC": [
+   0.965,
+   0.989,
+   0.91
+  ]
+ },
+ "tool-relative": {
+  "E1 new tool, same machine": {
+   "GB": 0.9366090232645922,
+   "LR": 0.9431532848871558,
+   "MAE_VB": 12.396800393375818
+  },
+  "E2 unseen machine, trained on 2 machines": {
+   "GB": 0.986341057978005,
+   "LR": 0.9575039860778619,
+   "MAE_VB": 11.119515504153467
+  },
+  "E3 unseen machine, trained on 1 machine": {
+   "GB": 0.9150171344732039,
+   "LR": 0.9135642393274604,
+   "MAE_VB": 10.923369956645436
+  },
+  "_E2_per_machine_GB_AUROC": [
+   0.98,
+   0.994,
+   0.985
+  ]
+ }
+}

@@ -1,0 +1,170 @@
+{
+ "train on ONE nominal machine | raw features | GB | val": {
+  "top1": 0.35868055555555556,
+  "macroF1": 0.29886059831479933,
+  "top3": 0.7614583333333333
+ },
+ "train on ONE nominal machine | raw features | GB | test_in": {
+  "top1": 0.3211805555555556,
+  "macroF1": 0.27129798852529874,
+  "top3": 0.7508680555555556,
+  "coverage": 0.0,
+  "acc_answered": NaN,
+  "thr": null
+ },
+ "train on ONE nominal machine | raw features | GB | test_extrap": {
+  "top1": 0.3307291666666667,
+  "macroF1": 0.3167901834377739,
+  "top3": 0.7552083333333334,
+  "coverage": 0.0,
+  "acc_answered": NaN,
+  "thr": null
+ },
+ "train on ONE nominal machine | raw features | RF | val": {
+  "top1": 0.359375,
+  "macroF1": 0.2965647395967423,
+  "top3": 0.7895833333333333
+ },
+ "train on ONE nominal machine | raw features | RF | test_in": {
+  "top1": 0.3257378472222222,
+  "macroF1": 0.26518560680500414,
+  "top3": 0.771484375,
+  "coverage": 0.0,
+  "acc_answered": NaN,
+  "thr": null
+ },
+ "train on ONE nominal machine | raw features | RF | test_extrap": {
+  "top1": 0.3255208333333333,
+  "macroF1": 0.30857668223973606,
+  "top3": 0.75390625,
+  "coverage": 0.0,
+  "acc_answered": NaN,
+  "thr": null
+ },
+ "train on ONE nominal machine | healthy-relative features | GB | val": {
+  "top1": 0.35208333333333336,
+  "macroF1": 0.2885480822023751,
+  "top3": 0.7607638888888889
+ },
+ "train on ONE nominal machine | healthy-relative features | GB | test_in": {
+  "top1": 0.3517795138888889,
+  "macroF1": 0.28144737951056714,
+  "top3": 0.7645399305555556,
+  "coverage": 0.0,
+  "acc_answered": NaN,
+  "thr": null
+ },
+ "train on ONE nominal machine | healthy-relative features | GB | test_extrap": {
+  "top1": 0.3381076388888889,
+  "macroF1": 0.28054691113311586,
+  "top3": 0.7400173611111112,
+  "coverage": 0.0,
+  "acc_answered": NaN,
+  "thr": null
+ },
+ "train on ONE nominal machine | healthy-relative features | RF | val": {
+  "top1": 0.3503472222222222,
+  "macroF1": 0.2791417939553062,
+  "top3": 0.7201388888888889
+ },
+ "train on ONE nominal machine | healthy-relative features | RF | test_in": {
+  "top1": 0.353515625,
+  "macroF1": 0.2784612149288396,
+  "top3": 0.73046875,
+  "coverage": 0.14778645833333334,
+  "acc_answered": 0.8193832599118943,
+  "thr": 0.8125714285714285
+ },
+ "train on ONE nominal machine | healthy-relative features | RF | test_extrap": {
+  "top1": 0.3396267361111111,
+  "macroF1": 0.29236464502107845,
+  "top3": 0.7259114583333334,
+  "coverage": 0.10394965277777778,
+  "acc_answered": 1.0,
+  "thr": 0.8125714285714285
+ },
+ "train on MANY machines | raw features | GB | val": {
+  "top1": 0.5840277777777778,
+  "macroF1": 0.5877476169332589,
+  "top3": 0.9173611111111111
+ },
+ "train on MANY machines | raw features | GB | test_in": {
+  "top1": 0.5481770833333334,
+  "macroF1": 0.5502825187712853,
+  "top3": 0.8708767361111112,
+  "coverage": 0.2599826388888889,
+  "acc_answered": 0.8898163606010017,
+  "thr": 0.9505714285714284
+ },
+ "train on MANY machines | raw features | GB | test_extrap": {
+  "top1": 0.3849826388888889,
+  "macroF1": 0.38191742073466745,
+  "top3": 0.7673611111111112,
+  "coverage": 0.1833767361111111,
+  "acc_answered": 0.7230769230769231,
+  "thr": 0.9505714285714284
+ },
+ "train on MANY machines | raw features | RF | val": {
+  "top1": 0.5819444444444445,
+  "macroF1": 0.5818539945777607,
+  "top3": 0.9166666666666666
+ },
+ "train on MANY machines | raw features | RF | test_in": {
+  "top1": 0.5199652777777778,
+  "macroF1": 0.519265627277988,
+  "top3": 0.8713107638888888,
+  "coverage": 0.2556423611111111,
+  "acc_answered": 0.8913412563667232,
+  "thr": 0.5562857142857143
+ },
+ "train on MANY machines | raw features | RF | test_extrap": {
+  "top1": 0.3784722222222222,
+  "macroF1": 0.38178421244450683,
+  "top3": 0.8138020833333334,
+  "coverage": 0.3318142361111111,
+  "acc_answered": 0.47155003270111184,
+  "thr": 0.5562857142857143
+ },
+ "train on MANY machines | healthy-relative features | GB | val": {
+  "top1": 0.5493055555555556,
+  "macroF1": 0.5451889546773064,
+  "top3": 0.8885416666666667
+ },
+ "train on MANY machines | healthy-relative features | GB | test_in": {
+  "top1": 0.5221354166666666,
+  "macroF1": 0.5134694708364212,
+  "top3": 0.8532986111111112,
+  "coverage": 0.3120659722222222,
+  "acc_answered": 0.847009735744089,
+  "thr": 0.8519999999999999
+ },
+ "train on MANY machines | healthy-relative features | GB | test_extrap": {
+  "top1": 0.3832465277777778,
+  "macroF1": 0.3500543776355478,
+  "top3": 0.7688802083333334,
+  "coverage": 0.5603298611111112,
+  "acc_answered": 0.48528272656855154,
+  "thr": 0.8519999999999999
+ },
+ "train on MANY machines | healthy-relative features | RF | val": {
+  "top1": 0.5510416666666667,
+  "macroF1": 0.5478545143948211,
+  "top3": 0.8840277777777777
+ },
+ "train on MANY machines | healthy-relative features | RF | test_in": {
+  "top1": 0.5006510416666666,
+  "macroF1": 0.4926989719282954,
+  "top3": 0.8487413194444444,
+  "coverage": 0.2756076388888889,
+  "acc_answered": 0.862992125984252,
+  "thr": 0.4971428571428571
+ },
+ "train on MANY machines | healthy-relative features | RF | test_extrap": {
+  "top1": 0.3782552083333333,
+  "macroF1": 0.35456888958468347,
+  "top3": 0.787109375,
+  "coverage": 0.5115017361111112,
+  "acc_answered": 0.4963937208315656,
+  "thr": 0.4971428571428571
+ }
+}

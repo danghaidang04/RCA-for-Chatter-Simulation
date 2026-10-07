@@ -70,3 +70,11 @@ python rca_causal.py  # RCA nhân quả (cần output/real_windows.npz)
 - `rca_ablation.py` XONG: đồ thị physics/shuffled/none cho kết quả như nhau (đồ thị không có vai trò); nút vật lý không nhãn gần mức đoán bừa; gain x3 làm tệ hơn khi tham số DDE lệch. Xem `paper/main.tex` mục Ablations.
 - `real_defect_check.py` XONG (dao D* hỏng vs D khỏe, thép 4140): mô phỏng KHÔNG tái tạo được dịch chuyển băng thấp (+3.9/+4.0 sd) và chỉ số phi đồng bộ (-3.7/-1.2 sd) của dao hỏng thật. Giả thuyết (chưa kiểm): thiếu cơ chế sứt rãnh (lực 1 lần/vòng).
 - Việc còn lại chính: (a) mô hình hóa cơ chế dao sứt/không đối xứng rãnh và kiểm lại với D*; (b) thiết kế lại benchmark để nguyên nhân gốc không phải gốc đồ thị được ước lượng có giám sát (hiện benchmark không kiểm tra suy luận nhân quả); (c) nền nhiễu C2ST; (d) bản ghi thư mục BRCD/RCG/SimpleRCA; (e) chọn mẫu tạp chí.
+
+## 8. Văn liệu và thí nghiệm khung A (8/10/2026)
+- Văn liệu: `paper/lit/literature_map.md`, `paper/lit/verify_refs.py`, 12 nguồn mới đã xác minh trong `paper/refs.bib` (21 mục). Phát hiện: mô phỏng -> thật đã có tiền lệ cho chatter (Alberts 2024) và lỗi dao (Ebrahimi Araghizad 2023) => tính mới KHÔNG nằm ở "học trước bằng mô phỏng". Chưa xác định bài "tiền huấn luyện lực mô phỏng + tinh chỉnh ít mẫu cho mòn dao" (xem mục D của bản đồ).
+- Thí nghiệm `sim_to_real_wear.py` (LUH, mòn dao VB>=100, 3 máy đích chưa thấy, đặc trưng lực x,y tương đối theo nền khỏe của từng dao):
+  - Lần 1 (dùng lực trung bình có dấu): zero-shot dưới ngẫu nhiên (AUROC 0.55/0.26/0.10) do quy ước dấu trục lực; tinh chỉnh tệ hơn học từ đầu.
+  - Lần 2 (dùng |lực trung bình|, thay đổi SAU khi thấy kết quả lần 1, có cơ sở bất biến dấu): zero-shot (không nhãn thật) AUROC M1 0.887, M2 0.807, M3 0.571; học từ k mẫu thật: 0.85-0.99; tinh chỉnh từ mô phỏng KHÔNG tốt hơn học từ đầu ở mọi k (k=2: 0.83-0.89 vs 0.85-0.89; k=32: 0.97-0.99 vs 0.99).
+  - Kết luận sơ bộ: mô phỏng có giá trị trong chế độ không nhãn thật; chưa chứng minh lợi ích tinh chỉnh; nhiệm vụ này dễ (đặc trưng tương đối + vài nhãn đã đủ).
+- File: `cutting_sim/output/sim_to_real_wear*.json`, `luh_transfer.json`, `quick_*.json`.

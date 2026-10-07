@@ -1,0 +1,128 @@
+{
+ "sim2real_chatter": [
+  1.0,
+  "crossref",
+  "Transitioning from Simulation to Reality: Applying Chatter Detection Models to Real-World Machining Data",
+  "10.20944/preprints202411.0016.v1",
+  2024,
+  "Alberts",
+  ""
+ ],
+ "sim_faults_budak": [
+  1.0,
+  "crossref",
+  "Smart Tool-Related Faults Monitoring System Using Process Simulation-Based Machine Learning Algorithms",
+  "10.36897/jme/174018",
+  2023,
+  "Ebrahimi Araghizad",
+  "Journal of Machine Engineering"
+ ],
+ "tl_chatter": [
+  1.0,
+  "crossref",
+  "Transfer learning for autonomous chatter detection in machining",
+  "10.1016/j.jmapro.2022.05.037",
+  2022,
+  "Yesilli",
+  "Journal of Manufacturing Processes"
+ ],
+ "dat_wear": [
+  1.0,
+  "crossref",
+  "Domain Adversarial Transfer Learning for Generalized Tool Wear Prediction",
+  "10.36001/phmconf.2020.v12i1.1137",
+  2020,
+  "Wang",
+  "Annual Conference of the PHM Society"
+ ],
+ "single_sensor_wear": [
+  1.0,
+  "crossref",
+  "Data-Driven Tool Wear Prediction in Milling, Based on a Process-Integrated Single-Sensor Approach",
+  "10.2139/ssrn.5260864",
+  2025,
+  "Hirsch",
+  ""
+ ],
+ "dt_pdm": [
+  1.0,
+  "crossref",
+  "Digital Twin Technologies in Predictive Maintenance: Enabling Transferability via Sim-to-Real and Real-to-Sim Transfer",
+  "10.1061/9780784486122.057",
+  2025,
+  "Ma",
+  "Computing in Civil Engineering 2024"
+ ],
+ "luh_dataset": [
+  1.0,
+  "crossref",
+  "Multivariate time series data of milling processes with varying tool wear and machine tools",
+  "10.1016/j.dib.2023.109574",
+  2023,
+  "Denkena",
+  "Data in Brief"
+ ],
+ "meta_dg_wear": [
+  0.8075117370892019,
+  "crossref",
+  "Semi-supervised multi-source meta-domain generalization method for tool wear state prediction under varying cutting conditions",
+  "10.1016/j.jmsy.2023.09.011",
+  2023,
+  "Li",
+  "Journal of Manufacturing Systems"
+ ],
+ "phys_guided_wear": [
+  1.0,
+  "crossref",
+  "Application of physics-guided deep learning model in tool wear monitoring of high-speed milling",
+  "10.1016/j.ymssp.2024.111949",
+  2025,
+  "Li",
+  "Mechanical Systems and Signal Processing"
+ ],
+ "dt_mech_wear": [
+  1.0,
+  "crossref",
+  "Digital twin with dynamic mechanistic simulation core for milling tool wear prediction",
+  "10.1016/j.jmapro.2025.06.023",
+  2025,
+  "Han",
+  "Journal of Manufacturing Processes"
+ ],
+ "hybrid_wear": [
+  0.9704142011834319,
+  "crossref",
+  "Hybrid data-driven and model-informed online tool wear detection in milling machines",
+  "10.1016/j.jmsy.2022.04.001",
+  2022,
+  "Yang",
+  "Journal of Manufacturing Systems"
+ ],
+ "gan_stability": [
+  0.6751592356687898,
+  "crossref",
+  "Wasserstein Generative Adversarial Networks for Bacterial Hemoglobin-Like Proteins Prediction",
+  "10.2139/ssrn.4943780",
+  2024,
+  "Hamena",
+  ""
+ ],
+ "pinn_phm_review": [
+  1.0,
+  "crossref",
+  "Physics-informed machine learning in prognostics and health management: a systematic literature review",
+  "10.1007/s10845-026-02930-3",
+  2026,
+  "Braun",
+  "Journal of Intelligent Manufacturing"
+ ],
+ "causal_rca_mfg": [
+  0.46408839779005523,
+  "crossref",
+  "Explainable Causal Graph\u2010based Method for Diagnosis and Root Cause Analysis in Process Systems",
+  "10.1016/j.psep.2025.107953",
+  2025,
+  "Ji",
+  "Process Safety and Environmental Protect"
+ ]
+}
