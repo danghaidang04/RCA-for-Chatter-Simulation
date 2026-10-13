@@ -225,3 +225,6 @@ python plot_perfect_figures.py
 3. Lee, K., Zhou, Z., & Kocaoglu, M. (2026). *Root Cause Analysis of Failures via Bayesian Root Cause Discovery (BRCD)*. In *Proceedings of the 43rd International Conference on Machine Learning (ICML)*.
 4. Ikram, A., Chakraborty, S., Mitra, S., Saini, S., Bagchi, S., & Kocaoglu, M. (2022). *Root cause analysis of failures in microservices through causal discovery (RCD)*. *NeurIPS*, 35, 31158-31170.
 5. Pham, L., Ha, H., & Zhang, H. (2024). *BARO: Robust root cause analysis for microservices via multivariate Bayesian online change point detection*. *ACM FSE*.
+
+## Chạy web app cục bộ
+`./run_app.sh` (mất khoảng 25 s khởi động, rồi tự mở http://127.0.0.1:8000). Key OpenRouter (tuỳ chọn) để trong `prototype_kg_bn_llm/.env`.
