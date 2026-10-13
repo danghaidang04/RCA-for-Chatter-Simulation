@@ -3,83 +3,288 @@
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \citation{kim2026msm}
-\citation{ikram2022rcd,pham2024baro}
-\citation{orchard2025}
+\citation{denkena2023luh}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{The problem.}{1}{section*.1}\protected@file@percent }
+\newlabel{sec:intro}{{1}{1}{Introduction}{section.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Why the problem is hard.}{1}{section*.1}\protected@file@percent }
 \citation{altintas2020}
-\citation{kim2026msm}
-\citation{ikram2022rcd}
-\citation{pham2024baro}
-\citation{orchard2025}
+\citation{yesilli2022tlchatter,wang2020datwear,li2023metadg}
+\citation{li2025physguided,yang2022hybridwear,han2025dtmech}
+\citation{alberts2024sim2real}
+\citation{ebrahimi2023smartfaults}
+\citation{tobin2017,shrivastava2017,cranmer2020}
+\citation{ikram2022rcd,ikram2025rcg,pham2024baro,orchard2025,fang2025simplerca,lee2026brcd}
+\@writefile{toc}{\contentsline {paragraph}{What has been done.}{2}{section*.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{The remaining challenge.}{2}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Our solution.}{2}{section*.5}\protected@file@percent }
+\citation{altintas2020}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Why a simulated RCA benchmark cannot be read at face value: top-1 root-cause accuracy of six causal RCA algorithms (mean over five root causes, $m{=}10$ anomalous samples; dotted line: chance) when the diagnostic nodes and the test faults come from the same simulator (blue) and when the simulator's physical parameters are shifted at test time (red).}}{3}{figure.caption.4}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:teaser}{{1}{3}{Why a simulated RCA benchmark cannot be read at face value: top-1 root-cause accuracy of six causal RCA algorithms (mean over five root causes, $m{=}10$ anomalous samples; dotted line: chance) when the diagnostic nodes and the test faults come from the same simulator (blue) and when the simulator's physical parameters are shifted at test time (red)}{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Findings.}{3}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Contributions.}{3}{section*.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{3}{section.2}\protected@file@percent }
+\newlabel{sec:related}{{2}{3}{Related Work}{section.2}{}}
+\citation{yesilli2022tlchatter}
+\citation{wang2020datwear}
+\citation{li2023metadg}
+\citation{li2025physguided}
+\citation{yang2022hybridwear}
+\citation{han2025dtmech}
+\citation{hirsch2025singlesensor}
+\citation{braun2026pinnphm}
+\citation{ma2025dtpdm}
+\citation{alberts2024sim2real}
+\citation{ebrahimi2023smartfaults}
 \citation{kennedy2001}
 \citation{tobin2017}
 \citation{shrivastava2017}
 \citation{cranmer2020}
-\@writefile{toc}{\contentsline {paragraph}{What we do.}{2}{section*.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Main findings.}{2}{section*.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{What we do not show.}{2}{section*.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Regenerative chatter and milling simulation.}{2}{section*.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Machining datasets.}{2}{section*.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Causal root cause analysis.}{2}{section*.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Calibrating simulators to data.}{2}{section*.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3}Data}{3}{section.3}\protected@file@percent }
-\newlabel{sec:data}{{3}{3}{Data}{section.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Method}{3}{section.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Simulator}{3}{subsection.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Provenance of every parameter}{3}{subsection.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Healthy baseline from real spectra}{3}{subsection.4.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Stability lobes (zero-order approximation, 4-flute reference transfer function) and time-domain simulation outcomes on a speed--depth grid.}}{4}{figure.caption.9}\protected@file@percent }
-\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:lobes}{{1}{4}{Stability lobes (zero-order approximation, 4-flute reference transfer function) and time-domain simulation outcomes on a speed--depth grid}{figure.caption.9}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Power spectral density of four real windows (accelerometer left, microphone right): normal and abnormal cuts at different spindle speeds.}}{4}{figure.caption.10}\protected@file@percent }
-\newlabel{fig:psd}{{2}{4}{Power spectral density of four real windows (accelerometer left, microphone right): normal and abnormal cuts at different spindle speeds}{figure.caption.10}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Fault injection and gain calibration}{4}{subsection.4.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Causal RCA protocol}{5}{subsection.4.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5}Experiments}{5}{section.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}How realistic is the healthy baseline?}{5}{subsection.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}A negative result: direct calibration of the delay model}{5}{subsection.5.2}\protected@file@percent }
-\newlabel{sec:neg}{{5.2}{5}{A negative result: direct calibration of the delay model}{subsection.5.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Classifier two-sample test between real and simulated healthy windows on held-out cuts. Three-split values are mean $\pm $ standard deviation over random stratified splits. {\color  {blue}[\textbf  {VERIFY:} values copied from console logs; only the last run is archived]}}}{6}{table.caption.11}\protected@file@percent }
-\newlabel{tab:c2st}{{1}{6}{Classifier two-sample test between real and simulated healthy windows on held-out cuts. Three-split values are mean $\pm $ standard deviation over random stratified splits. \verify {values copied from console logs; only the last run is archived}}{table.caption.11}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Six-class classification on simulated data, 16 held-out cuts (chance top-1 $=0.167$).}}{6}{table.caption.12}\protected@file@percent }
-\newlabel{tab:cls}{{2}{6}{Six-class classification on simulated data, 16 held-out cuts (chance top-1 $=0.167$)}{table.caption.12}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Classifying simulated fault classes}{6}{subsection.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Causal RCA}{6}{subsection.5.4}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Causal RCA: top-1 accuracy (mean over 5 faults; 100 draws per fault) versus number of anomalous samples $m$.}}{7}{table.caption.13}\protected@file@percent }
-\newlabel{tab:causal}{{3}{7}{Causal RCA: top-1 accuracy (mean over 5 faults; 100 draws per fault) versus number of anomalous samples $m$}{table.caption.13}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Top-1 accuracy of the causal algorithms versus $m$ for the shared-generator and shifted settings (dotted line: chance).}}{7}{figure.caption.14}\protected@file@percent }
-\newlabel{fig:causal}{{3}{7}{Top-1 accuracy of the causal algorithms versus $m$ for the shared-generator and shifted settings (dotted line: chance)}{figure.caption.14}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}Dependence on the assumed fault strength}{7}{subsection.5.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.6}What drives the accuracy? Ablations}{7}{subsection.5.6}\protected@file@percent }
-\newlabel{sec:ablation}{{5.6}{7}{What drives the accuracy? Ablations}{subsection.5.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Top-1 accuracy of classifiers on simulated data versus fault gain relative to the calibrated value.}}{8}{table.caption.15}\protected@file@percent }
-\newlabel{tab:sweep}{{4}{8}{Top-1 accuracy of classifiers on simulated data versus fault gain relative to the calibrated value}{table.caption.15}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Ablation of the causal RCA benchmark at $m{=}10$: top-1 accuracy (mean $\pm $ s.d.\ over 3 seeds) for the node construction, the graph and the fault gain; chance $=0.07$.}}{8}{table.caption.16}\protected@file@percent }
-\newlabel{tab:ablation}{{5}{8}{Ablation of the causal RCA benchmark at $m{=}10$: top-1 accuracy (mean $\pm $ s.d.\ over 3 seeds) for the node construction, the graph and the fault gain; chance $=0.07$}{table.caption.16}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.7}Comparison with a real defective tool}{8}{subsection.5.7}\protected@file@percent }
-\newlabel{sec:real}{{5.7}{8}{Comparison with a real defective tool}{subsection.5.7}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Shift of each sensor node in units of the healthy standard deviation: real defective tool D$^*$ (with 95\% bootstrap intervals over cuts) versus the five simulated faults.}}{9}{table.caption.17}\protected@file@percent }
-\newlabel{tab:realshift}{{6}{9}{Shift of each sensor node in units of the healthy standard deviation: real defective tool D$^*$ (with 95\% bootstrap intervals over cuts) versus the five simulated faults}{table.caption.17}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {6}Limitations and What Remains}{9}{section.6}\protected@file@percent }
-\newlabel{sec:limits}{{6}{9}{Limitations and What Remains}{section.6}{}}
+\citation{lopezpaz2017c2st}
+\citation{ikram2022rcd}
+\citation{ikram2025rcg}
+\citation{pham2024baro}
+\citation{fang2025simplerca}
+\citation{orchard2025}
+\citation{lee2026brcd}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Physics-based modelling of milling dynamics and chatter}{4}{subsection.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Data-driven monitoring and transfer for tool condition}{4}{subsection.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Simulation-to-real learning in machining}{4}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Causal root cause analysis}{4}{subsection.2.4}\protected@file@percent }
 \citation{kim2026msm}
+\citation{denkena2023luh}
+\citation{altintas2020}
+\citation{yesilli2022tlchatter}
+\citation{wang2020datwear,li2023metadg}
+\citation{li2025physguided,yang2022hybridwear,han2025dtmech}
+\citation{alberts2024sim2real}
+\citation{ebrahimi2023smartfaults}
+\citation{ikram2022rcd,ikram2025rcg,pham2024baro,fang2025simplerca,orchard2025}
+\citation{lee2026brcd}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Coverage of the closest literature along the six aspects needed to judge simulation-based root cause diagnosis in machining. $\text  {$\mathsurround \z@ \mathchar "458$}$: addressed; $\circ $: partly; $\times $: not addressed; --: not reported or not applicable. $^{\ddagger }$ judged from title and abstract only. C1 machining domain; C2 several root causes; C3 simulation used as the data source; C4 dependence on the generator tested; C5 gap to real signals measured; C6 parameter provenance reported.}}{5}{table.caption.8}\protected@file@percent }
+\newlabel{tab:gap}{{1}{5}{Coverage of the closest literature along the six aspects needed to judge simulation-based root cause diagnosis in machining. \cmark : addressed; \pmark : partly; \xmark : not addressed; --: not reported or not applicable. $^{\ddagger }$ judged from title and abstract only. C1 machining domain; C2 several root causes; C3 simulation used as the data source; C4 dependence on the generator tested; C5 gap to real signals measured; C6 parameter provenance reported}{table.caption.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Datasets}{5}{subsection.2.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Summary of the gaps}{5}{subsection.2.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Method}{5}{section.3}\protected@file@percent }
+\newlabel{sec:method}{{3}{5}{Method}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Problem formulation and overview}{5}{subsection.3.1}\protected@file@percent }
+\newlabel{sec:overview}{{3.1}{5}{Problem formulation and overview}{subsection.3.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Architecture of the pipeline. \textbf  {Input}: cutting condition, tool and machine, force and sensor constants, fault specification and real healthy cuts, all tagged in a provenance registry. \textbf  {Simulation}: a regenerative milling model and a sensor chain give the fault effect $\Delta $ as the difference between a faulty and a healthy run; a baseline fitted to real spectra supplies the healthy signal. \textbf  {RCA}: 30 features give 14 nodes, six causal algorithms rank them, and synthetic tests and real-data checks measure the three parts of the simulation gap.}}{7}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:architecture}{{2}{7}{Architecture of the pipeline. \textbf {Input}: cutting condition, tool and machine, force and sensor constants, fault specification and real healthy cuts, all tagged in a provenance registry. \textbf {Simulation}: a regenerative milling model and a sensor chain give the fault effect $\Delta $ as the difference between a faulty and a healthy run; a baseline fitted to real spectra supplies the healthy signal. \textbf {RCA}: 30 features give 14 nodes, six causal algorithms rank them, and synthetic tests and real-data checks measure the three parts of the simulation gap}{figure.caption.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Input groups of the pipeline and their origin.}}{8}{table.caption.13}\protected@file@percent }
+\newlabel{tab:inputs}{{2}{8}{Input groups of the pipeline and their origin}{table.caption.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Input}{8}{subsection.3.2}\protected@file@percent }
+\newlabel{sec:input}{{3.2}{8}{Input}{subsection.3.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Motivation.}{8}{section*.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Design.}{8}{section*.11}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Advantage.}{8}{section*.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Simulation}{8}{subsection.3.3}\protected@file@percent }
+\newlabel{sec:sim}{{3.3}{8}{Simulation}{subsection.3.3}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.1}Structural dynamics and cutting forces}{8}{subsubsection.3.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Motivation.}{8}{section*.15}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Design.}{8}{section*.16}\protected@file@percent }
+\citation{altintas2020}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Provenance tiers of the simulator parameter groups.}}{9}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:prov}{{3}{9}{Provenance tiers of the simulator parameter groups}{figure.caption.14}{}}
+\@writefile{toc}{\contentsline {paragraph}{Advantage and check.}{9}{section*.17}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.2}Stability lobes}{9}{subsubsection.3.3.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Simulated four-sensor signals at nominal parameters for the two extreme radial depths of the real data (10\,000~rpm, 2-flute 6.35~mm tool, $a_p{=}38.1$~mm). The amplitudes (millimetre-scale displacement, tens to hundreds of $g$) are not physical for stable cutting; see Section~\ref {sec:regime}.}}{10}{figure.caption.20}\protected@file@percent }
+\newlabel{fig:waveforms}{{4}{10}{Simulated four-sensor signals at nominal parameters for the two extreme radial depths of the real data (10\,000~rpm, 2-flute 6.35~mm tool, $a_p{=}38.1$~mm). The amplitudes (millimetre-scale displacement, tens to hundreds of $g$) are not physical for stable cutting; see Section~\ref {sec:regime}}{figure.caption.20}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.3}Sensor chain}{10}{subsubsection.3.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Motivation.}{10}{section*.18}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Design.}{10}{section*.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.4}Healthy baseline from real spectra}{10}{subsubsection.3.3.4}\protected@file@percent }
+\newlabel{sec:base}{{3.3.4}{10}{Healthy baseline from real spectra}{subsubsection.3.3.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Motivation.}{10}{section*.21}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Design.}{10}{section*.22}\protected@file@percent }
+\citation{lee2026brcd}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Power spectral density of four real windows (accelerometer left, microphone right): normal and abnormal cuts at different spindle speeds.}}{11}{figure.caption.24}\protected@file@percent }
+\newlabel{fig:psd}{{5}{11}{Power spectral density of four real windows (accelerometer left, microphone right): normal and abnormal cuts at different spindle speeds}{figure.caption.24}{}}
+\@writefile{toc}{\contentsline {paragraph}{Advantage.}{11}{section*.23}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.5}Fault injection with effect-size gain}{11}{subsubsection.3.3.5}\protected@file@percent }
+\newlabel{sec:fault}{{3.3.5}{11}{Fault injection with effect-size gain}{subsubsection.3.3.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{Motivation.}{11}{section*.25}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Design.}{11}{section*.26}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Limit.}{11}{section*.27}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.3.6}Features and nodes}{11}{subsubsection.3.3.6}\protected@file@percent }
+\citation{lee2026brcd}
+\citation{lee2026brcd}
+\citation{lee2026brcd}
+\citation{lee2026brcd}
+\citation{ikram2022rcd}
+\citation{ikram2025rcg}
+\citation{orchard2025}
+\citation{pham2024baro}
+\citation{fang2025simplerca}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Benchmark loop for one fault, condition and number of samples $m$.}}{12}{algorithm.1}\protected@file@percent }
+\newlabel{alg:bench}{{1}{12}{Benchmark loop for one fault, condition and number of samples $m$}{algorithm.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Causal graph used by the RCA algorithms: five root-cause nodes (left) and nine sensor nodes (right); 19 edges from physical prior knowledge.}}{12}{figure.caption.28}\protected@file@percent }
+\newlabel{fig:graph}{{6}{12}{Causal graph used by the RCA algorithms: five root-cause nodes (left) and nine sensor nodes (right); 19 edges from physical prior knowledge}{figure.caption.28}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Root cause analysis}{12}{subsection.3.4}\protected@file@percent }
+\newlabel{sec:rca}{{3.4}{12}{Root cause analysis}{subsection.3.4}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.1}Protocol}{12}{subsubsection.3.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.2}Nodes and graph}{12}{subsubsection.3.4.2}\protected@file@percent }
+\citation{kim2026msm}
+\citation{denkena2023luh}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Root-cause nodes.}}{13}{table.caption.29}\protected@file@percent }
+\newlabel{tab:nodes}{{3}{13}{Root-cause nodes}{table.caption.29}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.3}The algorithms as implemented}{13}{subsubsection.3.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.4.4}Generator shift and real-data transfer}{13}{subsubsection.3.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Generator shift.}{13}{section*.31}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Real-data transfer.}{13}{section*.32}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experiments}{13}{section.4}\protected@file@percent }
+\newlabel{sec:exp}{{4}{13}{Experiments}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Experimental setup}{13}{subsection.4.1}\protected@file@percent }
+\newlabel{sec:setup}{{4.1}{13}{Experimental setup}{subsection.4.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.1}Configuration}{13}{subsubsection.4.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.2}Datasets}{13}{subsubsection.4.1.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces The six RCA algorithms: original method (as summarised by \citealt  {lee2026brcd}) versus our implementation.}}{14}{table.caption.30}\protected@file@percent }
+\newlabel{tab:algs}{{4}{14}{The six RCA algorithms: original method (as summarised by \citealt {lee2026brcd}) versus our implementation}{table.caption.30}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.3}Metrics}{14}{subsubsection.4.1.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.1.4}Baselines}{14}{subsubsection.4.1.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Main results}{14}{subsection.4.2}\protected@file@percent }
+\newlabel{sec:main}{{4.2}{14}{Main results}{subsection.4.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Causal RCA on simulated faults: is the benchmark circular?}{14}{subsubsection.4.2.1}\protected@file@percent }
+\newlabel{sec:circ}{{4.2.1}{14}{Causal RCA on simulated faults: is the benchmark circular?}{subsubsection.4.2.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{Protocol.}{14}{section*.37}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Result.}{14}{section*.39}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Experimental configuration.}}{15}{table.caption.33}\protected@file@percent }
+\newlabel{tab:config}{{5}{15}{Experimental configuration}{table.caption.33}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Datasets.}}{15}{table.caption.34}\protected@file@percent }
+\newlabel{tab:datasets}{{6}{15}{Datasets}{table.caption.34}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.2}Does simulation help on real machines? Cross-machine wear}{15}{subsubsection.4.2.2}\protected@file@percent }
+\newlabel{sec:wear}{{4.2.2}{15}{Does simulation help on real machines? Cross-machine wear}{subsubsection.4.2.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Protocol.}{15}{section*.42}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Result.}{15}{section*.44}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Metrics. $\uparrow $ higher is better, $\downarrow $ lower is better.}}{16}{table.caption.35}\protected@file@percent }
+\newlabel{tab:metrics}{{7}{16}{Metrics. $\uparrow $ higher is better, $\downarrow $ lower is better}{table.caption.35}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Baselines and their role.}}{16}{table.caption.36}\protected@file@percent }
+\newlabel{tab:baselines}{{8}{16}{Baselines and their role}{table.caption.36}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Analysis: is the simulator right?}{16}{subsection.4.3}\protected@file@percent }
+\newlabel{sec:analysis}{{4.3}{16}{Analysis: is the simulator right?}{subsection.4.3}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Numerical correctness and stability lobes}{16}{subsubsection.4.3.1}\protected@file@percent }
+\newlabel{sec:lobes}{{4.3.1}{16}{Numerical correctness and stability lobes}{subsubsection.4.3.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Causal RCA: top-1 accuracy $\uparrow $ (mean over 5 root causes; 100 draws per fault) versus the number of anomalous samples $m$; best per column in bold.}}{17}{table.caption.38}\protected@file@percent }
+\newlabel{tab:causal}{{9}{17}{Causal RCA: top-1 accuracy $\uparrow $ (mean over 5 root causes; 100 draws per fault) versus the number of anomalous samples $m$; best per column in bold}{table.caption.38}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Top-1 accuracy versus the number of anomalous samples in the shared-generator and shifted settings (dotted: chance). In the shifted setting BARO and RCD deteriorate with more samples while Smooth Traversal improves.}}{17}{figure.caption.40}\protected@file@percent }
+\newlabel{fig:mcurve}{{7}{17}{Top-1 accuracy versus the number of anomalous samples in the shared-generator and shifted settings (dotted: chance). In the shifted setting BARO and RCD deteriorate with more samples while Smooth Traversal improves}{figure.caption.40}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}Operating regime and robustness}{17}{subsubsection.4.3.2}\protected@file@percent }
+\newlabel{sec:regime}{{4.3.2}{17}{Operating regime and robustness}{subsubsection.4.3.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Top-1 accuracy per root cause and algorithm at $m{=}10$.}}{18}{figure.caption.41}\protected@file@percent }
+\newlabel{fig:heat}{{8}{18}{Top-1 accuracy per root cause and algorithm at $m{=}10$}{figure.caption.41}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Leave-one-machine-out AUROC for three feature sets and five methods (dotted: chance).}}{18}{figure.caption.45}\protected@file@percent }
+\newlabel{fig:luh}{{9}{18}{Leave-one-machine-out AUROC for three feature sets and five methods (dotted: chance)}{figure.caption.45}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.3}How far is the simulated healthy baseline from real data?}{18}{subsubsection.4.3.3}\protected@file@percent }
+\newlabel{sec:healthy}{{4.3.3}{18}{How far is the simulated healthy baseline from real data?}{subsubsection.4.3.3}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.4}Does any simulated fault reproduce a real defective tool?}{18}{subsubsection.4.3.4}\protected@file@percent }
+\newlabel{sec:real}{{4.3.4}{18}{Does any simulated fault reproduce a real defective tool?}{subsubsection.4.3.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{Protocol.}{18}{section*.52}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces Leave-one-machine-out wear detection (VB $\ge 100~\mu $m), AUROC $\uparrow $, mean over 10 seeds on target machines M1--M3.}}{19}{table.caption.43}\protected@file@percent }
+\newlabel{tab:luhbase}{{10}{19}{Leave-one-machine-out wear detection (VB $\ge 100~\mu $m), AUROC $\uparrow $, mean over 10 seeds on target machines M1--M3}{table.caption.43}{}}
+\@writefile{toc}{\contentsline {paragraph}{Result.}{19}{section*.55}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Tested hypothesis: chipped flute.}{19}{section*.56}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.5}Sensitivity to the assumed fault strength}{19}{subsubsection.4.3.5}\protected@file@percent }
+\newlabel{sec:sweep}{{4.3.5}{19}{Sensitivity to the assumed fault strength}{subsubsection.4.3.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Stability lobes (zero-order approximation, 4-flute reference transfer function) and time-domain simulation outcomes on a speed--depth grid.}}{20}{figure.caption.46}\protected@file@percent }
+\newlabel{fig:lobes}{{10}{20}{Stability lobes (zero-order approximation, 4-flute reference transfer function) and time-domain simulation outcomes on a speed--depth grid}{figure.caption.46}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces Operating regime of the simulator at 9000~rpm, $a_p=38.1$~mm, as a function of the modal stiffness scale (nominal $=1$); red: limit depth below $a_p$. Source: \texttt  {regime\_check.py}.}}{20}{table.caption.47}\protected@file@percent }
+\newlabel{tab:regime}{{11}{20}{Operating regime of the simulator at 9000~rpm, $a_p=38.1$~mm, as a function of the modal stiffness scale (nominal $=1$); red: limit depth below $a_p$. Source: \texttt {regime\_check.py}}{table.caption.47}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.6}Does real-data transfer degrade when the target dynamics are far from the training machines?}{20}{subsubsection.4.3.6}\protected@file@percent }
+\newlabel{sec:dyn}{{4.3.6}{20}{Does real-data transfer degrade when the target dynamics are far from the training machines?}{subsubsection.4.3.6}{}}
+\citation{lee2026brcd}
+\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces Top-1 accuracy $\uparrow $ at $m{=}10$ (mean over 5 root causes) at nominal parameters and with the modal stiffness multiplied by 10; best per column in bold.}}{21}{table.caption.48}\protected@file@percent }
+\newlabel{tab:k10}{{12}{21}{Top-1 accuracy $\uparrow $ at $m{=}10$ (mean over 5 root causes) at nominal parameters and with the modal stiffness multiplied by 10; best per column in bold}{table.caption.48}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Robustness to the operating regime: top-1 at $m{=}10$ for nominal parameters and for a stiffer, stable-regime parameter set.}}{21}{figure.caption.49}\protected@file@percent }
+\newlabel{fig:k10}{{11}{21}{Robustness to the operating regime: top-1 at $m{=}10$ for nominal parameters and for a stiffer, stable-regime parameter set}{figure.caption.49}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.7}FRF import}{21}{subsubsection.4.3.7}\protected@file@percent }
+\newlabel{sec:frf}{{4.3.7}{21}{FRF import}{subsubsection.4.3.7}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.8}Negative result: direct calibration of the delay model}{21}{subsubsection.4.3.8}\protected@file@percent }
+\newlabel{sec:neg}{{4.3.8}{21}{Negative result: direct calibration of the delay model}{subsubsection.4.3.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces Classifier two-sample test, real versus simulated healthy windows on held-out cuts (3 random stratified splits, mean $\pm $ s.d.; 22 test cuts).}}{22}{table.caption.50}\protected@file@percent }
+\newlabel{tab:c2st}{{13}{22}{Classifier two-sample test, real versus simulated healthy windows on held-out cuts (3 random stratified splits, mean $\pm $ s.d.; 22 test cuts)}{table.caption.50}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces C2ST balanced accuracy of the four baseline variants (dots: individual splits; dashed: indistinguishable).}}{22}{figure.caption.51}\protected@file@percent }
+\newlabel{fig:c2st}{{12}{22}{C2ST balanced accuracy of the four baseline variants (dots: individual splits; dashed: indistinguishable)}{figure.caption.51}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Ablation studies}{22}{subsection.4.4}\protected@file@percent }
+\newlabel{sec:ablation}{{4.4}{22}{Ablation studies}{subsection.4.4}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.1}Graph, node construction and fault gain}{22}{subsubsection.4.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.2}Feature normalisation for transfer between machines}{22}{subsubsection.4.4.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {14}{\ignorespaces Shift of each sensor node in healthy standard deviations: real defective tool D$^*$ (95\% bootstrap interval over cuts) versus five simulated faults. Red (blue) cells: shift $\ge 2$ ($\le -2$) s.d.}}{23}{table.caption.53}\protected@file@percent }
+\newlabel{tab:realshift}{{14}{23}{Shift of each sensor node in healthy standard deviations: real defective tool D$^*$ (95\% bootstrap interval over cuts) versus five simulated faults. Red (blue) cells: shift $\ge 2$ ($\le -2$) s.d}{table.caption.53}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {13}{\ignorespaces Left: real defective-tool shift with 95\% bootstrap intervals. Right: real versus simulated fault shifts on the same scale. Simulated faults raise broadband levels but do not move the low-frequency bands or the non-synchronous indices.}}{23}{figure.caption.54}\protected@file@percent }
+\newlabel{fig:sig}{{13}{23}{Left: real defective-tool shift with 95\% bootstrap intervals. Right: real versus simulated fault shifts on the same scale. Simulated faults raise broadband levels but do not move the low-frequency bands or the non-synchronous indices}{figure.caption.54}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.4.3}Wear threshold and fine-tuning}{23}{subsubsection.4.4.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {14}{\ignorespaces Chipped-flute test: shifts of five discriminating nodes for the real defective tool (red) and for simulated effective runout of 20 and 80~$\mu $m at fault gains $1\times $ and $10\times $.}}{24}{figure.caption.57}\protected@file@percent }
+\newlabel{fig:chip}{{14}{24}{Chipped-flute test: shifts of five discriminating nodes for the real defective tool (red) and for simulated effective runout of 20 and 80~$\mu $m at fault gains $1\times $ and $10\times $}{figure.caption.57}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {15}{\ignorespaces Top-1 accuracy $\uparrow $ of classifiers on simulated data versus fault gain relative to the calibrated value.}}{24}{table.caption.58}\protected@file@percent }
+\newlabel{tab:sweep}{{15}{24}{Top-1 accuracy $\uparrow $ of classifiers on simulated data versus fault gain relative to the calibrated value}{table.caption.58}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion, Limitations and Future Work}{24}{section.5}\protected@file@percent }
+\newlabel{sec:concl}{{5}{24}{Conclusion, Limitations and Future Work}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Conclusion}{24}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Limitations}{24}{subsection.5.2}\protected@file@percent }
+\newlabel{sec:limits}{{5.2}{24}{Limitations}{subsection.5.2}{}}
+\citation{wang2020datwear}
+\citation{li2023metadg}
+\@writefile{lot}{\contentsline {table}{\numberline {16}{\ignorespaces Six-class classification on simulated data, 16 held-out cuts (chance $0.167$).}}{25}{table.caption.59}\protected@file@percent }
+\newlabel{tab:cls}{{16}{25}{Six-class classification on simulated data, 16 held-out cuts (chance $0.167$)}{table.caption.59}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {15}{\ignorespaces Simulated six-class accuracy as a function of the assumed fault gain.}}{25}{figure.caption.60}\protected@file@percent }
+\newlabel{fig:gain}{{15}{25}{Simulated six-class accuracy as a function of the assumed fault gain}{figure.caption.60}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Future work}{25}{subsection.5.3}\protected@file@percent }
+\newlabel{sec:future}{{5.3}{25}{Future work}{subsection.5.3}{}}
+\citation{kim2026msm}
+\citation{denkena2023luh}
+\@writefile{lof}{\contentsline {figure}{\numberline {16}{\ignorespaces Real-data transfer to an unseen machine versus the spectral proxy distance of the target tool to the training tools (nine targets).}}{26}{figure.caption.61}\protected@file@percent }
+\newlabel{fig:dyn}{{16}{26}{Real-data transfer to an unseen machine versus the spectral proxy distance of the target tool to the training tools (nine targets)}{figure.caption.61}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {17}{\ignorespaces FRF import on a synthetic transfer function with 1\% and 3\% noise: noisy input, true and fitted receptance magnitude.}}{26}{figure.caption.62}\protected@file@percent }
+\newlabel{fig:frf}{{17}{26}{FRF import on a synthetic transfer function with 1\% and 3\% noise: noisy input, true and fitted receptance magnitude}{figure.caption.62}{}}
+\newlabel{sec:avail}{{5.3}{26}{Availability}{section*.70}{}}
+\@writefile{toc}{\contentsline {paragraph}{Code.}{26}{section*.71}\protected@file@percent }
 \bibstyle{plainnat}
 \bibdata{refs}
-\bibcite{altintas2020}{{1}{2020}{{Altintas et~al.}}{{Altintas, Stepan, Budak, Schmitz, and Kilic}}}
-\bibcite{cranmer2020}{{2}{2020}{{Cranmer et~al.}}{{Cranmer, Brehmer, and Louppe}}}
-\bibcite{ikram2022rcd}{{3}{2022}{{Ikram et~al.}}{{Ikram, Chakraborty, Mitra, Saini, Bagchi, and Kocaoglu}}}
-\bibcite{kennedy2001}{{4}{2001}{{Kennedy and O’Hagan}}{{}}}
-\bibcite{kim2026msm}{{5}{2026}{{Kim et~al.}}{{Kim, Sim, Li, Mostafiz, Van~Meter, Jun, Bertino, and Shakouri}}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{10}{section.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Code and data.}{10}{section*.18}\protected@file@percent }
-\bibcite{orchard2025}{{6}{2025}{{Orchard et~al.}}{{Orchard, Okati, Garrido~Mejia, Blöbaum, and Janzing}}}
-\bibcite{pham2024baro}{{7}{2024}{{Pham et~al.}}{{Pham, Ha, and Zhang}}}
-\bibcite{shrivastava2017}{{8}{2017}{{Shrivastava et~al.}}{{Shrivastava, Pfister, Tuzel, Susskind, Wang, and Webb}}}
-\bibcite{tobin2017}{{9}{2017}{{Tobin et~al.}}{{Tobin, Fong, Ray, Schneider, Zaremba, and Abbeel}}}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Parameter provenance}{11}{appendix.A}\protected@file@percent }
-\newlabel{app:registry}{{A}{11}{Parameter provenance}{appendix.A}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {B}Methodological pitfalls found along the way}{11}{appendix.B}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Every simulator parameter, its tier (fixed / learned / assumed) and verification status.}}{12}{table.caption.20}\protected@file@percent }
-\gdef \@abspage@last{12}
+\bibcite{alberts2024sim2real}{{1}{2024}{{Alberts et~al.}}{{Alberts, St.~John, Odie, Khojandi, Coble, Jared, Schmitz, and Karandikar}}}
+\bibcite{altintas2020}{{2}{2020}{{Altintas et~al.}}{{Altintas, Stepan, Budak, Schmitz, and Kilic}}}
+\@writefile{lot}{\contentsline {table}{\numberline {17}{\ignorespaces Ablation at $m{=}10$: top-1 accuracy $\uparrow $ (mean $\pm $ s.d.\ over 3 seeds); chance $=0.07$.}}{27}{table.caption.63}\protected@file@percent }
+\newlabel{tab:ablation}{{17}{27}{Ablation at $m{=}10$: top-1 accuracy $\uparrow $ (mean $\pm $ s.d.\ over 3 seeds); chance $=0.07$}{table.caption.63}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {18}{\ignorespaces Ablation at $m{=}10$ (mean $\pm $ s.d.\ over 3 seeds): the graph does not matter; node construction does.}}{27}{figure.caption.64}\protected@file@percent }
+\newlabel{fig:ablation}{{18}{27}{Ablation at $m{=}10$ (mean $\pm $ s.d.\ over 3 seeds): the graph does not matter; node construction does}{figure.caption.64}{}}
+\@writefile{toc}{\contentsline {paragraph}{Data.}{27}{section*.72}\protected@file@percent }
+\bibcite{braun2026pinnphm}{{3}{2026}{{Braun et~al.}}{{Braun, Raible, and Huber}}}
+\bibcite{cranmer2020}{{4}{2020}{{Cranmer et~al.}}{{Cranmer, Brehmer, and Louppe}}}
+\bibcite{denkena2023luh}{{5}{2023}{{Denkena et~al.}}{{Denkena, Klemme, and Stiehl}}}
+\bibcite{ebrahimi2023smartfaults}{{6}{2023}{{Ebrahimi~Araghizad et~al.}}{{Ebrahimi~Araghizad, Tehranizadeh, Kilic, and Budak}}}
+\bibcite{fang2025simplerca}{{7}{2025}{{Fang et~al.}}{{Fang, Zhang, Yang, Wu, Xu, Wang, Wang, Wang, Lu, and He}}}
+\@writefile{lot}{\contentsline {table}{\numberline {18}{\ignorespaces Label-free wear detection on unseen machines, AUROC $\uparrow $, by wear threshold. Rule: mean resultant force on tool-relative $x,y$ features.}}{28}{table.caption.65}\protected@file@percent }
+\newlabel{tab:thr}{{18}{28}{Label-free wear detection on unseen machines, AUROC $\uparrow $, by wear threshold. Rule: mean resultant force on tool-relative $x,y$ features}{table.caption.65}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {19}{\ignorespaces Label-free AUROC of the one-feature rule and the simulation-only model per machine and wear threshold.}}{28}{figure.caption.66}\protected@file@percent }
+\newlabel{fig:thr}{{19}{28}{Label-free AUROC of the one-feature rule and the simulation-only model per machine and wear threshold}{figure.caption.66}{}}
+\bibcite{han2025dtmech}{{8}{2025}{{Han et~al.}}{{Han, Liang, Luo, Tian, Yang, Gui, Wang, and Zhang}}}
+\bibcite{hirsch2025singlesensor}{{9}{2025}{{Hirsch and Friedrich}}{{}}}
+\bibcite{ikram2022rcd}{{10}{2022}{{Ikram et~al.}}{{Ikram, Chakraborty, Mitra, Saini, Bagchi, and Kocaoglu}}}
+\bibcite{ikram2025rcg}{{11}{2025}{{Ikram et~al.}}{{Ikram, Lee, Agarwal, Saini, Bagchi, and Kocaoglu}}}
+\bibcite{kennedy2001}{{12}{2001}{{Kennedy and O’Hagan}}{{}}}
+\@writefile{lof}{\contentsline {figure}{\numberline {20}{\ignorespaces AUROC versus the number $k$ of real labelled runs (VB $\ge 100~\mu $m; mean of three machines).}}{29}{figure.caption.67}\protected@file@percent }
+\newlabel{fig:ft}{{20}{29}{AUROC versus the number $k$ of real labelled runs (VB $\ge 100~\mu $m; mean of three machines)}{figure.caption.67}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {19}{\ignorespaces {\color  {red}PLACEHOLDER (not real data).} Layout of the planned leave-one-configuration-out evaluation on real multi-cause cuts: top-1 $\uparrow $ and expected calibration error (ECE) $\downarrow $ per training mode, $k{=}8$ real cuts.}}{29}{table.caption.68}\protected@file@percent }
+\newlabel{tab:planned}{{19}{29}{\fake {PLACEHOLDER (not real data).} Layout of the planned leave-one-configuration-out evaluation on real multi-cause cuts: top-1 $\uparrow $ and expected calibration error (ECE) $\downarrow $ per training mode, $k{=}8$ real cuts}{table.caption.68}{}}
+\bibcite{kim2026msm}{{13}{2026}{{Kim et~al.}}{{Kim, Sim, Li, Mostafiz, Van~Meter, Jun, Bertino, and Shakouri}}}
+\bibcite{lee2026brcd}{{14}{2026}{{Lee et~al.}}{{Lee, Zhou, and Kocaoglu}}}
+\bibcite{li2025physguided}{{15}{2025}{{Li et~al.}}{{Li, Li, and Zhu}}}
+\bibcite{li2023metadg}{{16}{2023}{{Li et~al.}}{{Li, Fu, Zhuo, Liu, and Jin}}}
+\bibcite{lopezpaz2017c2st}{{17}{2016}{{Lopez-Paz and Oquab}}{{}}}
+\bibcite{ma2025dtpdm}{{18}{2025}{{Ma et~al.}}{{Ma, Flanigan, and Bergés}}}
+\bibcite{orchard2025}{{19}{2025}{{Orchard et~al.}}{{Orchard, Okati, Garrido~Mejia, Blöbaum, and Janzing}}}
+\@writefile{lof}{\contentsline {figure}{\numberline {21}{\ignorespaces {\color  {red}PLACEHOLDER (not real data).} Planned learning curve: top-1 versus the number $k$ of real labelled cuts, with and without simulation pre-training.}}{30}{figure.caption.69}\protected@file@percent }
+\newlabel{fig:planned}{{21}{30}{\fake {PLACEHOLDER (not real data).} Planned learning curve: top-1 versus the number $k$ of real labelled cuts, with and without simulation pre-training}{figure.caption.69}{}}
+\bibcite{pham2024baro}{{20}{2024}{{Pham et~al.}}{{Pham, Ha, and Zhang}}}
+\bibcite{shrivastava2017}{{21}{2017}{{Shrivastava et~al.}}{{Shrivastava, Pfister, Tuzel, Susskind, Wang, and Webb}}}
+\bibcite{tobin2017}{{22}{2017}{{Tobin et~al.}}{{Tobin, Fong, Ray, Schneider, Zaremba, and Abbeel}}}
+\bibcite{wang2020datwear}{{23}{2020}{{Wang and Russell}}{{}}}
+\bibcite{yang2022hybridwear}{{24}{2022}{{Yang et~al.}}{{Yang, Pattipati, Awasthi, and Bollas}}}
+\bibcite{yesilli2022tlchatter}{{25}{2022}{{Yesilli et~al.}}{{Yesilli, Khasawneh, and Mann}}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Parameter provenance}{31}{appendix.A}\protected@file@percent }
+\newlabel{app:registry}{{A}{31}{Parameter provenance}{appendix.A}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Nominal simulator parameters}{31}{appendix.B}\protected@file@percent }
+\newlabel{app:simparams}{{B}{31}{Nominal simulator parameters}{appendix.B}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {C}Methodological pitfalls found along the way}{31}{appendix.C}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {20}{\ignorespaces Every simulator parameter, its tier (fixed / range / learned / assumed) and verification status.}}{32}{table.caption.74}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {21}{\ignorespaces Nominal values and numerical search bounds of the 16 simulator parameter groups (\texttt  {cutting\_sim/model\_v4.py}). The bounds are numerical, not claims from the literature. Fixed quantities: 2 flutes, $D{=}6.35$~mm, $\beta {=}30^\circ $, $a_p{=}38.1$~mm, $N_z{=}8$, $\Delta t{=}1/25\,600$~s, $h_{\max }{=}0.3$~mm.}}{33}{table.caption.75}\protected@file@percent }
+\gdef \@abspage@last{33}

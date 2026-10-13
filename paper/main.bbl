@@ -1,9 +1,19 @@
-\begin{thebibliography}{9}
+\begin{thebibliography}{25}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Alberts et~al.(2024)Alberts, St.~John, Odie, Khojandi, Coble, Jared,
+  Schmitz, and Karandikar]{alberts2024sim2real}
+Matthew Alberts, Sam St.~John, Simon Odie, Anahita Khojandi, Jamie Coble,
+  Bradley Jared, Tony Schmitz, and Kaydeep Karandikar.
+\newblock Transitioning from simulation to reality: Applying chatter detection
+  models to real-world machining data.
+\newblock \emph{Preprints.org (preprint, not peer reviewed)}, November 2024.
+\newblock \doi{10.20944/preprints202411.0016.v1}.
+\newblock URL \url{http://dx.doi.org/10.20944/preprints202411.0016.v1}.
 
 \bibitem[Altintas et~al.(2020)Altintas, Stepan, Budak, Schmitz, and
   Kilic]{altintas2020}
@@ -15,6 +25,15 @@ Yusuf Altintas, Gabor Stepan, Erhan Budak, Tony Schmitz, and Zekai~Murat Kilic.
 \newblock \doi{10.1115/1.4047391}.
 \newblock URL \url{http://dx.doi.org/10.1115/1.4047391}.
 
+\bibitem[Braun et~al.(2026)Braun, Raible, and Huber]{braun2026pinnphm}
+Christopher Braun, Julian Raible, and Marco~F. Huber.
+\newblock Physics-informed machine learning in prognostics and health
+  management: a systematic literature review.
+\newblock \emph{Journal of Intelligent Manufacturing}, August 2026.
+\newblock ISSN 1572-8145.
+\newblock \doi{10.1007/s10845-026-02930-3}.
+\newblock URL \url{http://dx.doi.org/10.1007/s10845-026-02930-3}.
+
 \bibitem[Cranmer et~al.(2020)Cranmer, Brehmer, and Louppe]{cranmer2020}
 Kyle Cranmer, Johann Brehmer, and Gilles Louppe.
 \newblock The frontier of simulation-based inference.
@@ -23,6 +42,55 @@ Kyle Cranmer, Johann Brehmer, and Gilles Louppe.
 \newblock ISSN 1091-6490.
 \newblock \doi{10.1073/pnas.1912789117}.
 \newblock URL \url{http://dx.doi.org/10.1073/pnas.1912789117}.
+
+\bibitem[Denkena et~al.(2023)Denkena, Klemme, and Stiehl]{denkena2023luh}
+Berend Denkena, Heinrich Klemme, and Tobias~H. Stiehl.
+\newblock Multivariate time series data of milling processes with varying tool
+  wear and machine tools.
+\newblock \emph{Data in Brief}, 50:\penalty0 109574, October 2023.
+\newblock ISSN 2352-3409.
+\newblock \doi{10.1016/j.dib.2023.109574}.
+\newblock URL \url{http://dx.doi.org/10.1016/j.dib.2023.109574}.
+
+\bibitem[Ebrahimi~Araghizad et~al.(2023)Ebrahimi~Araghizad, Tehranizadeh,
+  Kilic, and Budak]{ebrahimi2023smartfaults}
+Arash Ebrahimi~Araghizad, Faraz Tehranizadeh, Kemal Kilic, and Erhan Budak.
+\newblock Smart tool-related faults monitoring system using process
+  simulation-based machine learning algorithms.
+\newblock \emph{Journal of Machine Engineering}, 23\penalty0 (4):\penalty0
+  18–32, October 2023.
+\newblock ISSN 2391-8071.
+\newblock \doi{10.36897/jme/174018}.
+\newblock URL \url{http://dx.doi.org/10.36897/jme/174018}.
+
+\bibitem[Fang et~al.(2025)Fang, Zhang, Yang, Wu, Xu, Wang, Wang, Wang, Lu, and
+  He]{fang2025simplerca}
+Aoyang Fang, Songhan Zhang, Yifan Yang, Haotong Wu, Junjielong Xu, Xuyang Wang,
+  Rui Wang, Manyi Wang, Qisheng Lu, and Pinjia He.
+\newblock Rethinking the evaluation of microservice {RCA} with a fault
+  propagation-aware benchmark, 2025.
+\newblock URL \url{https://arxiv.org/abs/2510.04711}.
+\newblock Verified via the arXiv API (submitted 2025-10-06).
+
+\bibitem[Han et~al.(2025)Han, Liang, Luo, Tian, Yang, Gui, Wang, and
+  Zhang]{han2025dtmech}
+Zhiming Han, Xiaojun Liang, Weichao Luo, Junhao Tian, Chunhua Yang, Weihua Gui,
+  Xiaohao Wang, and Min Zhang.
+\newblock Digital twin with dynamic mechanistic simulation core for milling
+  tool wear prediction.
+\newblock \emph{Journal of Manufacturing Processes}, 149:\penalty0 1138–1150,
+  September 2025.
+\newblock ISSN 1526-6125.
+\newblock \doi{10.1016/j.jmapro.2025.06.023}.
+\newblock URL \url{http://dx.doi.org/10.1016/j.jmapro.2025.06.023}.
+
+\bibitem[Hirsch and Friedrich(2025)]{hirsch2025singlesensor}
+Eric Hirsch and Christian Friedrich.
+\newblock Data-driven tool wear prediction in milling, based on a
+  process-integrated single-sensor approach.
+\newblock \emph{SSRN preprint (arXiv:2412.19950; not peer reviewed)}, 2025.
+\newblock \doi{10.2139/ssrn.5260864}.
+\newblock URL \url{http://dx.doi.org/10.2139/ssrn.5260864}.
 
 \bibitem[Ikram et~al.(2022)Ikram, Chakraborty, Mitra, Saini, Bagchi, and
   Kocaoglu]{ikram2022rcd}
@@ -36,11 +104,21 @@ Azam Ikram, Sarthak Chakraborty, Subrata Mitra, Shiv Saini, Saurabh Bagchi, and
 \newblock \doi{10.52202/068431-2259}.
 \newblock URL \url{http://dx.doi.org/10.52202/068431-2259}.
 
+\bibitem[Ikram et~al.(2025)Ikram, Lee, Agarwal, Saini, Bagchi, and
+  Kocaoglu]{ikram2025rcg}
+Azam Ikram, Kenneth Lee, Sharad Agarwal, Shiv~Kumar Saini, Saurabh Bagchi, and
+  Murat Kocaoglu.
+\newblock Root cause analysis of failures from partial causal structures.
+\newblock In \emph{Proceedings of the 41st Conference on Uncertainty in
+  Artificial Intelligence}, 2025.
+\newblock Entry copied from the reference list of Lee et al.\ (2026); not
+  independently verified in a bibliographic database.
+
 \bibitem[Kennedy and O’Hagan(2001)]{kennedy2001}
 Marc~C. Kennedy and Anthony O’Hagan.
 \newblock Bayesian calibration of computer models.
 \newblock \emph{Journal of the Royal Statistical Society Series B: Statistical
-  Methodology}, 63\penalty0 (3):\penalty0 425–464, 2001.
+  Methodology}, 63\penalty0 (3):\penalty0 425–464, September 2001.
 \newblock ISSN 1467-9868.
 \newblock \doi{10.1111/1467-9868.00294}.
 \newblock URL \url{http://dx.doi.org/10.1111/1467-9868.00294}.
@@ -55,6 +133,51 @@ Eunseob Kim, Yuseop Sim, Adrian~Shuai Li, Mir~Imtiaz Mostafiz, Zachary
 \newblock ISSN 2052-4463.
 \newblock \doi{10.1038/s41597-026-07255-7}.
 \newblock URL \url{http://dx.doi.org/10.1038/s41597-026-07255-7}.
+
+\bibitem[Lee et~al.(2026)Lee, Zhou, and Kocaoglu]{lee2026brcd}
+Kenneth Lee, Zihan Zhou, and Murat Kocaoglu.
+\newblock Root cause analysis of failures in microservices via bayesian root
+  cause discovery.
+\newblock In \emph{Proceedings of the 43rd International Conference on Machine
+  Learning}, volume 306 of \emph{Proceedings of Machine Learning Research},
+  2026.
+\newblock Code: https://github.com/kenneth-lee-ch/brcd. Bibliographic data
+  taken from the first page of the paper (PDF in references/).
+
+\bibitem[Li et~al.(2025)Li, Li, and Zhu]{li2025physguided}
+Shenshen Li, Jun Li, and Kunpeng Zhu.
+\newblock Application of physics-guided deep learning model in tool wear
+  monitoring of high-speed milling.
+\newblock \emph{Mechanical Systems and Signal Processing}, 224:\penalty0
+  111949, February 2025.
+\newblock ISSN 0888-3270.
+\newblock \doi{10.1016/j.ymssp.2024.111949}.
+\newblock URL \url{http://dx.doi.org/10.1016/j.ymssp.2024.111949}.
+
+\bibitem[Li et~al.(2023)Li, Fu, Zhuo, Liu, and Jin]{li2023metadg}
+Wangyang Li, Hongya Fu, Yue Zhuo, Chuyu Liu, and Hongyu Jin.
+\newblock Semi-supervised multi-source meta-domain generalization method for
+  tool wear state prediction under varying cutting conditions.
+\newblock \emph{Journal of Manufacturing Systems}, 71:\penalty0 323–341,
+  December 2023.
+\newblock ISSN 0278-6125.
+\newblock \doi{10.1016/j.jmsy.2023.09.011}.
+\newblock URL \url{http://dx.doi.org/10.1016/j.jmsy.2023.09.011}.
+
+\bibitem[Lopez-Paz and Oquab(2016)]{lopezpaz2017c2st}
+David Lopez-Paz and Maxime Oquab.
+\newblock Revisiting classifier two-sample tests, 2016.
+\newblock URL \url{https://arxiv.org/abs/1610.06545}.
+\newblock Verified via the arXiv API; first submitted 2016-10-20.
+
+\bibitem[Ma et~al.(2025)Ma, Flanigan, and Bergés]{ma2025dtpdm}
+Sizhe Ma, Katherine~A. Flanigan, and Mario Bergés.
+\newblock Digital twin technologies in predictive maintenance: Enabling
+  transferability via sim-to-real and real-to-sim transfer.
+\newblock In \emph{Computing in Civil Engineering 2024}, page 519–527.
+  American Society of Civil Engineers, December 2025.
+\newblock \doi{10.1061/9780784486122.057}.
+\newblock URL \url{http://dx.doi.org/10.1061/9780784486122.057}.
 
 \bibitem[Orchard et~al.(2025)Orchard, Okati, Garrido~Mejia, Blöbaum, and
   Janzing]{orchard2025}
@@ -72,7 +195,7 @@ Luan Pham, Huong Ha, and Hongyu Zhang.
 \newblock Baro: Robust root cause analysis for microservices via multivariate
   bayesian online change point detection.
 \newblock \emph{Proceedings of the ACM on Software Engineering}, 1\penalty0
-  (FSE):\penalty0 2214–2237, 2024.
+  (FSE):\penalty0 2214–2237, July 2024.
 \newblock ISSN 2994-970X.
 \newblock \doi{10.1145/3660805}.
 \newblock URL \url{http://dx.doi.org/10.1145/3660805}.
@@ -84,7 +207,7 @@ Ashish Shrivastava, Tomas Pfister, Oncel Tuzel, Joshua Susskind, Wenda Wang,
 \newblock Learning from simulated and unsupervised images through adversarial
   training.
 \newblock In \emph{2017 IEEE Conference on Computer Vision and Pattern
-  Recognition (CVPR)}, page 2242–2251. IEEE, 2017.
+  Recognition (CVPR)}, page 2242–2251. IEEE, July 2017.
 \newblock \doi{10.1109/cvpr.2017.241}.
 \newblock URL \url{http://dx.doi.org/10.1109/cvpr.2017.241}.
 
@@ -95,8 +218,39 @@ Josh Tobin, Rachel Fong, Alex Ray, Jonas Schneider, Wojciech Zaremba, and
 \newblock Domain randomization for transferring deep neural networks from
   simulation to the real world.
 \newblock In \emph{2017 IEEE/RSJ International Conference on Intelligent Robots
-  and Systems (IROS)}, page 23–30. IEEE, 2017.
+  and Systems (IROS)}, page 23–30. IEEE, September 2017.
 \newblock \doi{10.1109/iros.2017.8202133}.
 \newblock URL \url{http://dx.doi.org/10.1109/iros.2017.8202133}.
+
+\bibitem[Wang and Russell(2020)]{wang2020datwear}
+Peng~(Edward) Wang and Matthew Russell.
+\newblock Domain adversarial transfer learning for generalized tool wear
+  prediction.
+\newblock \emph{Annual Conference of the PHM Society}, 12\penalty0
+  (1):\penalty0 8, November 2020.
+\newblock ISSN 2325-0178.
+\newblock \doi{10.36001/phmconf.2020.v12i1.1137}.
+\newblock URL \url{http://dx.doi.org/10.36001/phmconf.2020.v12i1.1137}.
+
+\bibitem[Yang et~al.(2022)Yang, Pattipati, Awasthi, and
+  Bollas]{yang2022hybridwear}
+Qian Yang, Krishna~R. Pattipati, Utsav Awasthi, and George~M. Bollas.
+\newblock Hybrid data-driven and model-informed online tool wear detection in
+  milling machines.
+\newblock \emph{Journal of Manufacturing Systems}, 63:\penalty0 329–343,
+  April 2022.
+\newblock ISSN 0278-6125.
+\newblock \doi{10.1016/j.jmsy.2022.04.001}.
+\newblock URL \url{http://dx.doi.org/10.1016/j.jmsy.2022.04.001}.
+
+\bibitem[Yesilli et~al.(2022)Yesilli, Khasawneh, and
+  Mann]{yesilli2022tlchatter}
+Melih~C. Yesilli, Firas~A. Khasawneh, and Brian~P. Mann.
+\newblock Transfer learning for autonomous chatter detection in machining.
+\newblock \emph{Journal of Manufacturing Processes}, 80:\penalty0 1–27,
+  August 2022.
+\newblock ISSN 1526-6125.
+\newblock \doi{10.1016/j.jmapro.2022.05.037}.
+\newblock URL \url{http://dx.doi.org/10.1016/j.jmapro.2022.05.037}.
 
 \end{thebibliography}

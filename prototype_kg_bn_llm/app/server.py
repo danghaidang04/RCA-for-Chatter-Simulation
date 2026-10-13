@@ -23,6 +23,8 @@ async def lifespan(app):
 
 
 app = FastAPI(title="Milling simulator + RCA demo", lifespan=lifespan)
+from fastapi.middleware.cors import CORSMiddleware
+app.add_middleware(CORSMiddleware, allow_origins=[o for o in os.environ.get("ALLOWED_ORIGINS", "https://danghaidang04.github.io").split(",") if o], allow_methods=["*"], allow_headers=["*"])
 
 
 class Req(BaseModel):

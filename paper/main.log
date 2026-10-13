@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.1)  7 OCT 2026 09:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.3.1)  7 OCT 2026 13:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -345,38 +345,89 @@ Package caption Info: Standard document class detected.
 \c@continuedfloat=\count315
 Package caption Info: hyperref package is loaded.
 )
-(/usr/local/texlive/2026basic/texmf-dist/tex/latex/natbib/natbib.sty
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/colortbl/colortbl.sty
+Package: colortbl 2024/10/29 v1.0k Color table columns (DPC)
+\everycr=\toks25
+\minrowclearance=\skip57
+\rownum=\count316
+)
+(/Users/danghaidang04/Library/texmf/tex/latex/multirow/multirow.sty
+Package: multirow 2024/11/12 v2.9 Span multiple rows of a table
+\multirow@colwidth=\skip58
+\multirow@cntb=\count317
+\multirow@dima=\skip59
+\bigstrutjot=\dimen195
+)
+(/Users/danghaidang04/Library/texmf/tex/latex/algorithms/algorithm.sty
+Package: algorithm 2009/08/24 v0.1 Document Style `algorithm' - floating enviro
+nment
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count318
+\float@exts=\toks26
+\float@box=\box57
+\@float@everytoks=\toks27
+\@floatcapt=\box58
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2024/03/16 v1.1e Standard LaTeX ifthen package (DPC)
+)
+\@float@every@algorithm=\toks28
+\c@algorithm=\count319
+)
+(/Users/danghaidang04/Library/texmf/tex/latex/algorithms/algorithmic.sty
+Package: algorithmic 2009/08/24 v0.1 Document Style `algorithmic'
+\c@ALC@unique=\count320
+\c@ALC@line=\count321
+\c@ALC@rem=\count322
+\c@ALC@depth=\count323
+\ALC@tlm=\skip60
+\algorithmicindent=\skip61
+)
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/pdflscape/pdflscape.sty
+Package: pdflscape 2025-06-23 v0.14 Display of landscape pages in PDF
+
+(/usr/local/texlive/2026basic/texmf-dist/tex/latex/pdflscape/pdflscape-nometada
+ta.sty
+Package: pdflscape-nometadata 2025-06-23 v0.14 Display of landscape pages in PD
+F (HO)
+ (/usr/local/texlive/2026basic/texmf-dist/tex/latex/graphics/lscape.sty
+Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
+)
+Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
+)) (/usr/local/texlive/2026basic/texmf-dist/tex/latex/natbib/natbib.sty
 Package: natbib 2010/09/13 8.31b (PWD, AO)
-\bibhang=\skip57
-\bibsep=\skip58
+\bibhang=\skip62
+\bibsep=\skip63
 LaTeX Info: Redefining \cite on input line 694.
-\c@NAT@ctr=\count316
+\c@NAT@ctr=\count324
 )
 (/usr/local/texlive/2026basic/texmf-dist/tex/latex/l3backend/l3backend-pdftex.d
 ef
 File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count317
+\l__color_backend_stack_int=\count325
 ) (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -414,17 +465,17 @@ LaTeX Font Info:    ... okay on input line 15.
 
 (/usr/local/texlive/2026basic/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count318
-\scratchdimen=\dimen195
-\scratchbox=\box57
-\nofMPsegments=\count319
-\nofMParguments=\count320
-\everyMPshowfont=\toks25
-\MPscratchCnt=\count321
-\MPscratchDim=\dimen196
-\MPnumerator=\count322
-\makeMPintoPDFobject=\count323
-\everyMPtoPDFconversion=\toks26
+\scratchcounter=\count326
+\scratchdimen=\dimen196
+\scratchbox=\box59
+\nofMPsegments=\count327
+\nofMParguments=\count328
+\everyMPshowfont=\toks29
+\MPscratchCnt=\count329
+\MPscratchDim=\dimen197
+\MPnumerator=\count330
+\makeMPintoPDFobject=\count331
+\everyMPtoPDFconversion=\toks30
 )
 (/usr/local/texlive/2026basic/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.s
 ty
@@ -443,20 +494,21 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring OFF on input line 15.
+Package hyperref Info: Link coloring OFF on input line 22.
  (./main.out) (./main.out)
 \@outlinefile=\write3
 \openout3 = `main.out'.
 
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 17.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 24.
 
 
 (/usr/local/texlive/2026basic/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 17.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 24.
 
 
 (/usr/local/texlive/2026basic/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -464,42 +516,351 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/Users/danghaidang04/Library/texlive/2026basic/texmf-var/fonts/map/pdftex/updm
-ap/pdftex.map}] [2]
-<figures/exp1_lobes_validation.png, id=145, 722.7pt x 375.804pt>
+ap/pdftex.map}]
+<figures/f_teaser.png, id=253, 406.37978pt x 217.36592pt>
+File: figures/f_teaser.png Graphic file (type png)
+<use figures/f_teaser.png>
+Package pdftex.def Info: figures/f_teaser.png  used on input line 62.
+(pdftex.def)             Requested size: 338.22418pt x 180.91118pt.
+ [2] [3 <./figures/f_teaser.png>] [4]
+Underfull \hbox (badness 6477) in paragraph at lines 131--131
+[]|\T1/cmr/m/n/9 Physics-guided, hy-brid, digital-twin
+ []
+
+[5] [6]
+<figures/f_architecture.png, id=378, 798.37094pt x 546.7013pt>
+File: figures/f_architecture.png Graphic file (type png)
+<use figures/f_architecture.png>
+Package pdftex.def Info: figures/f_architecture.png  used on input line 154.
+(pdftex.def)             Requested size: 604.89514pt x 414.23767pt.
+
+
+LaTeX Warning: Float too large for page by 2.48265pt on input line 156.
+
+[7 <./figures/f_architecture.png>]
+Underfull \hbox (badness 1558) in paragraph at lines 174--175
+[]|\T1/cmr/m/n/10 catalogue (fixed, he-lix medium
+ []
+
+
+Underfull \hbox (badness 4429) in paragraph at lines 174--175
+\T1/cmr/m/n/10 con-fi-dence); modal val-ues as-
+ []
+
+
+Underfull \hbox (badness 5008) in paragraph at lines 175--175
+[]|\T1/cmr/m/n/10 Force and sen-sor
+ []
+
+
+Underfull \hbox (badness 7504) in paragraph at lines 175--176
+[]|\T1/cmr/m/n/10 no ver-i-fied source (as-sumed);
+ []
+
+<figures/f_provenance.png, id=390, 312.075pt x 212.868pt>
+File: figures/f_provenance.png Graphic file (type png)
+<use figures/f_provenance.png>
+Package pdftex.def Info: figures/f_provenance.png  used on input line 181.
+(pdftex.def)             Requested size: 234.8775pt x 160.21576pt.
+[8
+
+
+] [9 <./figures/f_provenance.png>]
+<figures/f_waveforms.png, id=420, 596.556pt x 368.577pt>
+File: figures/f_waveforms.png Graphic file (type png)
+<use figures/f_waveforms.png>
+Package pdftex.def Info: figures/f_waveforms.png  used on input line 216.
+(pdftex.def)             Requested size: 446.26582pt x 275.72905pt.
+ [10 <./figures/f_waveforms.png>]
+<figures/real_psd_examples.png, id=438, 939.51pt x 325.215pt>
+File: figures/real_psd_examples.png Graphic file (type png)
+<use figures/real_psd_examples.png>
+Package pdftex.def Info: figures/real_psd_examples.png  used on input line 225.
+
+(pdftex.def)             Requested size: 446.26582pt x 154.47375pt.
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 241.
+ [11 <./figures/real_psd_examples.png>]
+<figures/f_graph.png, id=455, 417.195pt x 215.496pt>
+File: figures/f_graph.png Graphic file (type png)
+<use figures/f_graph.png>
+Package pdftex.def Info: figures/f_graph.png  used on input line 257.
+(pdftex.def)             Requested size: 338.22418pt x 174.70534pt.
+ (./tables/tab_nodes.tex)
+Underfull \hbox (badness 1371) in paragraph at lines 271--271
+[]|\T1/cmr/m/n/9 Bayesian pos-te-rior over root
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 271--271
+\T1/cmr/m/n/9 pre-failure, uni-form DAG
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 271--271
+\T1/cmr/m/n/9 sam-pling per in-ter-ven-tional
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 271--271
+\T1/cmr/m/n/9 Markov equiv-a-lence class;
+ []
+
+
+Underfull \hbox (badness 4832) in paragraph at lines 271--271
+[]|\T1/cmr/m/n/9 Linear-Gaussian lo-cal model per
+ []
+
+
+Underfull \hbox (badness 1648) in paragraph at lines 271--271
+\T1/cmr/m/n/9 dard-ised mean shift of the node
+ []
+
+
+Underfull \hbox (badness 7704) in paragraph at lines 271--272
+[]|\T1/cmr/m/n/9 heuristic; no
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 272--273
+[]|\T1/cmr/m/n/9 simplified;
+ []
+
+
+Underfull \hbox (badness 1571) in paragraph at lines 272--273
+\T1/cmr/m/n/9 uses the true
+ []
+
+
+Underfull \hbox (badness 2547) in paragraph at lines 273--273
+\T1/cmr/m/n/9 given pos-si-ble par-ents in a
+ []
+
+
+Underfull \hbox (badness 1558) in paragraph at lines 273--273
+[]|\T1/cmr/m/n/9 squared stan-dard-ised shift of the
+ []
+
+
+Underfull \hbox (badness 4429) in paragraph at lines 273--273
+\T1/cmr/m/n/9 resid-ual given par-ents (Gaus-sian
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 273--274
+[]|\T1/cmr/m/n/9 simplified
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 274--274
+[]|\T1/cmr/m/n/9 Smooth
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 274--274
+\T1/cmr/m/n/9 Traver-sal
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 274--274
+[]|\T1/cmr/m/n/9 mean $\OMS/cmsy/m/n/9 j\OML/cmm/m/it/9 z\OMS/cmsy/m/n/9 j$ \T1
+/cmr/m/n/9 score; $\OML/cmm/m/it/9 z[] \OMS/cmsy/m/n/9 ^^@
+ []
+
+
+Underfull \hbox (badness 3872) in paragraph at lines 274--275
+[]|\T1/cmr/m/n/9 heuristic con-
+ []
+
+
+Underfull \hbox (badness 1496) in paragraph at lines 275--275
+[]|\T1/cmr/m/n/9 Bayesian on-line change-point
+ []
+
+
+Underfull \hbox (badness 4765) in paragraph at lines 275--275
+\T1/cmr/m/n/9 de-tec-tion of anomaly time;
+ []
+
+
+Underfull \hbox (badness 1755) in paragraph at lines 275--275
+[]|\T1/cmr/m/n/9 median/IQR-scaled de-vi-a-tion with
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 275--276
+[]|\T1/cmr/m/n/9 scoring step
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 276--276
+[]|\T1/cmr/m/n/9 SimpleRCA
+ []
+
+[12 <./figures/f_graph.png>] [13]
+Underfull \hbox (badness 4217) in paragraph at lines 323--323
+[]|\T1/cmr/m/n/10 Macro-F1, re-call per
+ []
+
+
+Underfull \hbox (badness 2443) in paragraph at lines 324--324
+[]|\T1/cmr/m/n/10 C2ST bal-anced ac-cu-
+ []
+
+
+Underfull \hbox (badness 4341) in paragraph at lines 324--324
+[]|\T1/cmr/m/n/10 random-forest ac-cu-racy sep-a-rat-ing real
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 329--329
+[]|\T1/cmr/m/n/10 ECE, coverage--
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 339--339
+[]|\T1/cmr/m/n/10 BRCD, RCD, RCG, Smooth
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 339--339
+\T1/cmr/m/n/10 Traver-sal, BARO, Sim-pleRCA
+ []
+
+
+Underfull \hbox (badness 1325) in paragraph at lines 340--341
+[]|\T1/cmr/m/n/10 supervised ref-er-ence in-side the
+ []
+
+
+Underfull \hbox (badness 8151) in paragraph at lines 341--341
+[]|\T1/cmr/m/n/10 supervised soft sen-sors ver-sus
+ []
+
+(./tables/tab_causal.tex)
+<figures/f_m_curve.png, id=504, 552.03162pt x 221.25739pt>
+File: figures/f_m_curve.png Graphic file (type png)
+<use figures/f_m_curve.png>
+Package pdftex.def Info: figures/f_m_curve.png  used on input line 356.
+(pdftex.def)             Requested size: 446.26582pt x 178.87311pt.
+<figures/f_cause_heatmap.png, id=505, 522.01176pt x 227.92847pt>
+File: figures/f_cause_heatmap.png Graphic file (type png)
+<use figures/f_cause_heatmap.png>
+Package pdftex.def Info: figures/f_cause_heatmap.png  used on input line 360.
+(pdftex.def)             Requested size: 446.26582pt x 194.8565pt.
+ [14] (./tables/tab_luhbase.tex)
+<figures/f_luh_baselines.png, id=521, 608.17984pt x 217.36592pt>
+File: figures/f_luh_baselines.png Graphic file (type png)
+<use figures/f_luh_baselines.png>
+Package pdftex.def Info: figures/f_luh_baselines.png  used on input line 372.
+(pdftex.def)             Requested size: 455.66293pt x 162.86151pt.
+ [15]
+<figures/exp1_lobes_validation.png, id=531, 722.7pt x 375.804pt>
 File: figures/exp1_lobes_validation.png Graphic file (type png)
 <use figures/exp1_lobes_validation.png>
 Package pdftex.def Info: figures/exp1_lobes_validation.png  used on input line 
-88.
-(pdftex.def)             Requested size: 366.40834pt x 190.53358pt.
- [3]
-<figures/real_psd_examples.png, id=161, 939.51pt x 325.215pt>
-File: figures/real_psd_examples.png Graphic file (type png)
-<use figures/real_psd_examples.png>
-Package pdftex.def Info: figures/real_psd_examples.png  used on input line 105.
+380.
+(pdftex.def)             Requested size: 338.22418pt x 175.87671pt.
 
-(pdftex.def)             Requested size: 446.26582pt x 154.47375pt.
- [4 <./figures/exp1_lobes_validation.png> <./figures/real_psd_examples.png>] (.
-/tables/tab_c2st.tex) [5] (./tables/tab_cls.tex)
-(./tables/tab_causal.tex)
-<figures/rca_causal.png, id=182, 867.24pt x 289.08pt>
-File: figures/rca_causal.png Graphic file (type png)
-<use figures/rca_causal.png>
-Package pdftex.def Info: figures/rca_causal.png  used on input line 164.
-(pdftex.def)             Requested size: 446.26582pt x 148.75655pt.
- [6] (./tables/tab_sweep.tex)
-(./tables/tab_ablation.tex)
-Overfull \hbox (14.03221pt too wide) in paragraph at lines 1--185
+(./tables/tab_regime.tex) (./tables/tab_k10.tex)
+<figures/f_k10.png, id=536, 580.788pt x 210.24pt>
+File: figures/f_k10.png Graphic file (type png)
+<use figures/f_k10.png>
+Package pdftex.def Info: figures/f_k10.png  used on input line 397.
+(pdftex.def)             Requested size: 446.26582pt x 161.54524pt.
+ [16] (./tables/tab_c2st.tex)
+<figures/f_c2st.png, id=545, 339.11308pt x 215.14223pt>
+File: figures/f_c2st.png Graphic file (type png)
+<use figures/f_c2st.png>
+Package pdftex.def Info: figures/f_c2st.png  used on input line 408.
+(pdftex.def)             Requested size: 234.8775pt x 149.01292pt.
+
+[17 <./figures/f_m_curve.png>] (./tables/tab_realshift.tex)
+<figures/f_signature.png, id=556, 610.40353pt x 252.38908pt>
+File: figures/f_signature.png Graphic file (type png)
+<use figures/f_signature.png>
+Package pdftex.def Info: figures/f_signature.png  used on input line 419.
+(pdftex.def)             Requested size: 455.66293pt x 188.41327pt.
+ [18 <./figures/f_cause_heatmap.png> <./figures/f_luh_baselines.png>]
+<figures/f_chipped.png, id=569, 447.51808pt x 208.47116pt>
+File: figures/f_chipped.png Graphic file (type png)
+<use figures/f_chipped.png>
+Package pdftex.def Info: figures/f_chipped.png  used on input line 425.
+(pdftex.def)             Requested size: 366.40834pt x 170.69296pt.
+ (./tables/tab_sweep.tex)
+(./tables/tab_cls.tex)
+<figures/f_gain_sweep.png, id=573, 339.669pt x 210.24pt>
+File: figures/f_gain_sweep.png Graphic file (type png)
+<use figures/f_gain_sweep.png>
+Package pdftex.def Info: figures/f_gain_sweep.png  used on input line 440.
+(pdftex.def)             Requested size: 258.36668pt x 159.922pt.
+ [19]
+<figures/f_dynamics_shift.png, id=587, 501.99854pt x 221.25739pt>
+File: figures/f_dynamics_shift.png Graphic file (type png)
+<use figures/f_dynamics_shift.png>
+Package pdftex.def Info: figures/f_dynamics_shift.png  used on input line 447.
+(pdftex.def)             Requested size: 366.40834pt x 161.50302pt.
+<figures/f_frf_fit.png, id=589, 589.329pt x 224.037pt>
+File: figures/f_frf_fit.png Graphic file (type png)
+<use figures/f_frf_fit.png>
+Package pdftex.def Info: figures/f_frf_fit.png  used on input line 454.
+(pdftex.def)             Requested size: 446.26582pt x 169.65454pt.
+ [20 <./figures/exp1_lobes_validation.png>]
+(./tables/tab_ablation.tex
+Underfull \hbox (badness 5970) in paragraph at lines 6--6
+[]| \T1/cmr/m/n/9 Su-per-vised nodes, physics graph
+ []
+
+
+Underfull \hbox (badness 5970) in paragraph at lines 14--14
+[]| \T1/cmr/m/n/9 Su-per-vised nodes, physics graph
+ []
+
+)
+Overfull \hbox (32.53145pt too wide) in paragraph at lines 1--467
  [][] 
  []
 
-[7 <./figures/rca_causal.png>] (./tables/tab_realshift.tex) [8] [9]
-Overfull \hbox (16.24184pt too wide) in paragraph at lines 220--221
- []\T1/cmr/bx/n/10.95 Code and data.[] \T1/cmr/m/n/10.95 Code: \T1/cmtt/m/n/10.
-95 cutting_sim/ \T1/cmr/m/n/10.95 in the project repos-i-tory (branch \T1/cmtt/
-m/n/10.95 cutting-sim-experiments\T1/cmr/m/n/10.95 );
+<figures/f_ablation.png, id=600, 608.17984pt x 220.14554pt>
+File: figures/f_ablation.png Graphic file (type png)
+<use figures/f_ablation.png>
+Package pdftex.def Info: figures/f_ablation.png  used on input line 469.
+(pdftex.def)             Requested size: 446.26582pt x 161.54132pt.
+[21 <./figures/f_k10.png>] (./tables/tab_thr.tex)
+<figures/f_wear_threshold.png, id=612, 579.82777pt x 203.46785pt>
+File: figures/f_wear_threshold.png Graphic file (type png)
+<use figures/f_wear_threshold.png>
+Package pdftex.def Info: figures/f_wear_threshold.png  used on input line 484.
+(pdftex.def)             Requested size: 455.66293pt x 159.89957pt.
+<figures/f_finetune.png, id=614, 322.43538pt x 209.02708pt>
+File: figures/f_finetune.png Graphic file (type png)
+<use figures/f_finetune.png>
+Package pdftex.def Info: figures/f_finetune.png  used on input line 489.
+(pdftex.def)             Requested size: 234.8775pt x 152.26955pt.
+ [22 <./figures/f_c2st.png>]
+[23 <./figures/f_signature.png>] [24 <./figures/f_chipped.png>]
+<figures/f_planned_kcurve.png, id=640, 317.331pt x 214.182pt>
+File: figures/f_planned_kcurve.png Graphic file (type png)
+<use figures/f_planned_kcurve.png>
+Package pdftex.def Info: figures/f_planned_kcurve.png  used on input line 524.
+(pdftex.def)             Requested size: 234.8775pt x 158.52814pt.
+ [25 <./figures/f_gain_sweep.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 530--531
+ []\T1/cmr/bx/n/10.95 Code.[] []$\T1/cmtt/m/n/10.95 https : / / github . com / 
+danghaidang04 / RCA-[]for-[]Chatter-[]Simulation$[] \T1/cmr/m/n/10.95 (branch
  []
 
-(./main.bbl [10]) (./tables/tab_registry.tex
+
+Underfull \hbox (badness 2181) in paragraph at lines 530--531
+\T1/cmtt/m/n/10.95 cutting-sim-experiments\T1/cmr/m/n/10.95 ); \T1/cmtt/m/n/10.
+95 REPRODUCE.md \T1/cmr/m/n/10.95 gives en-vi-ron-ment, data down-load, run or-
+der,
+ []
+
+[26 <./figures/f_dynamics_shift.png> <./figures/f_frf_fit.png>] (./main.bbl
+[27 <./figures/f_ablation.png>] [28 <./figures/f_wear_threshold.png>] [29 <./fi
+gures/f_finetune.png>] [30 <./figures/f_planned_kcurve.png>])
+(./tables/tab_registry.tex
 Underfull \hbox (badness 5077) in paragraph at lines 8--9
 []|\T1/cmr/m/n/10 verified (N and F equal mtc Spin-
  []
@@ -515,13 +876,13 @@ Underfull \hbox (badness 3849) in paragraph at lines 13--13
  []
 
 
-Underfull \hbox (badness 2884) in paragraph at lines 15--15
+Underfull \hbox (badness 2884) in paragraph at lines 16--16
 []|\T1/cmr/m/n/10 tool-tip FRF: fn_x, fn_y, $\OML/cmm/m/it/10 ^^P$\T1/cmr/m/n/1
 0 ,
  []
 
 
-Underfull \hbox (badness 1490) in paragraph at lines 17--18
+Underfull \hbox (badness 1490) in paragraph at lines 18--19
 []|\T1/cmr/m/n/10 NO source (sen-sors un-cal-i-brated: mic
  []
 
@@ -529,55 +890,79 @@ Underfull \hbox (badness 1490) in paragraph at lines 17--18
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[11] [12] (./main.aux)
+
+Underfull \hbox (badness 1205) in paragraph at lines 546--546
+[]\T1/cmr/bx/n/10 Table 21: |\T1/cmr/m/n/10 Nom-i-nal val-ues and nu-mer-i-cal 
+search bounds of the 16 sim-u-la-tor pa-ram-e-ter groups
+ []
+
+(./tables/tab_simparams.tex)
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[31] [32] [33] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: C4C90AB6E3B4D894A353DBFEBCD54061;3867.
+(rerunfilecheck)             Checksum: 3B45C6701AADF9EA00D6DAE33F3D5D4C;10863.
  ) 
 Here is how much of TeX's memory you used:
- 12868 strings out of 469006
- 198874 string characters out of 5454814
- 635665 words of memory out of 5000000
- 41314 multiletter control sequences out of 15000+600000
- 649109 words of font info for 95 fonts, out of 8000000 for 9000
+ 13892 strings out of 469006
+ 218142 string characters out of 5454814
+ 668007 words of memory out of 5000000
+ 42143 multiletter control sequences out of 15000+600000
+ 651734 words of font info for 99 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 75i,12n,79p,514b,564s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,17n,79p,1394b,598s stack positions out of 10000i,1000n,20000p,200000b,200000s
  </Users/danghaidang04/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/jk
-nappen/ec/tcrm1095.600pk> </Users/danghaidang04/Library/texlive/2026basic/texmf
--var/fonts/pk/ljfour/jknappen/ec/ecti0900.600pk> </Users/danghaidang04/Library/
-texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm0900.600pk> </Users
+nappen/ec/ecti0900.600pk> </Users/danghaidang04/Library/texlive/2026basic/texmf
+-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk> </Users/danghaidang04/Library/
+texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti1000.600pk> </Users
 /danghaidang04/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/
-ecrm0800.600pk> </Users/danghaidang04/Library/texlive/2026basic/texmf-var/fonts
-/pk/ljfour/jknappen/ec/ecti1095.600pk> </Users/danghaidang04/Library/texlive/20
+ecrm0600.600pk> </Users/danghaidang04/Library/texlive/2026basic/texmf-var/fonts
+/pk/ljfour/jknappen/ec/ecrm0700.600pk> </Users/danghaidang04/Library/texlive/20
 26basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt1095.600pk> </Users/danghaida
-ng04/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1095.6
+ng04/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm0800.6
 00pk> </Users/danghaidang04/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour
-/jknappen/ec/ecrm1095.600pk> </Users/danghaidang04/Library/texlive/2026basic/te
-xmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </Users/danghaidang04/Libra
-ry/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1000.600pk> </Us
+/jknappen/ec/ecbx0900.600pk> </Users/danghaidang04/Library/texlive/2026basic/te
+xmf-var/fonts/pk/ljfour/jknappen/ec/ecrm0900.600pk> </Users/danghaidang04/Libra
+ry/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </Us
 ers/danghaidang04/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/
-ec/ecbx1000.600pk> </Users/danghaidang04/Library/texlive/2026basic/texmf-var/fo
-nts/pk/ljfour/jknappen/ec/ecrm1200.600pk> </Users/danghaidang04/Library/texlive
-/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1200.600pk> </Users/dangha
-idang04/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecti120
+ec/ecbx1095.600pk> </Users/danghaidang04/Library/texlive/2026basic/texmf-var/fo
+nts/pk/ljfour/jknappen/ec/ecti1095.600pk> </Users/danghaidang04/Library/texlive
+/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1440.600pk> </Users/dangha
+idang04/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ectt100
 0.600pk> </Users/danghaidang04/Library/texlive/2026basic/texmf-var/fonts/pk/ljf
-our/jknappen/ec/ecrm1728.600pk></usr/local/texlive/2026basic/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026basic/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2026basic/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2026basic/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2026basic/texmf
--dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2026basic/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2026basic/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2026bas
-ic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2026
-basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb>
-Output written on main.pdf (12 pages, 633299 bytes).
+our/jknappen/ec/ecrm1000.600pk> </Users/danghaidang04/Library/texlive/2026basic
+/texmf-var/fonts/pk/ljfour/jknappen/ec/ecbx1000.600pk> </Users/danghaidang04/Li
+brary/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknappen/ec/ecrm1095.600pk> <
+/Users/danghaidang04/Library/texlive/2026basic/texmf-var/fonts/pk/ljfour/jknapp
+en/ec/ecrm1200.600pk> </Users/danghaidang04/Library/texlive/2026basic/texmf-var
+/fonts/pk/ljfour/jknappen/ec/ecrm1728.600pk></usr/local/texlive/2026basic/texmf
+-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2026basic/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2026bas
+ic/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/local/texlive/2026
+basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2
+026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texliv
+e/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/tex
+live/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/
+texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/loca
+l/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/lo
+cal/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/
+local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></us
+r/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
+</usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.p
+fb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
+7.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/c
+msy8.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmsy9.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfont
+s/symbols/msam10.pfb>
+Output written on main.pdf (33 pages, 1783462 bytes).
 PDF statistics:
- 889 PDF objects out of 1000 (max. 8388607)
- 315 compressed objects within 4 object streams
- 69 named destinations out of 1000 (max. 500000)
- 184 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1609 PDF objects out of 1728 (max. 8388607)
+ 796 compressed objects within 8 object streams
+ 210 named destinations out of 1000 (max. 500000)
+ 522 words of extra memory for PDF output out of 10000 (max. 10000000)
 
