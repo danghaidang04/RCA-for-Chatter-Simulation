@@ -1,0 +1,29 @@
+\begin{tabular}{lccc}
+\toprule
+Method (target machine $\rightarrow$) & M1 $\uparrow$ & M2 $\uparrow$ & M3 $\uparrow$ \\
+\midrule
+\multicolumn{4}{l}{\textit{Raw features}} \\
+\quad One-feature RMS rule (no labels) & 0.996 & 0.993 & 0.462 \\
+\quad Gradient boosting & 0.995 & \cellcolor{gray!20}\textbf{0.999} & \cellcolor{gray!20}\textbf{0.976} \\
+\quad Logistic regression & 0.996 & 0.995 & 0.943 \\
+\quad CORAL + LR$^{\dagger}$ & 0.992 & 0.995 & 0.886 \\
+\quad DANN$^{\dagger}$ & \cellcolor{gray!20}\textbf{0.996} & 0.997 & 0.974 \\
+\midrule
+\multicolumn{4}{l}{\textit{Machine-relative features}} \\
+\quad One-feature RMS rule (no labels) & 0.996 & 0.993 & 0.462 \\
+\quad Gradient boosting & 0.965 & 0.989 & 0.910 \\
+\quad Logistic regression & \cellcolor{gray!20}\textbf{0.998} & \cellcolor{gray!20}\textbf{0.999} & 0.964 \\
+\quad CORAL + LR$^{\dagger}$ & 0.981 & 0.952 & 0.956 \\
+\quad DANN$^{\dagger}$ & 0.997 & 0.879 & \cellcolor{gray!20}\textbf{0.980} \\
+\midrule
+\multicolumn{4}{l}{\textit{Tool-relative features}} \\
+\quad One-feature RMS rule (no labels) & 0.925 & 0.894 & 0.433 \\
+\quad Gradient boosting & \cellcolor{gray!20}\textbf{0.980} & 0.994 & \cellcolor{gray!20}\textbf{0.985} \\
+\quad Logistic regression & 0.931 & \cellcolor{gray!20}\textbf{0.999} & 0.946 \\
+\quad CORAL + LR$^{\dagger}$ & 0.822 & 0.997 & 0.926 \\
+\quad DANN$^{\dagger}$ & 0.786 & 0.998 & 0.731 \\
+\midrule
+Simulation only, no real labels (tool-relative $x,y$) & 0.887 & 0.807 & 0.571 \\
+\bottomrule
+\end{tabular}
+\vspace{1pt}\\{\footnotesize $^{\dagger}$ uses unlabelled target-machine features (transductive).}

@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "name": "milling root-cause knowledge graph (prototype)",
+    "version": "0.1",
+    "note": "Every cause->feature edge and its sign is a physics-reasoning ASSUMPTION, not a verified experimental result. 'reference' points to general theory only (Altintas et al. 2020, J. Manuf. Sci. Eng. 142(11):110801). The Bayesian layer tests these edges and signs against data; it never edits this file.",
+    "tiers": ["FIXED", "RANGE", "LEARNED", "ASSUMED"]
+  },
+  "entities": [
+    {"id": "STIFFNESS", "type": "cause", "label": "Loose clamping / lower modal stiffness", "description": "Workpiece or tool clamping is looser, so the tool-tip modal stiffness and natural frequency are lower."},
+    {"id": "DAMPING", "type": "cause", "label": "Lower damping", "description": "The tool-tip mode is less damped, for example through a longer overhang or a worn interface."},
+    {"id": "TOOL_WEAR", "type": "cause", "label": "Tool wear", "description": "Flank wear raises the effective cutting-force coefficients and edge (rubbing) forces."},
+    {"id": "DEPTH_OVERLOAD", "type": "cause", "label": "Excessive radial depth", "description": "The programmed radial immersion is larger than intended, so more of the flute is engaged."},
+    {"id": "RPM_MISMATCH", "type": "cause", "label": "Spindle speed mismatch", "description": "The spindle speed differs from the planned value, moving the tooth-passing harmonics relative to the structural modes."},
+
+    {"id": "M_STIFF", "type": "mechanism", "label": "Lower natural frequency and higher compliance", "description": "f_n scales with the square root of stiffness; the compliance of the tool-tip mode rises, which lowers the stability limit (general theory)."},
+    {"id": "M_DAMP", "type": "mechanism", "label": "Less damped tool-tip mode", "description": "A smaller damping ratio raises the resonance peak and lowers the stability margin, favouring regenerative chatter (general theory)."},
+    {"id": "M_WEAR", "type": "mechanism", "label": "Higher cutting-force coefficients", "description": "Flank wear increases rubbing and edge forces, raising the force level and broadband noise."},
+    {"id": "M_DEPTH", "type": "mechanism", "label": "Longer flute engagement", "description": "Larger radial immersion engages more of the flute per revolution, raising the force and signal level."},
+    {"id": "M_SPEED", "type": "mechanism", "label": "Tooth-passing harmonics move relative to modes", "description": "A different spindle speed changes which harmonics fall near structural modes and moves the cut along the stability lobes."},
+
+    {"id": "log10_acc", "type": "feature", "label": "log10 accelerometer rms", "description": "Overall vibration level."},
+    {"id": "mic_dB", "type": "feature", "label": "Microphone level (dB)", "description": "Overall sound level."},
+    {"id": "chatter_acc", "type": "feature", "label": "Non-synchronous index (accelerometer)", "description": "Share of accelerometer spectrum not at harmonics of the spindle frequency; chatter raises it, a tonal spectrum lowers it."},
+    {"id": "chatter_mic", "type": "feature", "label": "Non-synchronous index (microphone)", "description": "As above for the microphone."},
+    {"id": "acc_low", "type": "feature", "label": "Accelerometer 50-600 Hz", "description": "Low-frequency accelerometer band."},
+    {"id": "acc_res", "type": "feature", "label": "Accelerometer 1-3.2 kHz", "description": "Band containing the tool-structure modes."},
+    {"id": "acc_high", "type": "feature", "label": "Accelerometer above 3.2 kHz", "description": "High-frequency accelerometer band."},
+    {"id": "mic_low", "type": "feature", "label": "Microphone 50-600 Hz", "description": "Low-frequency microphone band."},
+    {"id": "mic_high", "type": "feature", "label": "Microphone above 3.2 kHz", "description": "High-frequency microphone band."},
+
+    {"id": "A_CLAMP", "type": "action", "label": "Re-torque the clamp and re-measure the tool-tip FRF", "description": "Confirms a change of stiffness or natural frequency."},
+    {"id": "A_FRF", "type": "action", "label": "Repeat the hammer test with the current stick-out", "description": "Checks damping ratio and the resonance peak."},
+    {"id": "A_VB", "type": "action", "label": "Measure flank wear VB under a microscope", "description": "Confirms tool wear directly."},
+    {"id": "A_CAM", "type": "action", "label": "Check the programmed radial depth in the CAM/NC program", "description": "Confirms a depth error."},
+    {"id": "A_RPM", "type": "action", "label": "Compare the controller spindle speed with the programmed value", "description": "Confirms a speed mismatch (spindle override, drive error)."}
+  ],
+  "relations": [
+    {"id": "r01", "source": "STIFFNESS", "target": "M_STIFF", "relation": "leads_to", "sign": 1, "rationale": "A looser clamp lowers modal stiffness.", "provenance": {"tier": "ASSUMED", "reference": "altintas2020 (general theory)"}},
+    {"id": "r02", "source": "DAMPING", "target": "M_DAMP", "relation": "leads_to", "sign": 1, "rationale": "Reduced damping ratio.", "provenance": {"tier": "ASSUMED", "reference": "altintas2020 (general theory)"}},
+    {"id": "r03", "source": "TOOL_WEAR", "target": "M_WEAR", "relation": "leads_to", "sign": 1, "rationale": "Wear raises cutting-force coefficients.", "provenance": {"tier": "ASSUMED", "reference": "none (no verified source for this tool)"}},
+    {"id": "r04", "source": "DEPTH_OVERLOAD", "target": "M_DEPTH", "relation": "leads_to", "sign": 1, "rationale": "Larger radial depth increases flute engagement.", "provenance": {"tier": "ASSUMED", "reference": "altintas2020 (general theory)"}},
+    {"id": "r05", "source": "RPM_MISMATCH", "target": "M_SPEED", "relation": "leads_to", "sign": 0, "rationale": "Direction of the effect depends on where the new speed falls on the lobes, so no sign is asserted.", "provenance": {"tier": "ASSUMED", "reference": "altintas2020 (general theory)"}},
+
+    {"id": "e01", "source": "M_STIFF", "target": "log10_acc", "relation": "manifests_as", "sign": 1, "rationale": "Higher compliance gives larger vibration.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+    {"id": "e02", "source": "M_STIFF", "target": "acc_res", "relation": "manifests_as", "sign": 1, "rationale": "The structural modes sit in the 1-3.2 kHz band and are excited more.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+    {"id": "e03", "source": "M_STIFF", "target": "chatter_acc", "relation": "manifests_as", "sign": 1, "rationale": "A lower stability limit favours non-synchronous (chatter) content.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+
+    {"id": "e04", "source": "M_DAMP", "target": "acc_res", "relation": "manifests_as", "sign": 1, "rationale": "A less damped mode rings more.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+    {"id": "e05", "source": "M_DAMP", "target": "chatter_acc", "relation": "manifests_as", "sign": 1, "rationale": "Reduced stability margin.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+    {"id": "e06", "source": "M_DAMP", "target": "chatter_mic", "relation": "manifests_as", "sign": 1, "rationale": "Chatter radiates sound at non-harmonic frequencies.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+
+    {"id": "e07", "source": "M_WEAR", "target": "mic_dB", "relation": "manifests_as", "sign": 1, "rationale": "Rubbing raises the sound level.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+    {"id": "e08", "source": "M_WEAR", "target": "mic_low", "relation": "manifests_as", "sign": 1, "rationale": "Higher force raises low-frequency sound.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+    {"id": "e09", "source": "M_WEAR", "target": "log10_acc", "relation": "manifests_as", "sign": 1, "rationale": "Higher cutting force raises vibration.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+    {"id": "e10", "source": "M_WEAR", "target": "acc_low", "relation": "manifests_as", "sign": 1, "rationale": "Higher force raises low-frequency vibration.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+
+    {"id": "e11", "source": "M_DEPTH", "target": "log10_acc", "relation": "manifests_as", "sign": 1, "rationale": "More engaged flute raises force and vibration.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+    {"id": "e12", "source": "M_DEPTH", "target": "mic_dB", "relation": "manifests_as", "sign": 1, "rationale": "Higher force raises sound level.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+    {"id": "e13", "source": "M_DEPTH", "target": "acc_low", "relation": "manifests_as", "sign": 1, "rationale": "Higher mean force.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+    {"id": "e14", "source": "M_DEPTH", "target": "acc_high", "relation": "manifests_as", "sign": 1, "rationale": "Broadband content of a longer engagement.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+    {"id": "e15", "source": "M_DEPTH", "target": "mic_high", "relation": "manifests_as", "sign": 1, "rationale": "Broadband sound of a longer engagement.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+
+    {"id": "e16", "source": "M_SPEED", "target": "acc_low", "relation": "manifests_as", "sign": 0, "rationale": "Harmonic positions change.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+    {"id": "e17", "source": "M_SPEED", "target": "chatter_acc", "relation": "manifests_as", "sign": 0, "rationale": "Lobe position changes the non-synchronous share.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+    {"id": "e18", "source": "M_SPEED", "target": "chatter_mic", "relation": "manifests_as", "sign": 0, "rationale": "As above for the microphone.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+    {"id": "e19", "source": "M_SPEED", "target": "mic_low", "relation": "manifests_as", "sign": 0, "rationale": "Harmonic positions change.", "provenance": {"tier": "ASSUMED", "reference": "physics reasoning"}},
+
+    {"id": "v01", "source": "STIFFNESS", "target": "A_CLAMP", "relation": "verified_by", "sign": 0, "rationale": "A direct physical check.", "provenance": {"tier": "ASSUMED", "reference": "practice"}},
+    {"id": "v02", "source": "DAMPING", "target": "A_FRF", "relation": "verified_by", "sign": 0, "rationale": "A direct physical check.", "provenance": {"tier": "ASSUMED", "reference": "practice"}},
+    {"id": "v03", "source": "TOOL_WEAR", "target": "A_VB", "relation": "verified_by", "sign": 0, "rationale": "A direct physical check.", "provenance": {"tier": "ASSUMED", "reference": "practice"}},
+    {"id": "v04", "source": "DEPTH_OVERLOAD", "target": "A_CAM", "relation": "verified_by", "sign": 0, "rationale": "A direct check of the program.", "provenance": {"tier": "ASSUMED", "reference": "practice"}},
+    {"id": "v05", "source": "RPM_MISMATCH", "target": "A_RPM", "relation": "verified_by", "sign": 0, "rationale": "A direct controller check.", "provenance": {"tier": "ASSUMED", "reference": "practice"}}
+  ]
+}

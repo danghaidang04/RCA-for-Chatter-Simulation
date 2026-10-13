@@ -78,3 +78,63 @@ python rca_causal.py  # RCA nhân quả (cần output/real_windows.npz)
   - Lần 2 (dùng |lực trung bình|, thay đổi SAU khi thấy kết quả lần 1, có cơ sở bất biến dấu): zero-shot (không nhãn thật) AUROC M1 0.887, M2 0.807, M3 0.571; học từ k mẫu thật: 0.85-0.99; tinh chỉnh từ mô phỏng KHÔNG tốt hơn học từ đầu ở mọi k (k=2: 0.83-0.89 vs 0.85-0.89; k=32: 0.97-0.99 vs 0.99).
   - Kết luận sơ bộ: mô phỏng có giá trị trong chế độ không nhãn thật; chưa chứng minh lợi ích tinh chỉnh; nhiệm vụ này dễ (đặc trưng tương đối + vài nhãn đã đủ).
 - File: `cutting_sim/output/sim_to_real_wear*.json`, `luh_transfer.json`, `quick_*.json`.
+
+## 9. Kiểm tra cơ chế dao sứt rãnh (runout hiệu dụng) — KẾT QUẢ ÂM TÍNH (2026-10-07)
+- Thêm lớp TOOL_DEFECT (runout 10–80 µm, hệ số khuếch đại g x1/x10/x100) vào `rca_data.dde_signals`; script `defect_mechanism_check.py`, kết quả `output/defect_mechanism_check.json`.
+- Cosine với mẫu lệch thật D* chỉ ≈0.48–0.54, và phần lớn do thành phần chung (log10_ac, mic_dB đều tăng). Các nút phân biệt KHÔNG khớp:
+  thật: chatter_acc −3.7, chatter_mic −1.2, acc_low +3.9, mic_low +4.0 ; mô phỏng: chatter ≈ +0.1..+0.9 (sai dấu), mic_low ≈ 0–0.9, acc_high tăng rất mạnh (+1..+38) mà thật chỉ +1.9.
+- Kết luận: runout 1x KHÔNG tái tạo chữ ký dao hỏng thật (tăng năng lượng băng thấp, tín hiệu đồng bộ hơn). Không nên báo là đã mô hình hóa được dao sứt. Giả thuyết còn lại: tương tác lực cạnh/ma sát phi tuyến, hoặc dao hỏng đổi tải theo răng (Kt từng răng khác nhau) — chưa thử.
+
+## 10. Nạp FRF đo (frf_import.py, test_frf_import.py) — mới có kiểm thử trên FRF tổng hợp
+- Khớp mode bằng cách thêm dần mode tại đỉnh phần dư + variable projection cho (σ, ν); dừng khi sai số giảm <3%.
+- Kiểm thử khép kín (FRF trục x của Altintas + nhiễu, dải ≤3500 Hz): sai số hình dạng FRF so với bản sạch 0.8% (không nhiễu), 1.7% (nhiễu 1% đỉnh), 16% (nhiễu 3%; mất mode 504 Hz). Mode chính 262/504/668/887/2201/2799 Hz được tìm đúng khi nhiễu ≤1%.
+- Hạn chế đã biết: (i) không nhiễu thì thêm mode giả ngoài dải (≥3465 Hz) để hấp thụ đuôi; (ii) mới thử trục x, chưa thử y; (iii) là inverse crime, FRF búa thật (nhiễu, phi tuyến, đo gia tốc) chưa thử — chỉ nhận receptance hoặc accelerance (chia (jω)²), chưa có định dạng UFF/MAT.
+
+## 11. Bước 1 kế hoạch: LUH leave-one-machine-out với baseline (luh_baselines.py -> output/luh_baselines.json)
+- 10 hạt giống, bootstrap theo lần chạy (đánh giá thấp bất định). Baseline: ngưỡng RMS lực 1 đặc trưng, GB, LR, CORAL+LR, DANN (2 phương pháp cuối dùng đặc trưng máy đích không nhãn).
+- Kết quả (đặc trưng thô, AUROC M1/M2/M3): RMS 0.996/0.993/0.462; GB 0.995/0.999/0.976; LR 0.996/0.995/0.943; CORAL 0.992/0.995/0.886; DANN 0.996/0.997/0.974.
+- Hệ quả: nhiệm vụ mòn LUH quá dễ để thấy lợi ích của mô phỏng; zero-shot mô phỏng (0.887/0.807/0.571) thấp hơn quy tắc 1 đặc trưng ở M1, M2. DANN/CORAL không hơn GB. Đã sửa abstract/đóng góp/kết luận của paper theo đó.
+- Khuyết điểm: CI bootstrap ở mức lần chạy; DANN ở dao-tương đối không ổn định (sd 0.13); chưa kiểm cột RMS bằng cách tách riêng.
+
+## 12. Bước 1b: ngưỡng mòn sớm (sim_to_real_wear.py, THR=100/60/40 đặt trước khi chạy; output/sim_to_real_wear*_thr*.json)
+- Label-free, AUROC (M1/M2/M3, TB): ngưỡng 100: sim 0.887/0.807/0.571 (0.755) vs quy tắc RMS(tool-rel) 0.853/0.936/0.433 (0.741); 60: sim 0.925/0.809/0.759 (0.831) vs 0.927/0.870/0.415 (0.737); 40: sim 0.827/0.893/0.782 (0.834) vs 0.994/0.941/0.398 (0.778).
+- Lợi ích của sim chỉ đến từ máy 3 (quy tắc < ngẫu nhiên, chưa giải thích dấu); máy 1,2 quy tắc ≥ sim. Tinh chỉnh KHÔNG hơn học từ đầu ở mọi k, mọi ngưỡng. Kết luận: bằng chứng lợi ích mô phỏng yếu, chưa "chứng minh".
+
+## 13. Thử hướng: chuyển giao thật có suy giảm khi động lực học đích xa không? (luh_dynamics_shift.py -> output/luh_dynamics_shift.json)
+- Proxy động lực học = phổ lực 21 băng của 3 lần chạy mòn ít nhất mỗi dao (KHÔNG phải FRF). 9 dao đích, huấn luyện trên dao của máy khác (tất cả 6 / 3 gần nhất / 3 xa nhất).
+- AUROC GB (raw): VB>=100 all 0.993, near3 0.984, far3 0.976; Spearman(khoảng cách, AUROC) = -0.16 (p=0.67). VB>=60: Spearman -0.34 (p=0.36). Chỉ LR tool-relative ở VB>=60 có xu hướng (rho=-0.62, p=0.08; AUROC thấp nhất 0.248).
+- Kết luận: trên LUH KHÔNG thấy suy giảm có ý nghĩa; dữ liệu thật đủ cho nhiệm vụ này. Với n=9, proxy yếu và dải động lực học không biết, đây là bằng chứng KHÔNG-phát-hiện, không bác bỏ giả thuyết. Cần dữ liệu có FRF và nhiều cấu hình để kiểm chứng.
+
+## 14. Hoàn thiện (7/10/2026)
+- C2ST chạy lại 3 hạt giống, lưu JSON `output/noise_model_gate_nonlin{0,1}_seed{0,1,2}.json` (noise_model.py ghi file theo NONLIN/SEED); `paper/make_tables.py` đọc trực tiếp từ JSON. Biến thể cuối 0.820±0.036 tái tạo đúng; hai dòng tuyến tính cũ không tái tạo được (0.986/0.876 → 0.946/0.853).
+- Hình pipeline `paper/figures/pipeline.png`; protocol thu dữ liệu `paper/DATA_PROTOCOL.md`; paper v2 16 trang biên dịch sạch; `paper/self_review.md` cập nhật.
+- Chưa làm: bảng causal chính 3–5 hạt giống (ablation đã có 3 hạt giống cho cấu hình đồ thị vật lý), meta-DG, đọc 4 bài PDF ưu tiên (thư mục paper/lit/pdfs chưa tồn tại), thiết kế lại benchmark nhân quả, thông tin thư mục BRCD/RCG/SimpleRCA.
+
+## 15. Bản v3 của paper, phát hiện chế độ vận hành, release (7/10/2026)
+- PHÁT HIỆN: ở tham số danh định mô phỏng nằm trên giới hạn ổn định (ZOA a_lim 18–31 mm < ap 38.1 mm; x rms 0.4–0.8 mm; h_min=0) ở rpm 9000, ae 0.0635/0.3175 mm. Độ cứng x10: a_lim ~180–195 mm, x rms 5–8 µm. Lưu `output/regime_check.json` (`regime_check.py`). Hệ số gain 7.7e-6 bù biên độ lệch.
+- Robustness: `KSCALE=10 TAG=_k10 rca_gain2.py/rca_causal.py` -> `rca_causal_k10.json`, `rca_gain_effect_k10.json` (gain 3.5e-4 / 0.43; lưới gain phải mở rộng). Top-1 m=10: cùng bộ sinh 0.53–0.98; lệch 0.32–0.62; BARO không còn sụp đổ (0.50).
+- Thuật toán RCA trong repo là bản đơn giản hóa (BRCD: mô hình Gauss tuyến tính trên DAG cho sẵn + hằng số 0.12/0.40; RCD: tương quan riêng; RCG: dịch chuyển phần dư chuẩn hóa; Smooth Traversal: hằng số 0.70/0.05). BARO (bước chấm điểm) và SimpleRCA khớp mô tả của Lee et al. 2026 phụ lục C. Đã ghi vào paper (Bảng RCA algorithms).
+- Thư mục gốc `references/30078_Root_Cause_Analysis_of_F.pdf` chính là bài BRCD (Lee, Zhou, Kocaoglu, ICML 2026; PMLR 306). Đã thêm refs.bib: lee2026brcd, ikram2025rcg (chép từ danh mục tham khảo của bài BRCD), fang2025simplerca (arXiv 2510.04711, đã kiểm API), lopezpaz2017c2st (arXiv 1610.06545, đã kiểm API). Ebrahimi 2023: đọc tóm tắt chính thức (94% mô phỏng, 93% đo thực), chưa đọc toàn văn.
+- Paper v3: tác giả Hai-Dang Dang, Dinh Thieu Quang, Simon Park (VinUniversity; email ĐOÁN, đỏ); khối thuật toán, phương trình mô phỏng, bảng so sánh bài khác, ~25 hình/bảng sinh từ JSON (`paper/make_figures.py`, `make_tables.py`); số giả duy nhất: bảng/hình planned (đỏ). Hạ tầng release: LICENSE (MIT, đề xuất), requirements.txt, CITATION.cff, REPRODUCE.md, Makefile, skill dự án.
+- Nơi nộp đề xuất: IEEE CASE 2027 (hạn 1/3/2027 theo trang IEEE RAS); định dạng IEEE chưa chuyển theo yêu cầu giữ mẫu hiện tại; quy định số trang năm 2027 chưa xác minh.
+
+## 16. Bản v4 của paper (7/10/2026): viết lại theo cấu trúc yêu cầu và skill
+- Bỏ ghi chú chữ đỏ và nơi nộp ở đầu bài; Abstract ngắn, ít số liệu, câu cuối là URL mã nguồn.
+- Related Work đầy đủ (5 mục) + Bảng 1 tổng hợp khoảng trống C1–C6; Method mở đầu bằng sơ đồ kiến trúc lớn (trang nằm ngang, `paper/figures/f_architecture.png`, `make_figures.py::fig_architecture`), rồi Input / Simulation / RCA; Experiments: Setup (config, datasets, metrics, baselines), Main, Analysis, Ablation; cuối cùng Conclusion, Limitations, Future work.
+- Bản trước giữ ở `paper/main_v3_article.tex`, `main_v2_article.tex`, `main_v1.tex`.
+
+## 17. Prototype KG + BN + LLM (13/10/2026): `prototype_kg_bn_llm/`
+- KG (5 nguyên nhân, 5 cơ chế, 9 đặc trưng, hành động kiểm tra; tier ASSUMED) -> 19 cạnh cause->feature; BN Gauss có điều kiện, hiệp phương sai chung, trọng số cạnh + CI bootstrap theo cut; LLM chỉ giải thích (kiểm tra bằng mã).
+- Kết quả mô phỏng (5 nguyên nhân, chance 0.2, m=10): KG gốc top-1 0.38 (lệch 0.24); KG sau kiểm chứng 0.84 (0.44); đầy đủ 0.88 (0.45); xáo trộn 0.22. Chỉ dùng trọng số (matched filter) 0.38-0.44; PageRank ≈ ngẫu nhiên. Dao hỏng thật D*: BN tự tin STIFFNESS 1.00 nhưng kiểm tra ngoài mô hình d²=3472 (ngưỡng 44.3).
+- Chưa gọi LLM thật (không có khóa; khóa OpenRouter sẽ do người dùng đặt trong .env, không dán vào chat). Chưa đánh giá chất lượng giải thích của LLM.
+- Văn liệu: không tìm thấy KG riêng cho chatter; gần nhất Wehner et al. 2024 (arXiv:2402.00043, KG ràng buộc BN nhân quả, không LLM) và các bài LLM+KG cho CNC (xem LITERATURE.md).
+
+## 18. Học liên tục qua 12 máy, truy hồi kiểu LightRAG, danh mục tài liệu (13/10/2026)
+- `prototype_kg_bn_llm/continual.py`: quên tăng theo số máy học (giữ lại 0.55 → 0.44 → 0.40 với ghi đè; nền chung + lớp phủ 0.53–0.62); máy mới không có ca xác nhận không cơ chế nào giúp; từ k=5–10 nền+lớp phủ tốt nhất ở L=6 (0.446±0.018 vs 0.381 vs 0.357); nhãn giả trôi (0.26–0.27). Chi tiết trong README của prototype.
+- `retrieval.py` + `documents/corpus_demo.json`: truy hồi kiểu LightRAG (không LLM) chỉ để lập luận; `documents/SOURCES.md` và `documents/DOWNLOAD_REQUEST.md` liệt kê tài liệu cần người dùng tải.
+
+## 19. Ứng dụng web, bộ phát hiện, KG tự động (13/10/2026)
+- `prototype_kg_bn_llm/app/` (FastAPI + HTML + Plotly): luồng thiết lập -> Start (10 cửa sổ học nền) -> Apply lỗi tăng dần -> CUSUM báo đèn đỏ + âm thanh -> xếp hạng + đồ thị nhân quả -> giải thích. Mô hình xếp hạng: Bayes Gauss có điều kiện trên 24 đặc trưng (`cond24.py`): top-1 0.795 trong bộ sinh (hiệu chuẩn tốt ECE 0.01), 0.47 khi lệch; 9 nút theo KG chỉ 0.48–0.58, nên KG không ràng buộc mô hình xếp hạng. Ma trận kiểm tra qua đúng đường chạy của ứng dụng: top-1 0.60; cản thấp khó nhất; mất cân bằng/độ đảo không bị gắn cờ ngoài mô hình.
+- Phát hiện lỗi thiết kế: thanh severity của độ cứng/cản bị đảo nghĩa (đã sửa); phát hiện chuẩn hóa chung theo điều kiện làm sai lệch khi rút cùng điều kiện (đã sửa bằng mô hình điều kiện); độ chính xác 0.80/0.93 trước đó là do rút cửa sổ lẫn lộn điều kiện.
+- `kg_build.py`: KG tự động từ 11 đoạn tài liệu (quy tắc), so với KG viết tay và với cạnh được dữ liệu ủng hộ. Chế độ LLM chưa chạy.
+- OpenRouter: đã gọi thử thành công một lần (gemma-3-4b-it), đầu ra qua kiểm tra. Xem `OPEN_ITEMS.md`.

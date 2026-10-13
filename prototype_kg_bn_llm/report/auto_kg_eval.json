@@ -1,0 +1,46 @@
+{
+ "passages": 11,
+ "entities": 28,
+ "relations": 43,
+ "auto_cause_feature_edges": 20,
+ "hand_kg_edges": 19,
+ "data_supported_edges": 31,
+ "auto_vs_hand": {
+  "overlap": 11,
+  "jaccard": 0.39285714285714285,
+  "precision": 0.55,
+  "recall": 0.5789473684210527
+ },
+ "auto_vs_data": {
+  "precision": 0.55,
+  "recall": 0.3548387096774194,
+  "n_auto_supported": 11
+ },
+ "hand_vs_data": {
+  "precision": 0.631578947368421,
+  "recall": 0.3870967741935484
+ },
+ "causes_without_any_edge": [],
+ "edges_support_count": {
+  "STIFFNESS|log10_acc": 3,
+  "STIFFNESS|acc_res": 3,
+  "STIFFNESS|acc_low": 1,
+  "STIFFNESS|mic_low": 1,
+  "DEPTH_OVERLOAD|log10_acc": 2,
+  "DEPTH_OVERLOAD|acc_res": 2,
+  "DEPTH_OVERLOAD|acc_low": 1,
+  "DEPTH_OVERLOAD|mic_low": 1,
+  "DAMPING|log10_acc": 2,
+  "DAMPING|acc_res": 2,
+  "TOOL_WEAR|mic_dB": 1,
+  "TOOL_WEAR|mic_high": 1,
+  "TOOL_WEAR|acc_low": 1,
+  "TOOL_WEAR|mic_low": 1,
+  "RPM_MISMATCH|log10_acc": 1,
+  "RPM_MISMATCH|acc_res": 1,
+  "STIFFNESS|chatter_acc": 1,
+  "STIFFNESS|chatter_mic": 1,
+  "DAMPING|chatter_acc": 1,
+  "DAMPING|chatter_mic": 1
+ }
+}

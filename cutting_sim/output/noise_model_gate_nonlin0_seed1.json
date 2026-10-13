@@ -1,0 +1,13 @@
+{
+ "c2st_heldout": {
+  "regression mean only": [
+   0.9662222222222222,
+   0.0031426968052735123
+  ],
+  "hierarchical: between-cut + within-cut": [
+   0.8233333333333334,
+   0.00383936723181581
+  ]
+ },
+ "n_test_cuts": 22
+}

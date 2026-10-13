@@ -17,6 +17,8 @@ from model_v4 import X0, build, HELIX  # noqa
 from common import run, replace  # noqa
 
 OUT = nm.OUT
+KSCALE = float(os.environ.get("KSCALE", "1"))   # kiểm tra độ bền: nhân độ cứng modal danh định (mặc định 1 = kết quả chính)
+TAG = os.environ.get("TAG", "")                # hậu tố tên file kết quả để không ghi đè
 CLASSES = ["NORMAL", "STIFFNESS", "DAMPING", "TOOL_WEAR", "DEPTH_OVERLOAD", "RPM_MISMATCH"]
 BANDS = np.array([50, 150, 300, 600, 1000, 1500, 2200, 3200, 5000, 8000, 12000.0])
 # mức độ nặng của từng nguyên nhân: GIẢ ĐỊNH (không có nguồn); khoảng chọn theo tính hợp lý vật lý, ghi rõ trong báo cáo
@@ -53,10 +55,10 @@ class NoiseGen:
         return (nm.synth(th[:ka], self.fs_a, n_a, f0, rng), nm.synth(th[ka:2 * ka], self.fs_a, n_a, f0, rng), nm.synth(th[2 * ka:2 * ka + km], self.sr, n_m, f0, rng))
 
 
-def dde_signals(mrow, cls, sev, seed, fs_a, sr, n_a, n_m, pj=None):
+def dde_signals(mrow, cls, sev, seed, fs_a, sr, n_a, n_m, pj=None, full=False):
     """DDE (0.6 s) -> acc_x, acc_y, mic ở fs gốc, cửa sổ 0.3 s cuối."""
     cut = dict(N=mrow[5], ap=38.1, ae=mrow[6], F=mrow[7], Z=int(mrow[8]), D=6.35, direction="UP" if mrow[4] else "DOWN")
-    th = X0.copy()
+    th = X0.copy(); th[7] += np.log(KSCALE)
     if pj:                                   # tham số máy thật lệch so với danh định (kiểm tra độ bền)
         th[4] *= pj['fn']; th[5] *= pj['fn']; th[6] *= pj['zeta']; th[7] += np.log(pj['k']); th[8] += np.log(pj['Kt']); th[10] += np.log(pj['Ke']); th[11] += np.log(pj['Ke'])
     if cls == "STIFFNESS":
@@ -69,13 +71,20 @@ def dde_signals(mrow, cls, sev, seed, fs_a, sr, n_a, n_m, pj=None):
         cut["ae"] = min(cut["ae"] * sev, 3.0)
     elif cls == "RPM_MISMATCH":
         cut["N"] = cut["N"] * sev
+    elif cls == "IMBALANCE":                                  # lỗi NGOÀI mô hình RCA (dùng cho ứng dụng demo): mất cân bằng trục chính x sev
+        th[12] += np.log(sev)
+    elif cls == "RUNOUT":                                     # lỗi NGOÀI mô hình RCA: độ đảo dao x sev
+        th[15] += np.log(sev)
     p, cfg = build(cut, th)
+    if cls == "TOOL_DEFECT":                     # dao sứt/không đối xứng rãnh: độ lệch tâm hiệu dụng sev [µm] -> thành phần 1x vòng quay
+        p = replace(p, runout=sev * 1e-6)
     cfg = replace(cfg, acc_noise_g=0.0, mic_noise_pa=0.0, acc_gain=1.0, mic_gain=1.0, acc_rpm_exp=0.0, mic_rpm_exp=0.0)
     sim, sig, _ = run(p, seed=seed, t_end=0.6, sensor_cfg=cfg, noise_um=0.02, skip=0.5)
     h = len(sig["t"]) // 2
     up_a = lambda x: resample_poly(x[h:], int(round(fs_a)) // 100, 25600 // 100)[:n_a]
     up_m = lambda x: resample_poly(x[h:], int(round(sr)) // 1600, 25600 // 1600)[:n_m]
-    return up_a(sig["acc_x"]), up_a(sig["acc_y"]), up_m(sig["mic"])
+    res = (up_a(sig["acc_x"]), up_a(sig["acc_y"]), up_m(sig["mic"]))
+    return (res, sig) if full else res
 
 
 def band_feats(x, fs):

@@ -74,7 +74,7 @@ def fit_prior(X, y, w0, lam):
 
 
 def main(n_sim=150):
-    Xr, lab = real_features(); wear, mach = lab.wear.values, lab.machine.values.astype(int); grp = (lab.machine.values * 10 + lab.tool.values).astype(int); y = (wear >= 100).astype(int)
+    Xr, lab = real_features(); wear, mach = lab.wear.values, lab.machine.values.astype(int); grp = (lab.machine.values * 10 + lab.tool.values).astype(int); THR = float(os.environ.get('THR', '100')); y = (wear >= THR).astype(int)
     if os.environ.get('ABSMEAN', '1') == '1':                      # bất biến theo dấu quy ước trục lực: dùng |lực trung bình| (cột 0 = x_mean, 10 = y_mean)
         Xr = Xr.copy(); Xr[:, [0, 10]] = np.abs(Xr[:, [0, 10]])
     Zr = rel_by_tool(Xr, wear, grp)
@@ -84,14 +84,14 @@ def main(n_sim=150):
         with Pool(10) as p: res = p.map(sim_tool, range(n_sim))
         Xs = np.vstack([r[0] for r in res]); vbs = np.concatenate([r[1] for r in res]); gs = np.repeat(np.arange(n_sim), 45); np.savez(cache, X=Xs, vb=vbs, g=gs)
     if os.environ.get('ABSMEAN', '1') == '1': Xs = Xs.copy(); Xs[:, [0, 10]] = np.abs(Xs[:, [0, 10]])
-    Zs = rel_by_tool(Xs, vbs, gs); ys = (vbs >= 100).astype(int); ok = np.isfinite(Zs).all(1) & (np.abs(Zs).max(1) < 1e4); Zs, ys = Zs[ok], ys[ok]
+    Zs = rel_by_tool(Xs, vbs, gs); ys = (vbs >= THR).astype(int); ok = np.isfinite(Zs).all(1) & (np.abs(Zs).max(1) < 1e4); Zs, ys = Zs[ok], ys[ok]
     print(f"mô phỏng: {len(Zs)} lần chạy, {int(ys.mean() * 100)}% mòn | thật: {len(Zr)} lần chạy, {int(y.mean() * 100)}% mòn", flush=True)
     sc_s = StandardScaler().fit(Zs); lr_s = LogisticRegression(C=1.0, max_iter=2000, class_weight="balanced").fit(sc_s.transform(Zs), ys)
     res = {}; rng = np.random.default_rng(0); KS = (2, 4, 8, 16, 32); LAMS = (0.3, 1.0, 3.0)
     for tm in (1, 2, 3):
         te = mach == tm; sc_t = StandardScaler().fit(Zr[te]); Zt = sc_t.transform(Zr[te]); yt = y[te]          # chuẩn hóa theo thống kê KHÔNG NHÃN của máy đích
         w_sim = np.r_[lr_s.coef_[0], lr_s.intercept_[0]]; r_ = {}
-        r_["sim-only"] = roc_auc_score(yt, np.c_[Zt, np.ones(len(Zt))] @ w_sim)
+        r_["sim-only"] = roc_auc_score(yt, np.c_[Zt, np.ones(len(Zt))] @ w_sim); r_["rms-rule"] = roc_auc_score(yt, Zr[te][:, 20])
         sc_src = StandardScaler().fit(Zr[~te]); src = LogisticRegression(C=1.0, max_iter=2000, class_weight="balanced").fit(sc_src.transform(Zr[~te]), y[~te]); r_["real-source (2 machines, all labels)"] = roc_auc_score(yt, src.predict_proba(sc_src.transform(Zr[te]))[:, 1])
         for k in KS:
             for lam in LAMS:
@@ -103,9 +103,9 @@ def main(n_sim=150):
                     Xb = np.c_[Zt[rest], np.ones(len(rest))]; a_f.append(roc_auc_score(yt[rest], Xb @ w_f)); a_s.append(roc_auc_score(yt[rest], Xb @ w_0))
                 r_[f"k={k} lam={lam} scratch"] = float(np.mean(a_s)) if a_s else float("nan"); r_[f"k={k} lam={lam} sim->finetune"] = float(np.mean(a_f)) if a_f else float("nan")
         res[tm] = r_
-    json.dump(res, open(f"{OUT}/sim_to_real_wear{'_absmean' if os.environ.get('ABSMEAN', '1') == '1' else ''}.json", "w"), indent=1)
+    json.dump(res, open(f"{OUT}/sim_to_real_wear{'_absmean' if os.environ.get('ABSMEAN', '1') == '1' else ''}{'' if THR == 100 else f'_thr{int(THR)}'}.json", "w"), indent=1)
     print("\nAUROC (VB>=100) trên máy ĐÍCH chưa thấy; đoán bừa 0.5 (trung bình 40 lần lấy k mẫu có nhãn)")
-    print("sim-only: " + ", ".join(f"M{m} {res[m]['sim-only']:.3f}" for m in res), "| tham chiếu 2 máy thật: " + ", ".join(f"M{m} {res[m]['real-source (2 machines, all labels)']:.3f}" for m in res))
+    print("rms-rule: " + ", ".join(f"M{m} {res[m]['rms-rule']:.3f}" for m in res)); print("sim-only: " + ", ".join(f"M{m} {res[m]['sim-only']:.3f}" for m in res), "| tham chiếu 2 máy thật: " + ", ".join(f"M{m} {res[m]['real-source (2 machines, all labels)']:.3f}" for m in res))
     print("\nk  lam   scratch  sim->finetune   (trung bình 3 máy đích)")
     for k in KS:
         for lam in LAMS:

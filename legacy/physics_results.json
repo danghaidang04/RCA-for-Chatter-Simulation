@@ -1,0 +1,123 @@
+{
+ "scenarios": [
+  {
+   "key": "Normal",
+   "truth": "Normal",
+   "params": {
+    "fn": 250.0,
+    "zeta": 0.012,
+    "k": 226000000.0,
+    "Kf": 1000000000.0,
+    "N_rpm": 3000.0,
+    "a": 5.0
+   },
+   "rms": 0.06824214041369048,
+   "dom_freq": 246.66666666666669,
+   "mean_force": 250.00027010374885,
+   "peak_force": 251.22641173811346,
+   "diagnosed": "Normal",
+   "prob": 0.9863379473617733,
+   "correct": true
+  },
+  {
+   "key": "Stiffness",
+   "truth": "Stiffness_Degradation",
+   "params": {
+    "fn": 176.7766952966369,
+    "zeta": 0.012,
+    "k": 113000000.0,
+    "Kf": 1000000000.0,
+    "N_rpm": 3000.0,
+    "a": 10.0
+   },
+   "rms": 51.86575409723394,
+   "dom_freq": 186.66666666666669,
+   "mean_force": 621.0319922683601,
+   "peak_force": 2622.1647963152413,
+   "diagnosed": "Stiffness_Degradation",
+   "prob": 0.9740711891852732,
+   "correct": true
+  },
+  {
+   "key": "Damping",
+   "truth": "Damping_Loss",
+   "params": {
+    "fn": 250.0,
+    "zeta": 0.0018,
+    "k": 226000000.0,
+    "Kf": 1000000000.0,
+    "N_rpm": 3800.0,
+    "a": 8.0
+   },
+   "rms": 2.548507409135287,
+   "dom_freq": 253.33333333333334,
+   "mean_force": 400.04286964685656,
+   "peak_force": 411.945640670922,
+   "diagnosed": "Normal",
+   "prob": 0.9863379473617733,
+   "correct": false
+  },
+  {
+   "key": "ToolWear",
+   "truth": "Tool_Wear",
+   "params": {
+    "fn": 250.0,
+    "zeta": 0.012,
+    "k": 226000000.0,
+    "Kf": 2200000000.0,
+    "N_rpm": 3000.0,
+    "a": 5.0
+   },
+   "rms": 0.2734366886105612,
+   "dom_freq": 246.66666666666669,
+   "mean_force": 549.9991243292243,
+   "peak_force": 553.831007385446,
+   "diagnosed": "Tool_Wear",
+   "prob": 0.892046247158034,
+   "correct": true
+  },
+  {
+   "key": "Depth",
+   "truth": "Excessive_Cut_Depth",
+   "params": {
+    "fn": 250.0,
+    "zeta": 0.012,
+    "k": 226000000.0,
+    "Kf": 1000000000.0,
+    "N_rpm": 3800.0,
+    "a": 28.0
+   },
+   "rms": 5.537127627982986,
+   "dom_freq": 253.33333333333334,
+   "mean_force": 1400.0826510679274,
+   "peak_force": 1462.677645071033,
+   "diagnosed": "Excessive_Cut_Depth",
+   "prob": 0.9880564806016174,
+   "correct": true
+  },
+  {
+   "key": "RPM",
+   "truth": "Unstable_Spindle_RPM",
+   "params": {
+    "fn": 250.0,
+    "zeta": 0.012,
+    "k": 226000000.0,
+    "Kf": 1000000000.0,
+    "N_rpm": 8800.0,
+    "a": 12.0
+   },
+   "rms": 39.429713266982425,
+   "dom_freq": 253.33333333333334,
+   "mean_force": 665.3275558256835,
+   "peak_force": 2322.793236905027,
+   "diagnosed": "Unstable_Spindle_RPM",
+   "prob": 0.9070210133847177,
+   "correct": true
+  }
+ ],
+ "mc": {
+  "n": 120,
+  "top1": 0.7666666666666667,
+  "top3": 1.0
+ }
+}

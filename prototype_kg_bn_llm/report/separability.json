@@ -1,0 +1,10 @@
+{
+ "bayes_9 nodes_nominal": 0.58,
+ "bayes_9 nodes_shifted": 0.27066666666666667,
+ "bayes_24 spectral features_nominal": 0.7973333333333333,
+ "bayes_24 spectral features_shifted": 0.428,
+ "gb_window_nominal_m10": 0.8906666666666667,
+ "gb_window_nominal_single": 0.7426666666666667,
+ "gb_window_shifted_m10": 0.49733333333333335,
+ "gb_window_shifted_single": 0.34933333333333333
+}

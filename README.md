@@ -9,9 +9,24 @@
 > - In the new experiments, accuracy drops from 0.80-0.98 (shared generator) to 0.35-0.71 (shifted simulator parameters, m=10). Ablations show that the causal graph has no effect on the results and that label-free nodes give near-chance accuracy, i.e. this benchmark does not test causal reasoning.
 > - A comparison with a real defective tool shows large low-frequency and tonal shifts that none of the simulated faults reproduces.
 > - The simulated healthy baseline is still distinguishable from real data (classifier two-sample test, balanced accuracy about 0.82; 0.5 would be indistinguishable). The RCA ranking has not been validated on real root causes.
+> - Late finding (Oct 2026): at nominal parameters the simulator is above its own stability limit for every real cutting condition (zero-order limit 18-31 mm vs the real 38.1 mm depth), so fault effects are rescaled by gains of about 1e-5; with a 10x stiffer, stable-regime parameter set the accuracy drop under generator shift persists (top-1 at m=10: 0.53-0.98 -> 0.32-0.62). The RCA algorithms in `run_full_paper_benchmark.py` are simplified re-implementations, not the authors' code. See `paper/main.pdf`.
 > - Status, known issues and TODO: [`cutting_sim/STATUS.md`](cutting_sim/STATUS.md). Parameter provenance: `cutting_sim/output/parameter_registry.md`.
 > - Raw data (`data/msm/`) is not in the repository; download MSM from Kaggle (DOI 10.34740/kaggle/ds/8392825, CC BY 4.0).
 
+
+## Repository layout (reorganised 2026-10-07)
+
+| Path | Content |
+|---|---|
+| `cutting_sim/` | Current work: milling DDE simulator (`milling_model.py`), real-data baseline (`noise_model.py`, `rca_data.py`), RCA experiments (`rca_*.py`, `real_defect_check.py`), real-data transfer (`luh_transfer.py`, `sim_to_real_wear.py`), FRF import (`frf_import.py`), `STATUS.md`. `archive/` holds superseded scripts. |
+| `paper/` | Manuscript v2 (`main.tex`; v1 kept as `main_v1.tex`), tables generated from JSON (`make_tables.py`), `PLAN_Q1.md`, `self_review.md`, `lit/` (verified literature map). |
+| `run_full_paper_benchmark.py` | Implementations of BRCD / RCD / RCG / Smooth Traversal / BARO / SimpleRCA, imported by `cutting_sim/rca_causal.py` and `rca_ablation.py`; must stay at the repository root. |
+| `legacy/` | First-generation SCM benchmark scripts, figures and reports (see caveats above: they do not measure real diagnostic ability). Scripts that import `run_full_paper_benchmark` need `PYTHONPATH=..`. |
+| `references/` | Source PDFs (Altintas assignment transfer function, RCA paper, chatter paper). |
+| `data/` | Raw datasets (git-ignored). |
+| `prototype_kg_bn_llm/` | Prototype: knowledge graph + Bayesian network + LLM that only explains the result (own README, tests, literature note). Simulated evidence only; not a validated diagnostic tool. |
+| `REPRODUCE.md`, `requirements.txt`, `Makefile`, `CITATION.cff`, `LICENSE` | Release material: environment, data download, run order, seeds, `make paper`; the licence (MIT) is a proposal to be confirmed. |
+| `.claude/skills/milling-rca-paper-writing/` | Project skill for writing the paper (adapted from github.com/Master-cai/Research-Paper-Writing-Skills, MIT; attribution inside). |
 
 ## Primary chatter-stability source
 

@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Provenance-tracked milling simulator and RCA benchmark (cutting_sim)"
+version: "0.3.0"
+date-released: "2026-10-07"
+license: MIT
+repository-code: "https://github.com/danghaidang04/RCA-for-Chatter-Simulation"
+authors:
+  - family-names: "Dang"
+    given-names: "Hai-Dang"
+    affiliation: "VinUniversity"
+  - family-names: "Quang"
+    given-names: "Dinh Thieu"
+    affiliation: "VinUniversity"
+  - family-names: "Park"
+    given-names: "Simon"
+    affiliation: "VinUniversity"
+abstract: "Regenerative-milling DDE simulator with parameter provenance, a real-data healthy baseline, and a root-cause-analysis benchmark with generator-shift, graph and node ablations."
+# TODO before release: add the archival DOI (Zenodo) as 'doi:' and confirm author order, names and licence.

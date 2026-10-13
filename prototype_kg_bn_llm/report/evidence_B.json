@@ -1,0 +1,164 @@
+{
+ "case_id": "B",
+ "variant": "kg_validated",
+ "m": 10,
+ "temperature": 1.4766704681005907,
+ "posterior": [
+  {
+   "cause": "TOOL_WEAR",
+   "prob": 0.511584930574579,
+   "rank": 1
+  },
+  {
+   "cause": "DEPTH_OVERLOAD",
+   "prob": 0.23063154466500396,
+   "rank": 2
+  },
+  {
+   "cause": "DAMPING",
+   "prob": 0.15104321150858616,
+   "rank": 3
+  },
+  {
+   "cause": "RPM_MISMATCH",
+   "prob": 0.10668812087625242,
+   "rank": 4
+  },
+  {
+   "cause": "STIFFNESS",
+   "prob": 5.219237285671402e-05,
+   "rank": 5
+  },
+  {
+   "cause": "HEALTHY",
+   "prob": 2.7217654827215212e-12,
+   "rank": 6
+  }
+ ],
+ "top": "TOOL_WEAR",
+ "node_shifts": {
+  "log10_acc": 2.781287064522182,
+  "mic_dB": 2.5268659495336534,
+  "chatter_acc": 0.09781621177698348,
+  "chatter_mic": 0.27295580652660273,
+  "acc_low": 0.4559434057446312,
+  "acc_res": 1.5234353280967694,
+  "acc_high": 2.1110962794413934,
+  "mic_low": 0.2702672027237564,
+  "mic_high": 0.3356831282027234
+ },
+ "kg_paths": [
+  {
+   "node": "log10_acc",
+   "observed_shift": 2.781287064522182,
+   "llr": 31.032127219352475,
+   "weight": 1.2402694240156256,
+   "ci_lo": 1.007050958826243,
+   "ci_hi": 1.487804646428946,
+   "in_kg": true,
+   "sign_pred": 1,
+   "sign_agrees": true,
+   "path_text": "Tool wear -> Higher cutting-force coefficients (Wear raises cutting-force coefficients.; tier ASSUMED, ref: none (no verified source for this tool)) | Higher cutting-force coefficients -> log10 accelerometer rms (Higher cutting force raises vibration.; tier ASSUMED, ref: physics reasoning)",
+   "tier": "ASSUMED"
+  },
+  {
+   "node": "acc_res",
+   "observed_shift": 1.5234353280967694,
+   "llr": 29.378651012140786,
+   "weight": 1.1731732206528982,
+   "ci_lo": 1.0026429312752396,
+   "ci_hi": 1.360238628421497,
+   "in_kg": false,
+   "sign_pred": 0,
+   "sign_agrees": true,
+   "path_text": "not in the knowledge graph (data-suggested edge; expert review needed)",
+   "tier": "ASSUMED"
+  },
+  {
+   "node": "mic_dB",
+   "observed_shift": 2.5268659495336534,
+   "llr": -26.842636331801884,
+   "weight": 1.055410699037986,
+   "ci_lo": 0.8333833091014712,
+   "ci_hi": 1.2875938644880587,
+   "in_kg": true,
+   "sign_pred": 1,
+   "sign_agrees": true,
+   "path_text": "Tool wear -> Higher cutting-force coefficients (Wear raises cutting-force coefficients.; tier ASSUMED, ref: none (no verified source for this tool)) | Higher cutting-force coefficients -> Microphone level (dB) (Rubbing raises the sound level.; tier ASSUMED, ref: physics reasoning)",
+   "tier": "ASSUMED"
+  },
+  {
+   "node": "acc_high",
+   "observed_shift": 2.1110962794413934,
+   "llr": 15.10611476479164,
+   "weight": 1.1794582678090806,
+   "ci_lo": 0.9282584617674099,
+   "ci_hi": 1.4500563607882972,
+   "in_kg": false,
+   "sign_pred": 0,
+   "sign_agrees": true,
+   "path_text": "not in the knowledge graph (data-suggested edge; expert review needed)",
+   "tier": "ASSUMED"
+  },
+  {
+   "node": "mic_high",
+   "observed_shift": 0.3356831282027234,
+   "llr": -7.669077470326256,
+   "weight": 0.1776322602037991,
+   "ci_lo": 0.10846172050884571,
+   "ci_hi": 0.24989246793920897,
+   "in_kg": false,
+   "sign_pred": 0,
+   "sign_agrees": true,
+   "path_text": "not in the knowledge graph (data-suggested edge; expert review needed)",
+   "tier": "ASSUMED"
+  }
+ ],
+ "misfit": {
+  "d2": 14.257990409392576,
+  "threshold": 44.31814095207805,
+  "flag": false,
+  "unexplained_nodes": []
+ },
+ "suggested_checks_from_kg": {
+  "TOOL_WEAR": [
+   "Measure flank wear VB under a microscope"
+  ],
+  "DEPTH_OVERLOAD": [
+   "Check the programmed radial depth in the CAM/NC program"
+  ]
+ },
+ "limitations": [
+  "Edge weights and the covariance are learned from simulated windows, so they inherit the simulator's assumptions (nominal parameters above the stability limit, assumed fault severities and gains).",
+  "Knowledge-graph edges and signs are physics reasoning with provenance tier ASSUMED, tested only against simulated data.",
+  "The posterior is temperature-calibrated on simulated validation draws; calibration on real data has not been tested.",
+  "No real multi-cause labelled data exist, so the ranking has not been validated on real cuts."
+ ],
+ "allowed_ids": [
+  "STIFFNESS",
+  "DAMPING",
+  "TOOL_WEAR",
+  "DEPTH_OVERLOAD",
+  "RPM_MISMATCH",
+  "M_STIFF",
+  "M_DAMP",
+  "M_WEAR",
+  "M_DEPTH",
+  "M_SPEED",
+  "log10_acc",
+  "mic_dB",
+  "chatter_acc",
+  "chatter_mic",
+  "acc_low",
+  "acc_res",
+  "acc_high",
+  "mic_low",
+  "mic_high",
+  "A_CLAMP",
+  "A_FRF",
+  "A_VB",
+  "A_CAM",
+  "A_RPM",
+  "HEALTHY"
+ ]
+}

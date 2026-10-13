@@ -1,0 +1,11 @@
+\begin{tabular}{llll}
+\toprule
+Root-cause node & Source & Quantity & Construction \\
+\midrule
+Stiffness\_est & soft sensor & log stiffness factor & gradient boosting on 30 spectral features \\
+Damping\_est & soft sensor & log damping factor & same \\
+ToolWear\_est & soft sensor & log wear factor ($K_t$) & same \\
+CutDepth\_est & soft sensor & log radial-depth factor & same \\
+SpindleRPM\_est & controller & log$(N/N_\text{plan})$ & true value + 0.5\% read noise \\
+\bottomrule
+\end{tabular}

@@ -1,0 +1,8 @@
+edge status: {'KG edge supported': 11, 'NOT in KG, significant and large: candidate for addition (expert review)': 12, 'KG edge not supported (CI contains 0): candidate for removal': 8, 'not in KG, not needed': 14}
+kg        T=   22.6 | nominal top1 0.381 ece 0.211 | shifted top1 0.243 ece 0.078 | no-T ece nominal 0.511
+kg_pruned T=   22.6 | nominal top1 0.385 ece 0.211 | shifted top1 0.243 ece 0.077 | no-T ece nominal 0.508
+kg_validated T=    1.5 | nominal top1 0.844 ece 0.034 | shifted top1 0.441 ece 0.382 | no-T ece nominal 0.068
+full      T=    1.5 | nominal top1 0.875 ece 0.032 | shifted top1 0.453 ece 0.358 | no-T ece nominal 0.052
+shuffled  T=    7.7 | nominal top1 0.217 ece 0.281 | shifted top1 0.247 ece 0.257 | no-T ece nominal 0.711
+misfit q95 (nominal) 44.32 | flag rate shifted 0.094
+done

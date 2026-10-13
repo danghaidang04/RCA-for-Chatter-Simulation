@@ -11,11 +11,13 @@ workpiece AA 6061; wet cutting (coolant flood) & FIXED & verified (stated in pap
 sampling: accelerometer 51.2 kHz, audio 48 kHz & FIXED & verified (stated in paper) \\
 analysis window 0.3 s & FIXED & design choice \\
 model structure: regenerative DDE, shear+edge force, ZOA lobes & FIXED & model structure \\
+\midrule
 Kt, Kr, Kte, Kre (AA 6061, this tool, wet) & LEARNED & NO usable source (rejected: steel-like values; dry-cutting AA6061 value unverified) \\
 tool-tip FRF: fn\_x, fn\_y, $\zeta$, modal stiffness k & LEARNED & NO source for this tool/holder/stick-out (Altintas Ex.2 FRF rejected: different machine and tool) \\
 spindle imbalance U & LEARNED & NO source (rotor mass, balance grade unknown) \\
 sensor gains, noise floors, rpm-dependence & LEARNED & NO source (sensors uncalibrated: mic dBFS, accelerometer mm/s\^{}2) \\
 runout; between-cut variability $\sigma$ (Kt, runout, roughness) & LEARNED & NO source \\
+\midrule
 chip-thickness cap 0.3 mm; roughness noise base 0.02 $\mu$m & ASSUMED & own assumption \\
 \bottomrule
 \end{tabular}

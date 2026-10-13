@@ -1,0 +1,12 @@
+# Versions actually used for the reported results (Python 3.13.12, macOS arm64). Older versions may work but are untested.
+numpy==2.4.4
+scipy==1.18.0
+pandas==3.0.2
+scikit-learn==1.9.1
+numba==0.68.0
+networkx==3.6.1
+matplotlib==3.10.9
+h5py==3.16.0
+torch==2.12.1        # only for cutting_sim/luh_baselines.py (DANN)
+cma==4.5.0           # only for cutting_sim/calibrate_cma.py (negative-result calibration)
+PyMuPDF              # optional: read reference PDFs

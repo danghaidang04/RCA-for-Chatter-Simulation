@@ -1,0 +1,961 @@
+{
+ "meta": {
+  "name": "auto-built KG (rule extractor)",
+  "note": "built from documents/corpus_demo.json; symptom->feature links come from a hand-written bridge lexicon; all tier ASSUMED",
+  "tiers": [
+   "FIXED",
+   "RANGE",
+   "LEARNED",
+   "ASSUMED"
+  ]
+ },
+ "entities": [
+  {
+   "id": "STIFFNESS",
+   "type": "cause",
+   "label": "STIFFNESS",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "M::weak fixture",
+   "type": "mechanism",
+   "label": "weak fixture",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "log10_acc",
+   "type": "feature",
+   "label": "log10_acc",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "acc_res",
+   "type": "feature",
+   "label": "acc_res",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "acc_low",
+   "type": "feature",
+   "label": "acc_low",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "mic_low",
+   "type": "feature",
+   "label": "mic_low",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "A::Reduce the cutting forces by decreasing the cutting depth, ap",
+   "type": "action",
+   "label": "Reduce the cutting forces by decreasing the cutting depth, ap",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "DEPTH_OVERLOAD",
+   "type": "cause",
+   "label": "DEPTH_OVERLOAD",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "M::cutting depth",
+   "type": "mechanism",
+   "label": "cutting depth",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "M::axially weak workpiece",
+   "type": "mechanism",
+   "label": "axially weak workpiece",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "A::Consider a square shoulder cutter (90-degree entering angle) with positive geome",
+   "type": "action",
+   "label": "Consider a square shoulder cutter (90-degree entering angle) with positive geome",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "DAMPING",
+   "type": "cause",
+   "label": "DAMPING",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "M::tool overhang",
+   "type": "mechanism",
+   "label": "tool overhang",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "A::Minimize overhang",
+   "type": "action",
+   "label": "Minimize overhang",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "TOOL_WEAR",
+   "type": "cause",
+   "label": "TOOL_WEAR",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "M::flank wear",
+   "type": "mechanism",
+   "label": "flank wear",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "mic_dB",
+   "type": "feature",
+   "label": "mic_dB",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "mic_high",
+   "type": "feature",
+   "label": "mic_high",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "A::Insert wear table lists flank wear, crater wear, chipping and notch wear with ca",
+   "type": "action",
+   "label": "Insert wear table lists flank wear, crater wear, chipping and notch wear with ca",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "M::depth of cut",
+   "type": "mechanism",
+   "label": "depth of cut",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "A::Adjust cutting speed, feed per tooth or depth of cut",
+   "type": "action",
+   "label": "Adjust cutting speed, feed per tooth or depth of cut",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "RPM_MISMATCH",
+   "type": "cause",
+   "label": "RPM_MISMATCH",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "M::cutting speed",
+   "type": "mechanism",
+   "label": "cutting speed",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "M::workpiece rigidity",
+   "type": "mechanism",
+   "label": "workpiece rigidity",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "chatter_acc",
+   "type": "feature",
+   "label": "chatter_acc",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "chatter_mic",
+   "type": "feature",
+   "label": "chatter_mic",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "A::Make the workpiece as rigid and secure as possible.",
+   "type": "action",
+   "label": "Make the workpiece as rigid and secure as possible.",
+   "description": "auto-extracted"
+  },
+  {
+   "id": "A::Minimize the distance between the workpiece and spindle.",
+   "type": "action",
+   "label": "Minimize the distance between the workpiece and spindle.",
+   "description": "auto-extracted"
+  }
+ ],
+ "relations": [
+  {
+   "id": "ra000",
+   "source": "STIFFNESS",
+   "target": "M::weak fixture",
+   "relation": "leads_to",
+   "sign": 0,
+   "rationale": "supported by R1",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R1"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra001",
+   "source": "M::weak fixture",
+   "target": "log10_acc",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R1",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R1"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra002",
+   "source": "M::weak fixture",
+   "target": "acc_res",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R1",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R1"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra003",
+   "source": "M::weak fixture",
+   "target": "acc_low",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R1",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R1"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra004",
+   "source": "M::weak fixture",
+   "target": "mic_low",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R1",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R1"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra005",
+   "source": "STIFFNESS",
+   "target": "A::Reduce the cutting forces by decreasing the cutting depth, ap",
+   "relation": "verified_by",
+   "sign": 0,
+   "rationale": "supported by R1",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R1"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra006",
+   "source": "DEPTH_OVERLOAD",
+   "target": "M::cutting depth",
+   "relation": "leads_to",
+   "sign": 0,
+   "rationale": "supported by R1",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R1"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra007",
+   "source": "M::cutting depth",
+   "target": "log10_acc",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R1",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R1"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra008",
+   "source": "M::cutting depth",
+   "target": "acc_res",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R1",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R1"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra009",
+   "source": "M::cutting depth",
+   "target": "acc_low",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R1",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R1"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra010",
+   "source": "M::cutting depth",
+   "target": "mic_low",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R1",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R1"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra011",
+   "source": "DEPTH_OVERLOAD",
+   "target": "A::Reduce the cutting forces by decreasing the cutting depth, ap",
+   "relation": "verified_by",
+   "sign": 0,
+   "rationale": "supported by R1",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R1"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra012",
+   "source": "STIFFNESS",
+   "target": "M::axially weak workpiece",
+   "relation": "leads_to",
+   "sign": 0,
+   "rationale": "supported by R2",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R2"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra013",
+   "source": "M::axially weak workpiece",
+   "target": "log10_acc",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R2",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R2"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra014",
+   "source": "M::axially weak workpiece",
+   "target": "acc_res",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R2",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R2"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra015",
+   "source": "STIFFNESS",
+   "target": "A::Consider a square shoulder cutter (90-degree entering angle) with positive geome",
+   "relation": "verified_by",
+   "sign": 0,
+   "rationale": "supported by R2",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R2"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra016",
+   "source": "DAMPING",
+   "target": "M::tool overhang",
+   "relation": "leads_to",
+   "sign": 0,
+   "rationale": "supported by R10, R3",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.kennametal.com/us/en/resources/blog/metal-cutting/reducing-chatter-and-vibration-in-end-milling.html; https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R10",
+     "R3"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra017",
+   "source": "M::tool overhang",
+   "target": "log10_acc",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R10, R3",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.kennametal.com/us/en/resources/blog/metal-cutting/reducing-chatter-and-vibration-in-end-milling.html; https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R10",
+     "R3"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra018",
+   "source": "M::tool overhang",
+   "target": "acc_res",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R10, R3",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.kennametal.com/us/en/resources/blog/metal-cutting/reducing-chatter-and-vibration-in-end-milling.html; https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R10",
+     "R3"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra019",
+   "source": "DAMPING",
+   "target": "A::Minimize overhang",
+   "relation": "verified_by",
+   "sign": 0,
+   "rationale": "supported by R3",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R3"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra020",
+   "source": "TOOL_WEAR",
+   "target": "M::flank wear",
+   "relation": "leads_to",
+   "sign": 0,
+   "rationale": "supported by R5",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R5"
+    ],
+    "text_types": [
+     "paraphrase"
+    ]
+   }
+  },
+  {
+   "id": "ra021",
+   "source": "M::flank wear",
+   "target": "mic_dB",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R5",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R5"
+    ],
+    "text_types": [
+     "paraphrase"
+    ]
+   }
+  },
+  {
+   "id": "ra022",
+   "source": "M::flank wear",
+   "target": "mic_high",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R5",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R5"
+    ],
+    "text_types": [
+     "paraphrase"
+    ]
+   }
+  },
+  {
+   "id": "ra023",
+   "source": "M::flank wear",
+   "target": "acc_low",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R5",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R5"
+    ],
+    "text_types": [
+     "paraphrase"
+    ]
+   }
+  },
+  {
+   "id": "ra024",
+   "source": "M::flank wear",
+   "target": "mic_low",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R5",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R5"
+    ],
+    "text_types": [
+     "paraphrase"
+    ]
+   }
+  },
+  {
+   "id": "ra025",
+   "source": "TOOL_WEAR",
+   "target": "A::Insert wear table lists flank wear, crater wear, chipping and notch wear with ca",
+   "relation": "verified_by",
+   "sign": 0,
+   "rationale": "supported by R5",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R5"
+    ],
+    "text_types": [
+     "paraphrase"
+    ]
+   }
+  },
+  {
+   "id": "ra026",
+   "source": "DEPTH_OVERLOAD",
+   "target": "M::depth of cut",
+   "relation": "leads_to",
+   "sign": 0,
+   "rationale": "supported by R6",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R6"
+    ],
+    "text_types": [
+     "paraphrase"
+    ]
+   }
+  },
+  {
+   "id": "ra027",
+   "source": "M::depth of cut",
+   "target": "log10_acc",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R6",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R6"
+    ],
+    "text_types": [
+     "paraphrase"
+    ]
+   }
+  },
+  {
+   "id": "ra028",
+   "source": "M::depth of cut",
+   "target": "acc_res",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R6",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R6"
+    ],
+    "text_types": [
+     "paraphrase"
+    ]
+   }
+  },
+  {
+   "id": "ra029",
+   "source": "DEPTH_OVERLOAD",
+   "target": "A::Adjust cutting speed, feed per tooth or depth of cut",
+   "relation": "verified_by",
+   "sign": 0,
+   "rationale": "supported by R6",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R6"
+    ],
+    "text_types": [
+     "paraphrase"
+    ]
+   }
+  },
+  {
+   "id": "ra030",
+   "source": "RPM_MISMATCH",
+   "target": "M::cutting speed",
+   "relation": "leads_to",
+   "sign": 0,
+   "rationale": "supported by R6",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R6"
+    ],
+    "text_types": [
+     "paraphrase"
+    ]
+   }
+  },
+  {
+   "id": "ra031",
+   "source": "M::cutting speed",
+   "target": "log10_acc",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R6",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R6"
+    ],
+    "text_types": [
+     "paraphrase"
+    ]
+   }
+  },
+  {
+   "id": "ra032",
+   "source": "M::cutting speed",
+   "target": "acc_res",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R6",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R6"
+    ],
+    "text_types": [
+     "paraphrase"
+    ]
+   }
+  },
+  {
+   "id": "ra033",
+   "source": "RPM_MISMATCH",
+   "target": "A::Adjust cutting speed, feed per tooth or depth of cut",
+   "relation": "verified_by",
+   "sign": 0,
+   "rationale": "supported by R6",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.sandvik.coromant.com/en-us/knowledge/milling/troubleshooting-milling",
+    "support": [
+     "R6"
+    ],
+    "text_types": [
+     "paraphrase"
+    ]
+   }
+  },
+  {
+   "id": "ra034",
+   "source": "STIFFNESS",
+   "target": "M::workpiece rigidity",
+   "relation": "leads_to",
+   "sign": 0,
+   "rationale": "supported by R9",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.kennametal.com/us/en/resources/blog/metal-cutting/reducing-chatter-and-vibration-in-end-milling.html",
+    "support": [
+     "R9"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra035",
+   "source": "M::workpiece rigidity",
+   "target": "log10_acc",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R9",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.kennametal.com/us/en/resources/blog/metal-cutting/reducing-chatter-and-vibration-in-end-milling.html",
+    "support": [
+     "R9"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra036",
+   "source": "M::workpiece rigidity",
+   "target": "acc_res",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R9",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.kennametal.com/us/en/resources/blog/metal-cutting/reducing-chatter-and-vibration-in-end-milling.html",
+    "support": [
+     "R9"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra037",
+   "source": "M::workpiece rigidity",
+   "target": "chatter_acc",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R9",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.kennametal.com/us/en/resources/blog/metal-cutting/reducing-chatter-and-vibration-in-end-milling.html",
+    "support": [
+     "R9"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra038",
+   "source": "M::workpiece rigidity",
+   "target": "chatter_mic",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R9",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.kennametal.com/us/en/resources/blog/metal-cutting/reducing-chatter-and-vibration-in-end-milling.html",
+    "support": [
+     "R9"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra039",
+   "source": "STIFFNESS",
+   "target": "A::Make the workpiece as rigid and secure as possible.",
+   "relation": "verified_by",
+   "sign": 0,
+   "rationale": "supported by R9",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.kennametal.com/us/en/resources/blog/metal-cutting/reducing-chatter-and-vibration-in-end-milling.html",
+    "support": [
+     "R9"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra040",
+   "source": "M::tool overhang",
+   "target": "chatter_acc",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R10",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.kennametal.com/us/en/resources/blog/metal-cutting/reducing-chatter-and-vibration-in-end-milling.html",
+    "support": [
+     "R10"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra041",
+   "source": "M::tool overhang",
+   "target": "chatter_mic",
+   "relation": "manifests_as",
+   "sign": 0,
+   "rationale": "supported by R10",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.kennametal.com/us/en/resources/blog/metal-cutting/reducing-chatter-and-vibration-in-end-milling.html",
+    "support": [
+     "R10"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  },
+  {
+   "id": "ra042",
+   "source": "DAMPING",
+   "target": "A::Minimize the distance between the workpiece and spindle.",
+   "relation": "verified_by",
+   "sign": 0,
+   "rationale": "supported by R10",
+   "provenance": {
+    "tier": "ASSUMED",
+    "reference": "https://www.kennametal.com/us/en/resources/blog/metal-cutting/reducing-chatter-and-vibration-in-end-milling.html",
+    "support": [
+     "R10"
+    ],
+    "text_types": [
+     "verbatim"
+    ]
+   }
+  }
+ ]
+}

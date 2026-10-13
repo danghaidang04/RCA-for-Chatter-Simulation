@@ -1,10 +1,10 @@
-\begin{tabular}{lc}
+\begin{tabular}{llc}
 \toprule
-Real-noise model variant & C2ST balanced accuracy (0.5 = indistinguishable) \\
+Mean model & Variation model & C2ST balanced accuracy $\downarrow$ \\
 \midrule
-Linear regression, mean only & 0.986 \\
-Linear regression + between/within-cut variation & 0.876 \\
-Kernel ridge + stratified split, mean only (3 splits) & 0.864 $\pm$ 0.022 \\
-Kernel ridge + hierarchical variation (3 splits) & 0.820 $\pm$ 0.036 \\
+Linear & mean only & 0.946 $\pm$ 0.025 \\
+Linear & + between/within-cut variation & 0.853 $\pm$ 0.022 \\
+Kernel ridge & mean only & 0.864 $\pm$ 0.022 \\
+Kernel ridge & + between/within-cut variation (final) & \cellcolor{gray!20}\textbf{0.820 $\pm$ 0.036} \\
 \bottomrule
 \end{tabular}

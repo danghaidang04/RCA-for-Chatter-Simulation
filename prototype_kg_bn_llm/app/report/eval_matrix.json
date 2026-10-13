@@ -1,0 +1,59 @@
+{
+ "n_runs": 360,
+ "seconds": 26.5,
+ "top1_modelled": 0.5955555555555555,
+ "top1_per_cause": {
+  "STIFFNESS": 0.7555555555555555,
+  "DAMPING": 0.2,
+  "TOOL_WEAR": 0.5777777777777777,
+  "DEPTH_OVERLOAD": 0.5111111111111111,
+  "RPM_MISMATCH": 0.9333333333333333
+ },
+ "healthy_flag_rate": 0.044444444444444446,
+ "healthy_false_alarm": 0.0,
+ "modelled_flag_rate": 0.18222222222222223,
+ "imbalance_flag_rate": 0.0,
+ "runout_flag_rate": 0.0,
+ "mean_top_prob_when_wrong": 0.6724991940775757,
+ "all_explanations_validated": true,
+ "confusion": {
+  "HEALTHY": {
+   "HEALTHY": 45
+  },
+  "STIFFNESS": {
+   "STIFFNESS": 34,
+   "RPM_MISMATCH": 11
+  },
+  "DAMPING": {
+   "HEALTHY": 11,
+   "DAMPING": 9,
+   "RPM_MISMATCH": 15,
+   "TOOL_WEAR": 10
+  },
+  "TOOL_WEAR": {
+   "DEPTH_OVERLOAD": 12,
+   "TOOL_WEAR": 26,
+   "RPM_MISMATCH": 7
+  },
+  "DEPTH_OVERLOAD": {
+   "DEPTH_OVERLOAD": 23,
+   "HEALTHY": 2,
+   "RPM_MISMATCH": 20
+  },
+  "RPM_MISMATCH": {
+   "RPM_MISMATCH": 42,
+   "TOOL_WEAR": 3
+  },
+  "IMBALANCE": {
+   "HEALTHY": 10,
+   "DAMPING": 6,
+   "RPM_MISMATCH": 24,
+   "DEPTH_OVERLOAD": 5
+  },
+  "RUNOUT": {
+   "HEALTHY": 24,
+   "RPM_MISMATCH": 21
+  }
+ },
+ "note": "in-distribution simulator results (same generator for training and testing); 3 conditions x 3 severities x 5 seeds"
+}

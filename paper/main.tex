@@ -1,223 +1,535 @@
 \documentclass[11pt]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage[T1]{fontenc}
-\usepackage{amsmath,amssymb,booktabs,graphicx,hyperref,xcolor,array,caption}
+\usepackage{amsmath,amssymb,booktabs,graphicx,hyperref,xcolor,array,caption,colortbl,multirow,algorithm,algorithmic,pdflscape}
 \usepackage[numbers,sort&compress]{natbib}
-\newcommand{\todo}[1]{{\color{red}[\textbf{TODO:} #1]}}
+\captionsetup{font=small,labelfont=bf}
+\setlength{\emergencystretch}{3em}
 \newcommand{\cn}[1]{{\color{orange}[\textbf{CITATION NEEDED:} #1]}}
-\newcommand{\verify}[1]{{\color{blue}[\textbf{VERIFY:} #1]}}
+\newcommand{\fake}[1]{{\color{red}#1}}            % PLACEHOLDER: giá trị giả/chưa xác nhận, thay trước khi nộp (xem paper/PLACEHOLDERS.md)
+\newcommand{\best}[1]{\cellcolor{gray!20}\textbf{#1}}
+\newcommand{\cmark}{$\checkmark$}
+\newcommand{\xmark}{$\times$}
+\newcommand{\pmark}{$\circ$}
 
-\title{Measuring the Simulation Gap in Root Cause Analysis for CNC Milling:\\
-A Physics-Based Simulator Grounded in Real Multi-Sensor Data}
-\author{\textit{Author names and affiliations to be added}}
-\date{\textbf{DRAFT} --- target venue not yet chosen; several results are incomplete (see Section~\ref{sec:limits})}
+\title{How Far Can Simulation Take Root Cause Diagnosis in Milling?\\
+Provenance-Tracked Simulation, Real-Data Gap Measurement and the Circularity of Simulated RCA Benchmarks}
+\author{Hai-Dang Dang$^{1}$ \and Dinh Thieu Quang$^{1}$ \and Simon Park$^{1,*}$\\[3pt]
+{\normalsize $^{1}$VinUniversity, Hanoi, Vietnam}\\[2pt]
+{\normalsize \fake{hai-dang.dang@vinuni.edu.vn \quad dinh.quang@vinuni.edu.vn \quad $^{*}$simon.park@vinuni.edu.vn}}}   % PLACEHOLDER emails
+\date{}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-Root cause analysis (RCA) of machining faults lacks public data with ground-truth causes, so RCA methods are routinely evaluated on simulators whose generator is also used to build the diagnostic nodes.
-We build a regenerative-milling simulator (delay-differential equations with helical flutes and edge forces) and ground its healthy baseline in a real multi-sensor milling dataset by modelling accelerometer and microphone spectra and their dependence on cutting conditions.
-Fault effects (stiffness, damping, tool wear, depth, spindle speed) are injected through the simulator and scaled by an effect-size calibration against real anomalous cuts.
-We then evaluate six causal RCA algorithms on a 14-node graph following a root-cause-ranking protocol.
-When diagnostic nodes and test faults come from the same generator, top-1 accuracy at $m{=}10$ interventional samples is 0.52--0.98 (0.80--0.98 for five of six algorithms); when the simulator's physical parameters are shifted at test time it falls to 0.35--0.71, and the ordering of methods changes.
-Ablations show that this accuracy comes from supervised estimates of the root-cause nodes, not from the causal graph: replacing the graph by a shuffled or an empty one leaves every algorithm unchanged, and label-free nodes drop accuracy to near chance.
-The simulated healthy baseline is still distinguishable from real data (classifier two-sample test, balanced accuracy $0.82\pm0.04$), and a comparison with a real defective tool shows large shifts at low frequencies and in non-synchronous indices that none of the simulated faults reproduces.
-We therefore present the results as a measurement of how strongly simulated RCA benchmarks depend on generator assumptions and node construction, not as evidence of real-world diagnostic accuracy.
+Root cause analysis (RCA) in machining aims to explain why a milling operation departs from healthy behaviour, for example because of a loose clamp, a worn tool, an excessive depth of cut or an unsuitable spindle speed, and it is a prerequisite for autonomous, zero-defect production.
+Real cuts with known causes are scarce and costly to produce, so simulation is the natural source of labelled data, and models trained on simulated cuts have already been transferred to real machines for single fault families such as chatter.
+These studies, however, build the diagnostic models and the test faults from the same simulator, treat one fault family on one machine, and do not measure how large the gap to real signals is or which part of it matters.
+We present a provenance-tracked regenerative-milling simulator whose healthy baseline is modelled from real multi-sensor spectra, and an evaluation framework that separates the healthy gap, the fault-signature gap and the circularity of the diagnostic procedure, applied to six causal RCA algorithms and to real-data transfer baselines.
+Experiments show that accuracy that is near perfect inside the generator falls from 0.80--0.98 to 0.35--0.71 when the generator's parameters are shifted, that the causal graph contributes nothing in this benchmark, and that no simulated fault reproduces the signature of a real defective tool.
+The simulator, the benchmark and the protocol are open source at \url{https://github.com/danghaidang04/RCA-for-Chatter-Simulation}.
 \end{abstract}
 
-\section{Introduction}
-Diagnosing why a milling operation misbehaves (loose fixture, worn tool, excessive depth, unsuitable spindle speed) requires knowing which physical cause produced the sensor signals.
-Real datasets rarely record causes; they record sensor streams and, at best, expert labels of ``normal'' or ``abnormal''.
-The recently released MSM dataset \citep{kim2026msm} is a rare multi-sensor milling collection with expert labels, but it does not provide root-cause annotations for most anomalies.
-Causal RCA methods, several developed for microservices \citep{ikram2022rcd,pham2024baro} and related outlier-explanation settings \citep{orchard2025}, take an observational dataset of healthy behaviour and a few anomalous samples, and rank graph nodes by how much their mechanism changed.
-Applying them to machining needs a source of faulty data with known causes, and the natural source is a simulator.
+%% =============================================================================================
+\section{Introduction}\label{sec:intro}
+Milling is the workhorse of discrete manufacturing, and its quality depends on a small set of physical conditions that are easy to disturb: how stiffly the workpiece is clamped, how far the tool overhangs, how worn the cutting edge is, and whether the programmed depth of cut and spindle speed lie inside the stable region of the machine--tool system.
+\emph{Root cause analysis} (RCA) for milling takes the signals that a machine already produces (accelerometers on the spindle, a microphone, spindle power and controller values, sometimes a force dynamometer) and returns a ranked list of the physical causes that explain an observed deviation from healthy cutting.
+The remedy depends on the cause: a loose fixture is re-clamped, a worn tool is replaced, an excessive depth is re-programmed, and a speed that falls into a lobe pocket is moved.
+Detecting that something is wrong is therefore not enough; autonomous and zero-defect production, and the reduction of scrap and unplanned downtime, require the machine to say \emph{why}.
 
-\paragraph{The problem.}
-A simulator-based RCA benchmark is only informative if the simulated data resemble real data and if the diagnostic procedure does not exploit the simulator itself.
-Both conditions are hard to check: real root causes are unavailable, and nodes of the causal graph are usually derived from, or trained on, the same generator that produces the test faults.
+\paragraph{Why the problem is hard.}
+The internal quantities that define the causes (stiffness, damping, cutting-force coefficients, tool wear) cannot be measured during cutting, and the same symptom, for instance a louder and more broadband signal, can arise from several of them.
+Real labelled data are the obvious route to learning the mapping from signals to causes, but they are expensive and often impossible to collect in numbers: causes such as a deliberately loosened clamp, an overloaded tool or a chipped flute damage parts, tools and sometimes the machine, and each requires a controlled cutting campaign on every machine of interest.
+Public machining datasets therefore record sensor streams together with, at best, expert labels of normal or abnormal operation \citep{kim2026msm}, or a single measured quantity such as flank wear \citep{denkena2023luh}, but not several known root causes.
 
-\paragraph{What we do.}
-(1) We implement a regenerative-milling simulator for the tool used in MSM, with every parameter tagged as fixed from a catalogue, learned from data, or assumed (Appendix~\ref{app:registry}).
-(2) We build the healthy baseline from real spectra rather than from the simulator, and report honestly how close it is (classifier two-sample test).
-(3) We inject simulated faults and calibrate their scale by effect size on real anomalous cuts.
-(4) We run six causal RCA algorithms and test them with and without a mismatch between the generator used to build the nodes and the one used to generate the faults.
+\paragraph{What has been done.}
+Four lines of work address parts of the problem.
+\emph{Physics-based models} predict the stability of milling from the tool-tip transfer function and the cutting-force coefficients \citep{altintas2020}; they say whether a cut will chatter, but they need quantities that are rarely known for a given machine and tool, and they do not infer causes from measured signals.
+\emph{Data-driven monitoring} learns chatter or tool-wear detectors from measurements and, to cope with changes of machine and condition, uses transfer learning, domain-adversarial training and meta-learning \citep{yesilli2022tlchatter,wang2020datwear,li2023metadg}, sometimes combined with physics or digital twins \citep{li2025physguided,yang2022hybridwear,han2025dtmech}; these detectors target one fault family and rely on real labels from the source machines.
+\emph{Simulation-to-real learning} trains on simulated cuts and applies the model to a real machine: random forests trained on process simulations detect chatter \citep{alberts2024sim2real} and tool-related faults \citep{ebrahimi2023smartfaults}, and domain randomisation, adversarial refinement and simulation-based inference are general tools for the same purpose \citep{tobin2017,shrivastava2017,cranmer2020}.
+\emph{Causal root cause analysis} ranks the nodes of a causal graph by how much their mechanism changed between healthy and anomalous data \citep{ikram2022rcd,ikram2025rcg,pham2024baro,orchard2025,fang2025simplerca,lee2026brcd}; it was developed for software systems and has not, to our knowledge, been applied to machining signals with known causes.
 
-\paragraph{Main findings.}
-(i) Top-1 accuracy at $m{=}10$ drops from $0.80$--$0.98$ (five of six algorithms) to $0.35$--$0.71$ (all six) under moderate shifts of the simulator's stiffness, damping and force coefficients, and the ranking of the algorithms changes.
-(ii) The causal graph is irrelevant in this benchmark: shuffled and empty graphs give the same accuracy as the physical graph, and nodes built without simulator labels give near-chance accuracy, so the benchmark measures the quality of supervised node estimators rather than causal reasoning.
-(iii) A real defective tool shifts low-frequency energy and non-synchronous indices by several standard deviations, and none of the simulated faults reproduces this.
-
-\paragraph{What we do not show.}
-We have no validation of the RCA ranking on real root causes (the real defective-tool data test only the signature of one cause, on a different tool than the one simulated), and the simulated healthy baseline is distinguishable from real data (Section~\ref{sec:limits}).
-
-\section{Related Work}
-\paragraph{Regenerative chatter and milling simulation.}
-Regenerative chatter stability and its analytical and time-domain treatment are surveyed by \citet{altintas2020}; we use the zero-order stability-lobe approximation and a time-domain delay model in that tradition.
-
-\paragraph{Machining datasets.}
-\citet{kim2026msm} release synchronised accelerometer, microphone, current and controller data from three machines with expert anomaly labels (normal, abnormal, defective tool). We use a subset (Section~\ref{sec:data}).
-
-\paragraph{Causal root cause analysis.}
-RCD \citep{ikram2022rcd} localises root causes with conditional-independence tests, BARO \citep{pham2024baro} uses multivariate Bayesian online change-point detection, and \citet{orchard2025} study root causes of outliers without full structural knowledge; our ``Smooth Traversal'' baseline follows the repository's description attributed to this work \verify{confirm that the implemented algorithm matches the paper}.
-BRCD, RCG and SimpleRCA are implemented in our codebase from the repository's descriptions \cn{BRCD (Lee, Zhou, Kocaoglu, ICML 2026), RCG (UAI 2025), SimpleRCA (Fang 2025): the author confirms the sources; bibliographic entries still to be added}.
-
-\paragraph{Calibrating simulators to data.}
-Calibration of computer models with a model-discrepancy term is classical \citep{kennedy2001}; domain randomisation \citep{tobin2017}, adversarial refinement of simulated data \citep{shrivastava2017} and simulation-based inference \citep{cranmer2020} are alternatives. We considered adversarial refinement but did not use it because of the small number of real cuts; we use a classifier two-sample test only as a diagnostic \cn{Lopez-Paz and Oquab 2017; Gretton et al. 2012}.
-
-\section{Data}\label{sec:data}
-We use datasets 5 and 6 of machine \texttt{imi\_vm20i} (Hurco, wet cutting, AA~6061): tool 2SE0250IX150A (2 flutes, 6.35~mm, flute length 38.1~mm, per the manufacturer catalogue), axial depth 38.1~mm, spindle speed 9000--12000~rpm, radial depth $a_e\in\{0.0635,0.1905,0.3175\}$~mm, up and down milling.
-This gives 73 cuts (48 labelled normal, 25 abnormal); each cut is split into three 0.3~s windows (219 windows).
-We verified that the spindle speed and feed in the label files equal the controller-recorded values (ratio 1.000).
-In these two datasets the abnormal label is strongly associated with up-milling rather than with a specific root cause (all 36 down-milling cuts are normal).
-Cuts with a documented root cause (defective tools, clamp failure, excessive depth) exist in other datasets but use different tools, and we could not complete their analysis (Section~\ref{sec:limits}).
-
-\section{Method}
-\subsection{Simulator}
-The tool-tip displacement follows modal dynamics driven by cutting forces; the chip thickness of each flute slice depends on the current and delayed displacement.
-For each of the $N_z{=}8$ axial slices of a flute, with helix lag $\psi(z)=2z\tan\beta/D$, the elemental forces are
-\begin{equation}
-dF_t=(K_t h+K_{te})\,dz,\qquad dF_r=(K_r K_t h+K_{re})\,dz,
-\end{equation}
-where $h$ is the chip thickness (clipped at 0 and a cap), $K_{te},K_{re}$ are edge-force coefficients and $\beta{=}30^\circ$ (manufacturer series feature list; medium confidence).
-Spindle imbalance adds a synchronous rotating force $U\Omega^2$.
-With helix and edge forces switched off the implementation reproduces our earlier straight-flute reference to $7\times10^{-16}$ relative error.
-The zero-order stability-lobe computation reproduces the repository's previous implementation exactly on the same transfer function, and a time-domain grid agrees with the lobe prediction on 79\% of $(n,a)$ points (Figure~\ref{fig:lobes}); the disagreement is concentrated at moderate depth, where the zero-order approximation is known to be conservative for half-immersion cuts.
+\paragraph{The remaining challenge.}
+Simulation-to-real studies in machining report that a model works on a real machine, but they do not tell the reader how much of the accuracy is due to the simulator itself.
+Three parts of the simulation gap are not separated in the literature.
+First, the \emph{healthy baseline} of a simulator may differ from real signals, so that a classifier learns to recognise the simulator.
+Second, the simulated \emph{fault signatures} may differ from real ones, so that learning the former does not diagnose the latter.
+Third, the \emph{diagnostic procedure} may exploit the generator: when the nodes of a causal graph are estimated by regressors trained on labels produced by the very simulator that generates the test faults, a high accuracy is guaranteed by construction (Figure~\ref{fig:teaser}).
+Without separating the three, a high simulated accuracy cannot be interpreted, and a simulator whose parameters have no source can silently decide the outcome of a benchmark.
 
 \begin{figure}[t]\centering
-\includegraphics[width=0.78\linewidth]{figures/exp1_lobes_validation.png}
-\caption{Stability lobes (zero-order approximation, 4-flute reference transfer function) and time-domain simulation outcomes on a speed--depth grid.}\label{fig:lobes}
+\includegraphics[width=0.72\linewidth]{figures/f_teaser.png}
+\caption{Why a simulated RCA benchmark cannot be read at face value: top-1 root-cause accuracy of six causal RCA algorithms (mean over five root causes, $m{=}10$ anomalous samples; dotted line: chance) when the diagnostic nodes and the test faults come from the same simulator (blue) and when the simulator's physical parameters are shifted at test time (red).}\label{fig:teaser}
 \end{figure}
 
-\subsection{Provenance of every parameter}
-Following a fixed policy, a parameter is \emph{fixed} if a verified source gives its value for this exact tool and context, taken from a \emph{range} if a source gives one, and \emph{learned} from data otherwise; values with no source or data are marked \emph{assumed}.
-Appendix~\ref{app:registry} lists each parameter, its tier and the verification status.
-Cutting-force coefficients for this tool and material, the tool-tip transfer function and the spindle imbalance had no usable source in our search and are therefore not fixed; we found no verified range for them either.
-In practice our direct attempts to learn them failed (Section~\ref{sec:neg}), so the simulator's physical parameters are nominal values, which is itself an assumption.
+\paragraph{Our solution.}
+We build a pipeline in which every ingredient is accountable to real data (Figure~\ref{fig:architecture}).
+The \emph{simulator} is a regenerative milling model whose parameters carry a provenance tier (fixed, ranged, learned or assumed), so that unsupported assumptions are visible.
+The \emph{healthy baseline} is modelled from real accelerometer and microphone spectra rather than simulated, so that the healthy gap can be measured directly with a classifier two-sample test; the simulator contributes only the \emph{difference} between a faulty and a healthy run, scaled to real effect sizes.
+The \emph{RCA stage} runs six causal algorithms on a 14-node graph and measures the circularity of the benchmark by shifting the generator's parameters at test time and by ablating the graph and the way the nodes are built.
+Finally, the simulated and real signals are compared on real data: a healthy baseline, a real defective tool, and a public multi-machine wear dataset on which simulation is pitted against domain-adaptation and one-feature baselines.
+The insight is that the question ``does simulation support diagnosis?'' has to be decomposed before it can be answered, and that each component can be measured with data that are publicly available today.
 
-\subsection{Healthy baseline from real spectra}
-For each 0.3~s window we estimate the one-sided power spectral density of the two accelerometer channels and the microphone, and summarise it by a piecewise-linear envelope over log-frequency (18 knots; knot values are band-averaged linear power so that total energy is preserved) plus the rms amplitude of the first eight harmonics of the spindle frequency $f_0=n/60$.
-The parameters are regressed on the cutting conditions (kernel ridge on $\log n$, $\log a_e$, $\log f$, direction, label) and the residuals are decomposed by one-way variance analysis into a between-cut and a within-cut component on twelve principal directions, with out-of-sample residuals.
-Synthetic windows are generated by shaping complex Gaussian spectra with the envelope and adding harmonics with random phases.
-The real spectra differ clearly from white or pink noise: the accelerometer shows a flat floor, a brick-wall cut-off near 23~kHz and a cluster of peaks at 1.5--2.3~kHz that is about two orders of magnitude stronger in abnormal windows; the microphone shows a broad hump at 1--6~kHz (Figure~\ref{fig:psd}).
+\paragraph{Findings.}
+Accuracy near one inside the generator is not evidence of diagnostic ability: it drops sharply under a moderate shift of the generator, does not depend on the causal graph, and is close to chance when nodes are built without simulator labels.
+The simulated healthy baseline and the signature of a real defective tool remain distinguishable from real data, and the nominal simulator turns out to lie above its own stability limit for every real cutting condition.
+On a public wear dataset, simulation-only transfer to unseen machines is machine-dependent and does not beat a one-feature baseline on two of three machines, and fine-tuning from simulation is no better than training from scratch on this task.
 
+\paragraph{Contributions.}
+\begin{enumerate}
+\item \textbf{A measurement of benchmark circularity.} We show for six causal RCA algorithms that accuracy depends on how nodes are constructed and not on the causal graph, and quantify its collapse under generator shift (Section~\ref{sec:main}).
+\item \textbf{A component-wise measurement of the simulation gap with negative results.} A real-data healthy baseline with a classifier two-sample test, a comparison with a real defective tool including a chipped-flute hypothesis, and a stability analysis of the simulator (Section~\ref{sec:analysis}).
+\item \textbf{Evidence on when simulation helps on real data}, with domain-adaptation, one-feature and real-only baselines on a public three-machine dataset (Sections~\ref{sec:main} and~\ref{sec:ablation}).
+\item \textbf{An open pipeline}: a provenance-tracked simulator with FRF import, a precise account of the RCA algorithms as implemented and of their deviations from the originals, and an evaluation protocol for real multi-cause data (Sections~\ref{sec:method} and~\ref{sec:future}).
+\end{enumerate}
+
+%% =============================================================================================
+\section{Related Work}\label{sec:related}
+We organise the literature by the part of the problem it addresses and finish with a summary of what each line leaves open (Table~\ref{tab:gap}).
+
+\subsection{Physics-based modelling of milling dynamics and chatter}
+Regenerative chatter is a self-excited vibration caused by the delay between the vibration marks left by successive teeth.
+Its stability can be predicted analytically with the zero-order approximation of the stability lobes, in the frequency domain with multi-frequency and semi-discretisation methods, and in the time domain with delay-differential-equation simulation \citep{altintas2020}.
+These models take the tool-tip transfer function and the cutting-force coefficients as inputs and return a stability boundary or a simulated vibration.
+They are the right foundation for a simulator of faulty cuts because the effect of a stiffness, damping, force or speed change on the signal follows from the model.
+Their limitation for diagnosis is the inverse direction: they predict the signal from known parameters but do not infer the parameters (the causes) from measured signals, and the parameters of a given tool, holder and machine are rarely known precisely.
+
+\subsection{Data-driven monitoring and transfer for tool condition}
+Learning-based chatter detectors and tool-wear estimators are trained on measured vibration, sound, force or power signals.
+Because their accuracy falls when the machine, tool or cutting conditions change, transfer learning for chatter detection \citep{yesilli2022tlchatter}, domain-adversarial transfer for generalised tool-wear prediction \citep{wang2020datwear} and semi-supervised multi-source meta domain generalisation across cutting conditions \citep{li2023metadg} have been proposed.
+Physics-guided deep learning \citep{li2025physguided}, hybrid online data--model wear detection \citep{yang2022hybridwear}, digital twins with a dynamics core \citep{han2025dtmech} and single-sensor wear prediction \citep{hirsch2025singlesensor} add structure or reduce the sensing effort; systematic reviews of physics-informed learning for prognostics and health management and of simulation-to-real transfer in digital twins are given by \citet{braun2026pinnphm} and \citet{ma2025dtpdm}.
+These works address one fault family (chatter or wear), rely on real labelled data from the source domains, and do not rank several root causes.
+We use their ideas (domain-adversarial training, correlation alignment) as baselines on public wear data.
+
+\subsection{Simulation-to-real learning in machining}
+\citet{alberts2024sim2real} train a random forest on more than 140\,000 simulated chatter cases and fine-tune it with 10\% of 1\,600 real instances from one custom three-axis machine, reaching 86.1\% accuracy on a chatter-versus-stable decision; they state limitations related to the simulation-to-real difference.
+\citet{ebrahimi2023smartfaults} train random forests on analytical process-simulation data to monitor tool-related faults in milling and report 94\% accuracy, and 93\% on actual measurements (from the abstract; full text not read).
+These studies establish that simulation-to-real training is feasible for one fault family on one machine.
+They do not decompose the simulation gap, test how much of the accuracy comes from sharing the generator between training and testing, or consider several root causes and several machines.
+Generic tools for narrowing a simulation gap include calibration with a discrepancy term \citep{kennedy2001}, domain randomisation \citep{tobin2017}, adversarial refinement of simulated data \citep{shrivastava2017} and simulation-based inference \citep{cranmer2020}; we use a classifier two-sample test \citep{lopezpaz2017c2st} as a diagnostic of the gap, not as a training signal.
+
+\subsection{Causal root cause analysis}
+Causal RCA formulates a failure as an intervention on one node of a causal graph and ranks nodes by the change of their mechanism between a healthy dataset and a few anomalous samples.
+RCD \citep{ikram2022rcd} tests the independence of a failure indicator from each metric under conditioning, RCG \citep{ikram2025rcg} ranks candidates by conditional mutual information given the parents in a partial causal structure, BARO \citep{pham2024baro} combines Bayesian change-point detection with a robust deviation score, SimpleRCA \citep{fang2025simplerca} compares the maximum of the anomalous data with the 95th percentile of the normal data, and Smooth Traversal \citep{orchard2025} traverses the ancestors of a trigger node using outlier scores.
+BRCD \citep{lee2026brcd} computes a Bayesian posterior over root causes from a CPDAG learned before the failure, with consistency guarantees, and compares ten methods on synthetic and microservice benchmarks; its authors observe that the methods based on marginal deviation (BARO, SimpleRCA) are competitive on two of the systems but do not generalise.
+These methods were developed and evaluated for software systems.
+Applying them to machining requires data with known causes, which is the role of simulation in this work; the algorithms in our code base are simplified re-implementations on a known graph (Section~\ref{sec:rca}).
+
+\subsection{Datasets}
+The MSM dataset \citep{kim2026msm} provides synchronised accelerometer, microphone, current and controller data from three machines with expert labels (normal, abnormal, defective tool), and the LUH dataset \citep{denkena2023luh} provides force and machine signals of three machines with three tools each and measured flank wear.
+Neither records several known root causes, which is why we use them for the healthy baseline, the signature of one real cause, and the study of transfer between machines.
+
+\subsection{Summary of the gaps}
+\begin{table}[t]\centering\footnotesize
+\caption{Coverage of the closest literature along the six aspects needed to judge simulation-based root cause diagnosis in machining. \cmark: addressed; \pmark: partly; \xmark: not addressed; --: not reported or not applicable. $^{\ddagger}$ judged from title and abstract only. C1 machining domain; C2 several root causes; C3 simulation used as the data source; C4 dependence on the generator tested; C5 gap to real signals measured; C6 parameter provenance reported.}\label{tab:gap}
+\begin{tabular}{p{5.6cm}cccccc}\toprule
+Work & C1 & C2 & C3 & C4 & C5 & C6\\\midrule
+Chatter and stability theory \citep{altintas2020} & \cmark & \xmark & \xmark & -- & -- & --\\
+Chatter detection with transfer \citep{yesilli2022tlchatter}$^{\ddagger}$ & \cmark & \xmark & \xmark & -- & -- & --\\
+Tool-wear transfer \citep{wang2020datwear,li2023metadg}$^{\ddagger}$ & \cmark & \xmark & \xmark & -- & -- & --\\
+Physics-guided, hybrid, digital-twin wear \citep{li2025physguided,yang2022hybridwear,han2025dtmech}$^{\ddagger}$ & \cmark & \xmark & \pmark & -- & -- & --\\
+Simulation to real, chatter \citep{alberts2024sim2real} & \cmark & \xmark & \cmark & \pmark & \pmark & --\\
+Simulation to real, tool faults \citep{ebrahimi2023smartfaults}$^{\ddagger}$ & \cmark & \pmark & \cmark & -- & -- & --\\
+Causal RCA, software \citep{ikram2022rcd,ikram2025rcg,pham2024baro,fang2025simplerca,orchard2025} & \xmark & \cmark & \xmark & -- & -- & --\\
+BRCD \citep{lee2026brcd} & \xmark & \cmark & \pmark & \pmark & -- & --\\\midrule
+\textbf{This work} & \cmark & \cmark & \cmark & \cmark & \cmark & \cmark\\\bottomrule
+\end{tabular}
+\end{table}
+The table shows that no prior work combines machining, several root causes and a measurement of the simulation gap.
+The columns that are empty for all prior work (C4 and C6, partly C5) are exactly the ones needed to interpret a simulated benchmark, and they define the contributions of this paper.
+
+%% =============================================================================================
+\section{Method}\label{sec:method}
+\subsection{Problem formulation and overview}\label{sec:overview}
+We consider a milling cut described by its condition $c=(n,a_e,a_p,f_t,\text{direction})$ (spindle speed, radial and axial depth, feed per tooth, up or down milling) on a machine--tool system $\theta$ (modal dynamics, force coefficients, sensor constants).
+A cut yields sensor signals $s$ (two accelerometer channels and a microphone, windowed to 0.3~s).
+A root cause is the change of one physical factor $z_j$ among five (clamp stiffness, damping, tool wear, radial depth, spindle speed) relative to the healthy value.
+Given a healthy dataset $D_\text{obs}$ and $m$ anomalous windows $D_\text{int}$ produced by an unknown cause, the \emph{RCA task} is to return a ranking of the nodes of a causal graph $G$ in which the true cause is as high as possible.
+Because real $(D_\text{int},\text{cause})$ pairs are scarce, the data for developing and testing RCA come from a simulator that must be accountable to real data.
+Figure~\ref{fig:architecture} gives the architecture; Section~\ref{sec:input} describes the inputs, Section~\ref{sec:sim} the simulation and Section~\ref{sec:rca} the RCA stage.
+
+\begin{landscape}
+\begin{figure}[p]\centering
+\includegraphics[width=0.93\linewidth]{figures/f_architecture.png}
+\caption{Architecture of the pipeline. \textbf{Input}: cutting condition, tool and machine, force and sensor constants, fault specification and real healthy cuts, all tagged in a provenance registry. \textbf{Simulation}: a regenerative milling model and a sensor chain give the fault effect $\Delta$ as the difference between a faulty and a healthy run; a baseline fitted to real spectra supplies the healthy signal. \textbf{RCA}: 30 features give 14 nodes, six causal algorithms rank them, and synthetic tests and real-data checks measure the three parts of the simulation gap.}\label{fig:architecture}
+\end{figure}
+\end{landscape}
+
+\subsection{Input}\label{sec:input}
+\paragraph{Motivation.} The result of a simulation-based benchmark depends on every number that enters the simulator; the inputs therefore have to be explicit, and each must say where it comes from.
+\paragraph{Design.} The input consists of five groups (Table~\ref{tab:inputs}).
+(i) The \emph{cutting condition} is read from the label files of the real data (spindle speed, feed, radial depth, direction) and verified against the controller values (ratio 1.000).
+(ii) The \emph{tool and machine description} fixes the geometry (2SE0250IX150A: two flutes, 6.35~mm, flute length 38.1~mm, helix $30^\circ$) and the modal dynamics of the tool tip; for a new machine the dynamics are read from a hammer-test transfer function by the FRF importer (Section~\ref{sec:frf}).
+(iii) The \emph{force and sensor constants} (cutting-force coefficients, imbalance, gains and noise floors) are the parameters that had no usable source.
+(iv) The \emph{fault specification} defines five faults and their severity ranges.
+(v) The \emph{real healthy cuts} supply the spectra from which the healthy baseline is built.
+Every parameter is registered with a tier: \emph{fixed} (a verified source gives the value for this exact tool and context), \emph{range} (a source gives a range), \emph{learned} (only data constrain it) or \emph{assumed} (neither), with its context and verification status (Figure~\ref{fig:prov}, Appendix~\ref{app:registry}).
+\paragraph{Advantage.} The registry makes unsupported assumptions visible to the reader and prevents a literature value from being reused outside the context in which it was measured.
+\begin{table}[t]\centering\small
+\caption{Input groups of the pipeline and their origin.}\label{tab:inputs}
+\begin{tabular}{p{3.0cm}p{6.0cm}p{5.2cm}}\toprule
+Input group & Content & Origin (provenance tier)\\\midrule
+Cutting condition & $n$, $a_e$, $a_p$, $f_t$, direction, number of teeth & label files of MSM, checked against the controller (fixed)\\
+Tool and machine & diameter, flutes, helix, flute length; modal $f_n,\zeta,k$ per axis & catalogue (fixed, helix medium confidence); modal values assumed, or measured FRF\\
+Force and sensor constants & $K_t,K_r,K_{te},K_{re}$, imbalance $U$, sensor gains and noise floors, runout & no verified source (assumed); learning failed (Section~\ref{sec:neg})\\
+Fault specification & stiffness, damping, wear, depth, speed; severity ranges & assumed (no source)\\
+Real healthy cuts & 73 cuts, 219 windows of 0.3~s, three channels & MSM datasets 5 and 6 (real data)\\\bottomrule
+\end{tabular}
+\end{table}
+\begin{figure}[t]\centering
+\includegraphics[width=0.5\linewidth]{figures/f_provenance.png}
+\caption{Provenance tiers of the simulator parameter groups.}\label{fig:prov}
+\end{figure}
+
+\subsection{Simulation}\label{sec:sim}
+\subsubsection{Structural dynamics and cutting forces}
+\paragraph{Motivation.} Regenerative chatter arises from the delayed feedback between the vibration marks left by one tooth and the chip thickness of the next; a time-domain model with the correct delay reproduces both stable forced vibration and saturated chatter, and the effect of a stiffness, damping, force or speed change.
+\paragraph{Design.} Each tool-tip axis $q\in\{x,y\}$ is a sum of modes with transfer function
+\begin{equation}
+H_q(s)=\sum_{r}\frac{\beta_r s+\alpha_r}{s^2+2\zeta_r\omega_r s+\omega_r^2},\qquad \beta_r=2\sigma_r,\;\;\alpha_r=2(\zeta_r\omega_r\sigma_r-\omega_{d,r}\nu_r),
+\end{equation}
+(residues $\sigma_r,\nu_r$; the nominal tool uses one mode per axis with $H=1/[m(s^2+2\zeta\omega s+\omega^2)]$, $m=k/\omega^2$). Each mode is a two-state system $[x_r,\dot x_r]$ discretised exactly with a zero-order hold, $(A_d,B_d)$ read from the matrix exponential of $\bigl(\begin{smallmatrix}A\,\Delta t & B\,\Delta t\\ 0&0\end{smallmatrix}\bigr)$, at $\Delta t=1/25\,600$~s.
+Tooth $k$ of a flute with $N$ teeth is divided into $N_z{=}8$ axial slices of height $dz=a_p/N_z$; the angle of slice $q$ at time $t$ is
+\begin{equation}
+\phi_{k,q}(t)=\Omega t+\frac{2\pi k}{N}-z_q\frac{2\tan\beta}{D},\qquad z_q=(q+\tfrac12)dz,
+\end{equation}
+where $\Omega$ is the spindle angular speed, $\beta$ the helix angle and $D$ the tool diameter. A slice cuts only while $\phi_{k,q}\in[\phi_{st},\phi_{ex})$, with span $\arccos(1-2a_e/D)$ (up milling: $[0,\text{span})$; down milling: $[\pi-\text{span},\pi)$). Its chip thickness depends on the current and delayed displacement,
+\begin{equation}
+h_{k,q}=\Big[f_t\sin\phi_{k,q}+\big(x(t)-x(t-T)\big)\sin\phi_{k,q}+\big(y(t)-y(t-T)\big)\cos\phi_{k,q}+\nu_k(t)\Big]_{0}^{h_{\max}},\quad T=\frac{60}{N\,n},
+\end{equation}
+with $n$ the spindle speed in rpm, $f_t$ the feed per tooth (offset by $\pm$ the runout for the first two teeth), a fractional delay $T/\Delta t$ implemented by linear interpolation, tooth-wise roughness noise $\nu_k\sim\mathcal N(0,0.02\,\mu\text{m})$, and $h_{\max}=0.3$~mm. The elemental forces are
+\begin{align}
+dF_t&=(K_t h+K_{te})\,dz,\qquad dF_r=(K_rK_t h+K_{re})\,dz,\\
+F_x&\mathrel{+}=-dF_t\cos\phi-dF_r\sin\phi,\qquad F_y\mathrel{+}=dF_t\sin\phi-dF_r\cos\phi,
+\end{align}
+and spindle imbalance $U$ adds $U\Omega^2[\cos\Omega t,\sin\Omega t]$.
+\paragraph{Advantage and check.} The core runs in numba (13 times faster than the Python reference). With helix and edge forces off it reproduces the pure-Python straight-flute reference to $7\times10^{-16}$, and eight slices are converged (Section~\ref{sec:lobes}).
+
+\subsubsection{Stability lobes}
+For comparison the zero-order approximation \citep{altintas2020} gives, for each chatter frequency $\omega_c$, the eigenvalue $\Lambda=-\frac{1}{2a_0}\big(a_1-\sqrt{a_1^2-4a_0}\big)$ with $a_0=H_xH_y(\alpha_{xx}\alpha_{yy}-\alpha_{xy}\alpha_{yx})$ and $a_1=\alpha_{xx}H_x+\alpha_{yy}H_y$, the limit depth $a_{\lim}=-\frac{2\pi\Lambda_R}{NK_t}(1+\kappa^2)$, $\kappa=\Lambda_I/\Lambda_R$, and the spindle speeds $n=60/(N T_k)$, $T_k=(\pi-2\psi+2k\pi)/\omega_c$, $\psi=\arctan(\Lambda_I/\Lambda_R)$. The lobes provide an independent check of the time-domain model and a test of whether a parameter set operates in the stable region.
+
+\subsubsection{Sensor chain}
+\paragraph{Motivation.} Real RCA data are sensor signals, not displacements; the simulated displacement has to pass through the same kind of measurement chain.
+\paragraph{Design.} Four linear time-invariant blocks implemented in \texttt{scipy.signal}: (1) a relative tool--work displacement sensor (low-pass at 8~kHz, noise 0.05~$\mu$m); (2) an accelerometer, $a=\ddot q/g$ band-passed to 5~Hz--10~kHz with a gain to the sensor location and IEPE noise; (3) a microphone, $p=\frac{\rho_0A}{4\pi r}a_\text{res}+c_\text{cut}\dot F_x$ delayed by $r/c$, band-passed to 20~Hz--10~kHz, plus floor noise; and (4) a force dynamometer, $-F$ through a second-order system ($f_n{=}2$~kHz, $\zeta{=}0.03$) plus drift and noise (Figure~\ref{fig:waveforms}). Simulation windows of 0.6~s are generated and the last 0.3~s analysed; signals are resampled with a polyphase filter to the sampling rates of the real data so that identical features can be computed.
+\begin{figure}[t]\centering
+\includegraphics[width=0.95\linewidth]{figures/f_waveforms.png}
+\caption{Simulated four-sensor signals at nominal parameters for the two extreme radial depths of the real data (10\,000~rpm, 2-flute 6.35~mm tool, $a_p{=}38.1$~mm). The amplitudes (millimetre-scale displacement, tens to hundreds of $g$) are not physical for stable cutting; see Section~\ref{sec:regime}.}\label{fig:waveforms}
+\end{figure}
+
+\subsubsection{Healthy baseline from real spectra}\label{sec:base}
+\paragraph{Motivation.} Fitting the simulator's absolute signal levels directly to real windows did not converge (Section~\ref{sec:neg}), and Section~\ref{sec:regime} explains why the nominal simulator cannot supply a realistic healthy signal; the data constrain the \emph{healthy signal} far better than the physics constants.
+\paragraph{Design.} For each 0.3~s window we compute the power spectral density of two accelerometer channels and the microphone and summarise it by a piecewise-linear envelope over log-frequency (18 knots, band-averaged linear power so that energy is preserved) plus the rms of the first eight harmonics of the spindle frequency. Envelope parameters are regressed on the cutting conditions (kernel ridge on $\log n$, $\log a_e$, $\log f$, direction); out-of-fold residuals are split by one-way variance analysis into between-cut and within-cut parts on twelve principal directions. Windows are synthesised by shaping complex Gaussian spectra with the envelope and adding harmonics with random phases (real spectra in Figure~\ref{fig:psd}).
+\paragraph{Advantage.} The healthy part of a simulated window is real-data-driven, so any remaining difference to real data (Section~\ref{sec:healthy}) is attributable to the baseline model, not to the physics.
 \begin{figure}[t]\centering
 \includegraphics[width=0.95\linewidth]{figures/real_psd_examples.png}
 \caption{Power spectral density of four real windows (accelerometer left, microphone right): normal and abnormal cuts at different spindle speeds.}\label{fig:psd}
 \end{figure}
 
-\subsection{Fault injection and gain calibration}
-For each window and fault class we run the simulator twice at identical conditions and noise seed (healthy and faulty), and add the scaled difference $g\,(s_{\text{fault}}-s_{\text{healthy}})$ to the real-spectra baseline, with separate gains $g_{\text{acc}},g_{\text{mic}}$.
-The five faults and their severity ranges (assumed, no source) are: stiffness $\times[0.4,0.9]$; damping $\times[0.3,0.8]$; tool wear $K_t\times[1.1,1.6]$ with edge forces increased; radial depth $\times[1.5,4]$; spindle speed $\pm[3\%,15\%]$.
-Matching the distribution of simulated faulty features to real abnormal windows did not identify the gains (the objective was flat for small gains, Section~\ref{sec:neg}); we therefore set them by effect size, so that the mean shift of $\log_{10}$ acceleration rms and of microphone level equals the real difference between abnormal and normal windows ($+0.375$ and $+4.86$~dB), giving $g_{\text{acc}}=7.7\times10^{-6}$ and $g_{\text{mic}}=0.0116$.
-Because real abnormal windows here are mainly up-milling cuts, this scale is an assumption about how strong a fault is, not an estimate of it.
+\subsubsection{Fault injection with effect-size gain}\label{sec:fault}
+\paragraph{Motivation.} A simulator's absolute fault amplitude is unknown, but the \emph{direction} of a fault's effect on the signal is physically constrained.
+\paragraph{Design.} For each window and fault we run the simulator twice with the same condition and noise seed and add $g\,(s_\text{fault}-s_\text{healthy})$ to the baseline, with separate $g_\text{acc},g_\text{mic}$. Faults and ranges (assumed): stiffness $\times[0.4,0.9]$ (natural frequency $\propto\sqrt{k}$); damping $\times[0.3,0.8]$; tool wear $K_t\times[1.1,1.6]$ with $K_{te},K_{re}\times(1+3(s-1))$; radial depth $\times[1.5,4]$; spindle speed $\pm[3,15]\%$. Matching feature distributions did not identify the gains (flat objective), so we set them by effect size: the mean shift of $\log_{10}$ acceleration rms and microphone level equals the real abnormal--normal difference ($+0.375$ and $+4.86$~dB), giving $g_\text{acc}=7.7\times10^{-6}$ and $g_\text{mic}=0.0116$.
+\paragraph{Limit.} Real abnormal windows are mainly up-milling cuts, so the scale is an assumption about fault strength, not an estimate (Section~\ref{sec:sweep}).
 
-\subsection{Causal RCA protocol}
-We follow the root-cause-ranking protocol of the repository: a healthy dataset $D_{\mathrm{obs}}$ and $m$ anomalous samples $D_{\mathrm{int}}$ are given, and each algorithm ranks all 14 nodes; we report top-$k$ accuracy for the true root-cause node.
-The nodes are five root-cause nodes (estimated stiffness, damping, tool wear, depth, and a controller-measured spindle-speed deviation) and nine sensor nodes (log acceleration, microphone level, two spectral non-synchronous indices, three accelerometer bands, two microphone bands).
-The directed graph encodes physical prior knowledge (each root cause points to the sensor quantities it can affect).
-The first four root-cause nodes are soft sensors: gradient-boosted regressors of the logarithm of the latent fault factor from the 30 spectral features, trained on training cuts only (out-of-fold for $D_{\mathrm{obs}}$); the spindle-speed node is the true factor plus 0.5\% reading noise.
-All nodes are standardised with $D_{\mathrm{obs}}$.
-Because the soft sensors are trained on labels from the same simulator, we add a \emph{shifted} test where the simulator's natural frequency, damping, stiffness, force and edge coefficients are multiplied by random factors in $[0.75,1.33]$, $[0.5,2]$, $[0.6,1.7]$, $[0.6,1.6]$ and $[0.4,2.5]$ respectively for each cut, while the soft sensors keep their nominal-parameter training.
-Cuts are split by identity into 43 training and 30 test cuts, stratified by $a_e$; each test point averages 100 random draws of $m$ faulty windows per fault.
+\subsubsection{Features and nodes}
+Each window is described by 30 features: log$_{10}$ acceleration rms, microphone level (dB), two spectral non-synchronous indices, ten log band powers each for the accelerometer and the microphone, the kurtosis of both, and the logarithms of spindle speed, radial depth and feed together with the milling direction. Nine of them are aggregated into the sensor nodes of Section~\ref{sec:rca}.
 
-\section{Experiments}
-\subsection{How realistic is the healthy baseline?}
-We train the baseline model on a subset of cuts and test it on held-out cuts, using a random-forest classifier two-sample test on the four summary features and the conditions, with balanced accuracy and fold assignment by cut (0.5 means indistinguishable).
-The first version of this metric used plain accuracy with five synthetic windows per real window, whose chance level is 0.83; those numbers are discarded.
-Table~\ref{tab:c2st} shows the progression; the final variants remain far from 0.5 and the differences between the kernel-regression and hierarchical variants are within the spread across data splits.
-Feature means match well (e.g.\ log acceleration $-1.37$ simulated vs.\ $-1.38$ real), but their dispersion and joint dependence on conditions do not.
-We could not measure an empirical floor for this test because no cutting condition is repeated in the data (only three $a_e$ values and one cut per condition).
-\begin{table}[t]\centering\small
-\input{tables/tab_c2st.tex}
-\caption{Classifier two-sample test between real and simulated healthy windows on held-out cuts. Three-split values are mean $\pm$ standard deviation over random stratified splits. \verify{values copied from console logs; only the last run is archived}}\label{tab:c2st}
-\end{table}
+\subsection{Root cause analysis}\label{sec:rca}
+\subsubsection{Protocol}
+Following the root-cause-ranking protocol of \citet{lee2026brcd}, a healthy dataset $D_\text{obs}$ and $m$ anomalous samples $D_\text{int}$ are given, the failure is treated as an intervention on one root-cause node, and each algorithm returns a ranking of the nodes; we report top-$k$ accuracy of the true root-cause node (chance $k/14$). Cuts are split by identity into 43 training and 30 test cuts (stratified by $a_e$); each point averages 100 random draws of $m$ faulty windows per fault, and all nodes are standardised with $D_\text{obs}$ so that no algorithm benefits from scale differences (Algorithm~\ref{alg:bench}).
+\begin{algorithm}[t]
+\caption{Benchmark loop for one fault, condition and number of samples $m$.}\label{alg:bench}
+\begin{algorithmic}[1]
+\REQUIRE healthy windows $\mathcal H$, faulty windows $\mathcal F_c$ of cause $c$, soft sensors $\{g_j\}$, graph $G$, algorithm $\mathcal A$
+\STATE $D_\text{obs}\leftarrow$ nodes of $\mathcal H$ (soft sensors out-of-fold), standardise with its mean and s.d.
+\FOR{trial $=1,\dots,100$}
+\STATE draw $m$ windows from $\mathcal F_c$ with replacement if needed; compute nodes with $g_j$; standardise $\to D_\text{int}$
+\STATE ranking $\leftarrow\mathcal A(D_\text{obs},D_\text{int},G)$
+\STATE record whether $\text{node}(c)$ is at rank 1, within 3, within 5
+\ENDFOR
+\RETURN mean top-1/3/5 over trials and over the five causes
+\end{algorithmic}
+\end{algorithm}
 
-\subsection{A negative result: direct calibration of the delay model}\label{sec:neg}
-We tried to fit the simulator's physical and sensor parameters directly to real windows with CMA-ES, matching feature distributions (MMD), later matching group means over cutting conditions.
-With 15 free parameters the loss plateaued near 3 (squared errors in units of the real standard deviation) and did not converge after 35--40 generations; we stopped it by a pre-set rule.
-Earlier low-MMD fits coexisted with qualitatively wrong dependence on conditions: in the real data the microphone level correlates with spindle speed at $+0.85$ while the simulation gave $0.00$, and the simulated acceleration depended on radial depth ($0.69$) where the real one did not ($0.06$).
-A bug that we had to fix on the way is instructive: real features had been computed on windows of about 4~s and simulated features on 0.18~s, which inflated simulated variance threefold.
-We conclude that the available data do not constrain the delay model's absolute levels, which is why we use the simulator only for fault \emph{differences}.
-
-\subsection{Classifying simulated fault classes}
-Table~\ref{tab:cls} reports six-class classification (healthy plus five faults) on 16 held-out cuts, with hyper-parameters chosen on 14 validation cuts. Tree ensembles are best; Gaussian generative models are worse, consistent with highly correlated continuous features.
-These numbers hold \emph{within the simulator}.
-Applying the models to real windows, 91--97\% of real normal windows are classified normal by the three tree and neighbour models, but only 51\% and 57\% by logistic regression and Naive Bayes, and 61, 64 and 72 of 75 real abnormal windows are assigned to tool wear by QDA, random forest and gradient boosting respectively.
-There is no ground truth for the abnormal windows, so we read this as a symptom of the models mapping any broadband increase to tool wear, not as a diagnosis.
-\begin{table}[t]\centering\small
-\input{tables/tab_cls.tex}
-\caption{Six-class classification on simulated data, 16 held-out cuts (chance top-1 $=0.167$).}\label{tab:cls}
-\end{table}
-
-\subsection{Causal RCA}
-Table~\ref{tab:causal} gives mean top-1 accuracy over the five root causes (chance $=1/14\approx0.07$).
-With a shared generator, Smooth Traversal and BARO approach 1.0 as $m$ grows, BRCD and RCG reach about 0.85--0.90, RCD declines with $m$, and SimpleRCA stays near 0.5.
-Under shifted simulator parameters all methods drop; the ordering changes: BARO falls from 0.94 to 0.35 at $m{=}10$ and declines with $m$, whereas BRCD and RCG improve slowly with $m$ and Smooth Traversal remains best at 0.71.
-In the shifted setting top-3 accuracy at $m{=}10$ is 0.98 for Smooth Traversal, 0.93 for BARO and 0.89 for BRCD (Figure~\ref{fig:causal}).
-Several entries equal 1.00 in the shared-generator setting; we do not regard them as evidence of diagnostic ability because the spindle-speed node contains the answer by construction and the other root-cause nodes are supervised estimates of it (Section~\ref{sec:limits}).
-\begin{table}[t]\centering\small
-\input{tables/tab_causal.tex}
-\caption{Causal RCA: top-1 accuracy (mean over 5 faults; 100 draws per fault) versus number of anomalous samples $m$.}\label{tab:causal}
-\end{table}
+\subsubsection{Nodes and graph}
+The graph has 14 nodes (Figure~\ref{fig:graph}, Table~\ref{tab:nodes}): five root-cause nodes and nine sensor nodes (log acceleration, microphone level, two non-synchronous indices, three accelerometer and two microphone bands). The 19 directed edges encode physical prior knowledge: each root cause points to the sensor quantities it can affect. Four root-cause nodes are soft sensors, i.e.\ gradient-boosted regressors of the log fault factor trained on training cuts only (out-of-fold predictions for $D_\text{obs}$); the spindle-speed node is the controller-measured deviation.
 \begin{figure}[t]\centering
-\includegraphics[width=0.95\linewidth]{figures/rca_causal.png}
-\caption{Top-1 accuracy of the causal algorithms versus $m$ for the shared-generator and shifted settings (dotted line: chance).}\label{fig:causal}
+\includegraphics[width=0.72\linewidth]{figures/f_graph.png}
+\caption{Causal graph used by the RCA algorithms: five root-cause nodes (left) and nine sensor nodes (right); 19 edges from physical prior knowledge.}\label{fig:graph}
+\end{figure}
+\begin{table}[t]\centering\small
+\caption{Root-cause nodes.}\label{tab:nodes}
+\input{tables/tab_nodes.tex}
+\end{table}
+
+\subsubsection{The algorithms as implemented}
+Table~\ref{tab:algs} compares each algorithm with its description in \citet{lee2026brcd} (Appendix~C of that paper) and states what our code (\texttt{run\_full\_paper\_benchmark.py}) does. \textbf{The implementations are simplified, graph-aware re-implementations, not the authors' code}: all of them score a node by the standardised shift of its mean or of its residual given its parents, under a linear-Gaussian model, and BRCD, RCG, RCD and Smooth Traversal use the known graph. BARO's scoring step and SimpleRCA match their published descriptions. BRCD, RCG, RCD and Smooth Traversal contain constants with no source (0.12, 0.40, 0.70, 0.05). Consequently, our accuracies describe these re-implementations on this benchmark and must not be read as the performance of the original algorithms; the finding that the graph is irrelevant is partly a property of the re-implementations (Section~\ref{sec:ablation}).
+\begin{table}[t]\centering\footnotesize
+\caption{The six RCA algorithms: original method (as summarised by \citealt{lee2026brcd}) versus our implementation.}\label{tab:algs}
+\begin{tabular}{p{1.8cm}p{4.4cm}p{5.2cm}p{2.1cm}}\toprule
+Algorithm & Original method & Our implementation & Fidelity\\\midrule
+BRCD \citep{lee2026brcd} & Bayesian posterior over root causes from a CPDAG learned pre-failure, uniform DAG sampling per interventional Markov equivalence class; consistency guarantees & Linear-Gaussian local model per node on a given DAG; score = standardised mean shift of the node (root) or of its residual given parents (child), $\times(1+0.12\,|\text{descendants}|)$ & heuristic; no DAG sampling\\
+RCD \citep{ikram2022rcd} & random partitions; conditional-independence tests of the failure indicator $F$ against each metric; rank by $p$-values & partial correlation test of $F$ and the node given its parents in the known DAG; score $-\log_{10}p$ & simplified; uses the true DAG\\
+RCG \citep{ikram2025rcg} & marginal tests with $F$, then conditional mutual information given possible parents in a CPDAG & squared standardised shift of the residual given parents (Gaussian proxy for CMI) & simplified proxy\\
+Smooth Traversal \citep{orchard2025} & outlier score of the anomalous sample; traverse from the trigger to ancestors; largest score difference between a node and its parents & mean $|z|$ score; $z_i-0.70\max_{p\in\text{pa}(i)}z_p$, plus $0.05\,z_i$ & heuristic constants\\
+BARO \citep{pham2024baro} & Bayesian online change-point detection of anomaly time; rank by median/IQR-scaled deviation & median/IQR-scaled deviation with the anomaly time known & scoring step matches\\
+SimpleRCA \citep{fang2025simplerca} & 95th percentile of normal data versus maximum of anomalous data & same & matches\\\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Generator shift and real-data transfer}
+\paragraph{Generator shift.} Because the soft sensors are trained on labels from the same generator, a \emph{shifted} test multiplies natural frequency, damping, stiffness, force and edge coefficients by random factors in $[0.75,1.33]$, $[0.5,2]$, $[0.6,1.7]$, $[0.6,1.6]$ and $[0.4,2.5]$ per cut, with soft sensors left at their nominal training.
+\paragraph{Real-data transfer.} For real wear data, features are expressed relative to the healthy baseline of each tool (the least-worn runs), are invariant to the sign convention of the force axes (absolute mean force) and are evaluated leave-one-machine-out; training modes are simulation only, simulation then fine-tuning on $k$ real samples with an L2 penalty towards the simulated solution, and real only.
+
+%% =============================================================================================
+\section{Experiments}\label{sec:exp}
+\subsection{Experimental setup}\label{sec:setup}
+\subsubsection{Configuration}
+All experiments run on a single Apple-silicon workstation with 10 worker processes; Table~\ref{tab:config} lists the settings.
+\begin{table}[t]\centering\footnotesize
+\caption{Experimental configuration.}\label{tab:config}
+\begin{tabular}{p{2.6cm}p{12.2cm}}\toprule
+Component & Setting\\\midrule
+Software & Python 3.13.12; numpy 2.4.4, scipy 1.18.0, scikit-learn 1.9.1, numba 0.68.0, torch 2.12.1\\
+Simulator & $\Delta t=1/25\,600$~s; window 0.6~s, last 0.3~s analysed; $N_z{=}8$; $h_{\max}{=}0.3$~mm; roughness noise 0.02~$\mu$m; tool 2SE0250IX150A (2 flutes, 6.35~mm, $\beta{=}30^\circ$), $a_p{=}38.1$~mm; nominal $f_n{=}1500$~Hz, $\zeta{=}0.03$, $k{=}3\times10^6$~N/m, $K_t{=}7\times10^8$~N/m$^2$ (assumed)\\
+Healthy baseline & 18 spectral knots, 8 harmonics; kernel ridge (RBF, $\alpha{=}0.3$, $\gamma{=}0.15$) on five condition variables; ridge $\lambda{=}1$; 12 principal directions; C2ST by random forest with 3 stratified splits (22 test cuts)\\
+Fault injection & severity ranges of Section~\ref{sec:fault}; $g_\text{acc}=7.7\times10^{-6}$, $g_\text{mic}=0.0116$ (effect-size calibration)\\
+RCA benchmark & 14 nodes, 19 edges; 43 training and 30 test cuts; soft sensors HistGradientBoosting (150 iterations, learning rate 0.1, 5-fold grouped out-of-fold); $m\in\{5,10,20,50\}$; 100 draws per fault; ablations: 3 seeds, 60 draws\\
+Real wear transfer & LUH 406 runs; GB (150 iterations, rate 0.1), LR ($C{=}0.3$), CORAL ($\epsilon{=}1$), DANN (hidden 64--32, dropout 0.2, 200 epochs, Adam $10^{-3}$, weight decay $10^{-3}$, domain-loss weight 0.5); 10 seeds; fine-tuning $\lambda\in\{0.3,1,3\}$, $k\in\{2,\dots,32\}$, 40 draws\\\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Datasets}
+Table~\ref{tab:datasets} lists the real and simulated datasets. The simulated RCA set contains one window per class for each real window and each of three replicates ($219\times3\times6=3942$ windows), generated separately for a nominal and for a shifted generator; the simulated wear set contains 150 randomised machine--tool pairs with 45 runs each (6750 runs).
+\begin{table}[t]\centering\small
+\caption{Datasets.}\label{tab:datasets}
+\begin{tabular}{p{3.0cm}p{2.0cm}p{9.2cm}}\toprule
+Dataset & Type & Content and use\\\midrule
+MSM 5, 6 \citep{kim2026msm} & real & 73 cuts (48 normal, 25 abnormal), 219 windows; 2-flute 6.35~mm tool, AA~6061 (wet); healthy baseline, gain calibration, C2ST\\
+MSM 3, 14 & real & defective 12.7~mm four-flute tool D$^*$ (12 cuts, 36 windows) and healthy tool (64 cuts, 192 windows), AISI~4140; fault signature\\
+LUH \citep{denkena2023luh} & real & 3 machines $\times$ 3 tools, 406 runs, force at 25~kHz, flank wear VB; 26\% of runs have VB $\ge100~\mu$m\\
+Simulated RCA set & simulated & 3942 windows per generator (nominal and shifted), 30 features, 14 nodes\\
+Simulated wear set & simulated & 6750 runs of randomised four-flute machine--tool pairs with growing wear\\\bottomrule
+\end{tabular}
+\end{table}
+In MSM datasets 5 and 6 the abnormal label is strongly associated with up-milling (all 36 down-milling cuts are normal), so it is not a specific root cause.
+
+\subsubsection{Metrics}
+\begin{table}[t]\centering\small
+\caption{Metrics. $\uparrow$ higher is better, $\downarrow$ lower is better.}\label{tab:metrics}
+\begin{tabular}{p{3.6cm}p{6.6cm}p{4.0cm}}\toprule
+Metric & Definition & Used for\\\midrule
+Top-$k$ accuracy $\uparrow$ & true root-cause node within the first $k$ ranks (chance $k/14$) & RCA benchmark\\
+Macro-F1, recall per cause $\uparrow$ & six-class classification of simulated windows & classifier reference\\
+C2ST balanced accuracy $\downarrow$ & random-forest accuracy separating real from simulated healthy windows; 0.5 means indistinguishable & healthy gap\\
+Shift in s.d.\ and cosine & node shift of anomalous windows in healthy standard deviations; cosine of shift vectors & fault-signature gap\\
+AUROC $\uparrow$ & wear detection, VB $\ge$ threshold; chance 0.5 & real wear transfer\\
+MAE of VB $\downarrow$ & error of wear estimation in $\mu$m & real wear transfer\\
+Spearman $\rho$ & rank correlation of proxy distance and AUROC & dynamics distance\\
+ECE, coverage--accuracy & calibration and abstention & planned real multi-cause data\\\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Baselines}
+The comparisons use five kinds of baseline (Table~\ref{tab:baselines}): the six RCA algorithms (re-implementations); direct supervised classifiers on the simulated windows as a within-simulator reference that ignores the graph; a chance rule and label-free nodes as lower references; for real wear transfer, a one-feature force rule without labels, standard classifiers, correlation alignment and domain-adversarial training with unlabelled target data, and real-only training; and a simulation-only model with and without fine-tuning.
+\begin{table}[t]\centering\small
+\caption{Baselines and their role.}\label{tab:baselines}
+\begin{tabular}{p{3.8cm}p{5.3cm}p{5.1cm}}\toprule
+Task & Baselines & Role\\\midrule
+Causal RCA & BRCD, RCD, RCG, Smooth Traversal, BARO, SimpleRCA (re-implementations); chance $1/14$ & compare ranking methods\\
+Simulated classification & gradient boosting, random forest, QDA, logistic regression & supervised reference inside the generator\\
+Node construction & supervised soft sensors versus label-free spectral nodes & measure dependence on simulator labels\\
+Real wear transfer & one-feature RMS rule (no labels); GB; LR; CORAL + LR; DANN & non-simulation baselines\\
+Simulation to real & simulation only; simulation + fine-tuning; real only ($k$ runs) & benefit of simulation and of fine-tuning\\\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Main results}\label{sec:main}
+\subsubsection{Causal RCA on simulated faults: is the benchmark circular?}\label{sec:circ}
+\paragraph{Protocol.} We compare the shared-generator and the shifted setting for $m\in\{5,10,20,50\}$ (Table~\ref{tab:causal}, Figures~\ref{fig:mcurve} and~\ref{fig:heat}).
+\begin{table}[t]\centering\small
+\caption{Causal RCA: top-1 accuracy $\uparrow$ (mean over 5 root causes; 100 draws per fault) versus the number of anomalous samples $m$; best per column in bold.}\label{tab:causal}
+\input{tables/tab_causal.tex}
+\end{table}
+\paragraph{Result.} With a shared generator, Smooth Traversal and BARO approach 1.0 as $m$ grows, BRCD and RCG reach 0.85--0.90, RCD declines with $m$, and SimpleRCA stays near 0.5. Under shifted parameters all methods drop and the ordering changes: BARO falls from 0.94 to 0.35 at $m{=}10$, BRCD and RCG improve slowly with $m$, and Smooth Traversal remains best at 0.71 (top-3: 0.98 Smooth Traversal, 0.93 BARO, 0.89 BRCD). The accuracy is unevenly spread over the causes (Figure~\ref{fig:heat}). Several entries equal 1.00 with a shared generator; we do not regard them as evidence of diagnostic ability, because the spindle-speed node contains the answer by construction and the other root-cause nodes are supervised estimates of it.
+\begin{figure}[t]\centering
+\includegraphics[width=0.95\linewidth]{figures/f_m_curve.png}
+\caption{Top-1 accuracy versus the number of anomalous samples in the shared-generator and shifted settings (dotted: chance). In the shifted setting BARO and RCD deteriorate with more samples while Smooth Traversal improves.}\label{fig:mcurve}
+\end{figure}
+\begin{figure}[t]\centering
+\includegraphics[width=0.95\linewidth]{figures/f_cause_heatmap.png}
+\caption{Top-1 accuracy per root cause and algorithm at $m{=}10$.}\label{fig:heat}
 \end{figure}
 
-\subsection{Dependence on the assumed fault strength}
-Scaling the fault gains by $0.3$ and $3$ changes the best classifier's accuracy from $0.698$ to $0.943$ (Table~\ref{tab:sweep}).
-Since the gain is set by an assumption, any single accuracy figure from this benchmark should be read together with this curve.
+\subsubsection{Does simulation help on real machines? Cross-machine wear}\label{sec:wear}
+\paragraph{Protocol.} LUH has three machines and three tools per machine with measured flank wear. The target is wear $\ge100~\mu$m, evaluated leaving one machine out (Table~\ref{tab:luhbase}, Figure~\ref{fig:luh}); a model trained only on simulated wear is applied without real labels.
 \begin{table}[t]\centering\small
-\input{tables/tab_sweep.tex}
-\caption{Top-1 accuracy of classifiers on simulated data versus fault gain relative to the calibrated value.}\label{tab:sweep}
+\caption{Leave-one-machine-out wear detection (VB $\ge100~\mu$m), AUROC $\uparrow$, mean over 10 seeds on target machines M1--M3.}\label{tab:luhbase}
+\input{tables/tab_luhbase.tex}
 \end{table}
+\paragraph{Result.} Wear detection with real labels is easy: gradient boosting with raw features is $\ge0.976$ on all three target machines. The one-feature rule reaches $0.996$ and $0.993$ on machines 1 and 2 but $0.46$ on machine 3, so force scale differs across machines. The model trained only on simulated wear reaches $0.887$, $0.807$ and $0.571$ using sign-invariant tool-relative features, which is below the one-feature rule on machines 1 and 2. The first attempt with signed mean force was below chance ($0.55$, $0.26$, $0.10$) because of an axis sign convention; changing to absolute mean force was decided after seeing this result, though with a physical argument, so these numbers should be read as exploratory. Bootstrap intervals are over runs and understate uncertainty because runs of one tool are correlated; gradient boosting and logistic regression are deterministic, so their seed spread is zero.
+\begin{figure}[t]\centering
+\includegraphics[width=0.97\linewidth]{figures/f_luh_baselines.png}
+\caption{Leave-one-machine-out AUROC for three feature sets and five methods (dotted: chance).}\label{fig:luh}
+\end{figure}
 
-\subsection{What drives the accuracy? Ablations}\label{sec:ablation}
-Table~\ref{tab:ablation} reports $m{=}10$ top-1 accuracy averaged over five root causes, with mean $\pm$ standard deviation over three seeds (each seed changes the cut split and the generated data; 60 draws per fault).
-Three observations follow.
-First, replacing the physical causal graph by a graph with random edges of the same out-degrees, or by an empty graph, changes no algorithm's accuracy beyond the seed spread (for example BRCD $0.92\pm0.01$, $0.92\pm0.02$ and $0.92\pm0.00$ in the shared-generator setting, and $0.60\pm0.05$, $0.60\pm0.05$ and $0.58\pm0.06$ when shifted).
-Because every root-cause node is a graph root, the conditional models of the causal methods cannot add information about those nodes, and the methods act as marginal shift detectors on the node estimates.
-Second, replacing the supervised soft sensors by label-free spectral summaries (spectral centroid and peakiness of the 1--3.2~kHz band, low and high microphone bands) reduces accuracy to $0.07$--$0.29$ (shared generator) and $0.07$--$0.37$ (shifted), against a chance level of $0.07$; the simplest method reaches exactly $0.20$, consistent with only the controller-measured spindle-speed node remaining informative (one of five causes), which we did not test directly.
-Third, under shifted simulator parameters a larger fault gain does not help: accuracy falls from $0.60$ to $0.27$ for BRCD and from $0.71$ to $0.28$ for Smooth Traversal when the gain is multiplied by 3, because the soft sensors, trained on nominal parameters, mis-estimate the larger and distorted effects.
-\begin{table}[t]\centering\footnotesize
-\input{tables/tab_ablation.tex}
-\caption{Ablation of the causal RCA benchmark at $m{=}10$: top-1 accuracy (mean $\pm$ s.d.\ over 3 seeds) for the node construction, the graph and the fault gain; chance $=0.07$.}\label{tab:ablation}
+\subsection{Analysis: is the simulator right?}\label{sec:analysis}
+\subsubsection{Numerical correctness and stability lobes}\label{sec:lobes}
+With helix and edge forces off, the numba core equals the pure-Python straight-flute reference to $7\times10^{-16}$; eight axial slices are converged; and a time-domain grid agrees with the zero-order lobe prediction on 79\% of speed--depth points, with disagreement at moderate depth where the zero-order approximation is known to be conservative (Figure~\ref{fig:lobes}).
+\begin{figure}[t]\centering
+\includegraphics[width=0.72\linewidth]{figures/exp1_lobes_validation.png}
+\caption{Stability lobes (zero-order approximation, 4-flute reference transfer function) and time-domain simulation outcomes on a speed--depth grid.}\label{fig:lobes}
+\end{figure}
+
+\subsubsection{Operating regime and robustness}\label{sec:regime}
+Plotting the raw simulator output (Figure~\ref{fig:waveforms}) showed millimetre-scale displacement. At nominal parameters (modal stiffness $3\times10^{6}$~N/m, $f_n{=}1500$~Hz, $\zeta{=}0.03$, $K_t{=}7\times10^{8}$~N/m$^2$) the zero-order limit depth at 9000~rpm is 30.6~mm for $a_e{=}0.0635$~mm and 18.0~mm for $a_e{=}0.3175$~mm, below the real axial depth of 38.1~mm; the time-domain rms displacement is 0.44 and 0.82~mm and the tool leaves the cut ($h_{\min}=0$). Increasing the modal stiffness 3, 10 and 30 times moves the limit above the depth and the rms displacement to 36--159, 5--8 and $\le$1~$\mu$m (Table~\ref{tab:regime}). Real healthy cuts are presumably stable, so the nominal simulation is not an operating point of the real machine.
+Because the simulator only supplies fault \emph{differences}, rescaled by gains chosen to match real effect sizes, the gains absorb the amplitude mismatch; with the modal stiffness multiplied by 10 the calibration needs gains 45 and 38 times larger ($g_\text{acc}=3.5\times10^{-4}$, $g_\text{mic}=0.43$; the search grid had to be extended).
+\begin{table}[t]\centering\small
+\caption{Operating regime of the simulator at 9000~rpm, $a_p=38.1$~mm, as a function of the modal stiffness scale (nominal $=1$); red: limit depth below $a_p$. Source: \texttt{regime\_check.py}.}\label{tab:regime}
+\input{tables/tab_regime.tex}
 \end{table}
+We repeated the causal benchmark in this stable regime (Table~\ref{tab:k10}, Figure~\ref{fig:k10}): top-1 accuracy at $m{=}10$ is $0.53$--$0.98$ with a shared generator and falls to $0.32$--$0.62$ under shifted parameters (nominal: $0.52$--$0.98$ and $0.35$--$0.71$). The ordering of the algorithms is partly regime-dependent: BARO no longer collapses under shift ($0.50$ instead of $0.35$) and Smooth Traversal remains best ($0.62$). The graph ablation and the real-data comparisons were not repeated in this regime.
+\begin{table}[t]\centering\small
+\caption{Top-1 accuracy $\uparrow$ at $m{=}10$ (mean over 5 root causes) at nominal parameters and with the modal stiffness multiplied by 10; best per column in bold.}\label{tab:k10}
+\input{tables/tab_k10.tex}
+\end{table}
+\begin{figure}[t]\centering
+\includegraphics[width=0.95\linewidth]{figures/f_k10.png}
+\caption{Robustness to the operating regime: top-1 at $m{=}10$ for nominal parameters and for a stiffer, stable-regime parameter set.}\label{fig:k10}
+\end{figure}
 
-\subsection{Comparison with a real defective tool}\label{sec:real}
-Cuts with a documented root cause exist in MSM, but for tools other than the one simulated.
-We compare the intentionally defective end mill D$^*$ (12 cuts, 36 windows; dataset 3) with the healthy tool of the same type (64 cuts, 192 windows; dataset 14), both 12.7~mm four-flute on AISI~4140.
-The cutting conditions of the two sets do not coincide, so we fit a ridge model of each sensor node on the conditions using the healthy cuts only (out-of-sample over cuts), express the defective windows as residuals in units of the healthy residual standard deviation, and bootstrap the cuts for 95\% intervals.
-We compare this shift vector with the shift vector of each simulated fault (Table~\ref{tab:realshift}).
-The real defective tool raises all node levels, with the largest shifts at low frequency ($+3.9$ and $+4.0$ standard deviations for the 50--600~Hz bands of the accelerometer and the microphone) and in the 1--3.2~kHz accelerometer band ($+6.3$), and lowers both non-synchronous indices ($-3.7$ and $-1.2$), i.e.\ the spectrum becomes more tonal.
-No simulated fault produces a low-frequency shift (all within $\pm0.1$) or a comparable change of the non-synchronous indices ($-0.3$ to $+0.5$); the simulated shifts consist of increases of broadband and high-frequency levels.
-The cosine similarity between the real and the simulated shift vectors is $0.55$--$0.62$ for all five causes; tool wear is the most similar in 89\% of bootstrap resamples, but the absolute differences between causes are small, since the similarity is dominated by the common ``louder'' direction.
-We therefore cannot claim that the simulator reproduces the signature of a defective tool, and the missing low-frequency and tonal components point to a mechanism absent from our fault models (we did not model flute chipping, which creates a strong once-per-revolution component; this is a hypothesis we have not tested).
-The two tools differ (12.7~mm, four flutes, steel versus the simulated 6.35~mm, two flutes, aluminium), so this comparison tests only the direction and sign of the shifts in standardised units.
+\subsubsection{How far is the simulated healthy baseline from real data?}\label{sec:healthy}
+We train the baseline on a subset of cuts and test on held-out cuts with a random-forest classifier two-sample test. Table~\ref{tab:c2st} and Figure~\ref{fig:c2st} show that all variants remain far from 0.5 ($0.82\pm0.04$ for the final model) and that the kernel and hierarchical improvements are small relative to the split spread. Feature means match (log acceleration $-1.37$ simulated, $-1.38$ real) but dispersion and joint dependence on conditions do not. We could not measure a floor because no cutting condition is repeated. An earlier version used plain accuracy with five synthetic windows per real one (chance 0.83); those numbers are discarded.
+\begin{table}[t]\centering\small
+\caption{Classifier two-sample test, real versus simulated healthy windows on held-out cuts (3 random stratified splits, mean $\pm$ s.d.; 22 test cuts).}\label{tab:c2st}
+\input{tables/tab_c2st.tex}
+\end{table}
+\begin{figure}[t]\centering
+\includegraphics[width=0.5\linewidth]{figures/f_c2st.png}
+\caption{C2ST balanced accuracy of the four baseline variants (dots: individual splits; dashed: indistinguishable).}\label{fig:c2st}
+\end{figure}
+
+\subsubsection{Does any simulated fault reproduce a real defective tool?}\label{sec:real}
+\paragraph{Protocol.} We compare the intentionally defective tool D$^*$ (12 cuts, 36 windows) with the healthy tool of the same type (64 cuts, 192 windows). Conditions differ, so we fit ridge models of each sensor node on the conditions with healthy cuts only (out-of-sample over cuts), express defective windows as residuals in healthy standard deviations, and bootstrap cuts for 95\% intervals (Table~\ref{tab:realshift}, Figure~\ref{fig:sig}).
 \begin{table}[t]\centering\footnotesize
+\caption{Shift of each sensor node in healthy standard deviations: real defective tool D$^*$ (95\% bootstrap interval over cuts) versus five simulated faults. Red (blue) cells: shift $\ge2$ ($\le-2$) s.d.}\label{tab:realshift}
 \input{tables/tab_realshift.tex}
-\caption{Shift of each sensor node in units of the healthy standard deviation: real defective tool D$^*$ (with 95\% bootstrap intervals over cuts) versus the five simulated faults.}\label{tab:realshift}
 \end{table}
+\begin{figure}[t]\centering
+\includegraphics[width=0.97\linewidth]{figures/f_signature.png}
+\caption{Left: real defective-tool shift with 95\% bootstrap intervals. Right: real versus simulated fault shifts on the same scale. Simulated faults raise broadband levels but do not move the low-frequency bands or the non-synchronous indices.}\label{fig:sig}
+\end{figure}
+\paragraph{Result.} The real tool raises all levels, most at low frequency ($+3.9$ and $+4.0$ for the 50--600~Hz accelerometer and microphone bands) and in the 1--3.2~kHz accelerometer band ($+6.3$), and lowers both non-synchronous indices ($-3.7$, $-1.2$), i.e.\ the spectrum becomes more tonal. No simulated fault shifts low frequencies (all within $\pm0.1$) or the non-synchronous indices beyond $-0.3$ to $+0.5$. The cosine similarity to the five simulated shifts is $0.55$--$0.62$ and driven by the common ``louder'' direction. The tools differ (12.7~mm four-flute steel versus simulated 6.35~mm two-flute aluminium), so only direction and sign in standardised units are compared.
+\paragraph{Tested hypothesis: chipped flute.} We added effective runout of 10--80~$\mu$m (a once-per-revolution term) and tried fault gains of $1\times$, $10\times$, $100\times$ (Figure~\ref{fig:chip}). The cosine similarity stays at $0.48$--$0.54$, again dominated by overall level; non-synchronous indices move in the wrong direction ($+0.1$ to $+0.9$ versus $-3.7$ and $-1.2$), the low bands barely change (microphone low band $\le+0.9$ versus $+4.0$), and the high accelerometer band grows far too much with added gain ($+1$ to $+38$ versus $+1.9$). A once-per-revolution runout therefore does not reproduce the signature either. Per-tooth force asymmetry and nonlinear edge or friction effects remain untested.
+\begin{figure}[t]\centering
+\includegraphics[width=0.78\linewidth]{figures/f_chipped.png}
+\caption{Chipped-flute test: shifts of five discriminating nodes for the real defective tool (red) and for simulated effective runout of 20 and 80~$\mu$m at fault gains $1\times$ and $10\times$.}\label{fig:chip}
+\end{figure}
 
-\section{Limitations and What Remains}\label{sec:limits}
+\subsubsection{Sensitivity to the assumed fault strength}\label{sec:sweep}
+Scaling the fault gains by $0.3$ and $3$ changes the best simulated classifier's accuracy from $0.698$ to $0.943$ (Table~\ref{tab:sweep}, Figure~\ref{fig:gain}); six-class accuracy within the simulator (Table~\ref{tab:cls}, 16 held-out cuts) is therefore only interpretable together with this curve. Applied to real windows, 91--97\% of normal windows are classified normal by tree and neighbour models but only 51\% and 57\% by logistic regression and Naive Bayes, and 61, 64 and 72 of 75 real abnormal windows are assigned to tool wear by QDA, random forest and gradient boosting; with no ground truth for abnormal windows we read this as mapping any broadband increase to wear.
+\begin{table}[t]\centering\small
+\caption{Top-1 accuracy $\uparrow$ of classifiers on simulated data versus fault gain relative to the calibrated value.}\label{tab:sweep}
+\input{tables/tab_sweep.tex}
+\end{table}
+\begin{table}[t]\centering\small
+\caption{Six-class classification on simulated data, 16 held-out cuts (chance $0.167$).}\label{tab:cls}
+\input{tables/tab_cls.tex}
+\end{table}
+\begin{figure}[t]\centering
+\includegraphics[width=0.55\linewidth]{figures/f_gain_sweep.png}
+\caption{Simulated six-class accuracy as a function of the assumed fault gain.}\label{fig:gain}
+\end{figure}
+
+\subsubsection{Does real-data transfer degrade when the target dynamics are far from the training machines?}\label{sec:dyn}
+Without measured transfer functions for LUH we used a proxy: the mean 21-band force spectrum of the three least-worn runs of each tool. For each of the nine target tools we trained on the tools of the other machines (all six, the three nearest, the three farthest by the proxy). With gradient boosting and raw features at VB $\ge100~\mu$m, AUROC was $0.993$, $0.984$ and $0.976$ for all, nearest and farthest training tools; the Spearman correlation between proxy distance and AUROC was $-0.16$ ($p=0.67$) at VB $\ge100~\mu$m and $-0.34$ ($p=0.36$) at $60~\mu$m (Figure~\ref{fig:dyn}). Only logistic regression on tool-relative features at $60~\mu$m showed a trend ($\rho=-0.62$, $p=0.08$; lowest AUROC $0.25$). With nine targets, a weak proxy and an unknown range of dynamics, this is absence of evidence, not evidence of absence: on these data real-data transfer is sufficient, and whether simulation is needed to reach dynamics outside the training range remains open.
+\begin{figure}[t]\centering
+\includegraphics[width=0.78\linewidth]{figures/f_dynamics_shift.png}
+\caption{Real-data transfer to an unseen machine versus the spectral proxy distance of the target tool to the training tools (nine targets).}\label{fig:dyn}
+\end{figure}
+
+\subsubsection{FRF import}\label{sec:frf}
+For a new machine the tool-tip transfer function can be read from hammer-test data (receptance, or accelerance divided by $(j\omega)^2$) and fitted by adding modes at residual peaks with linear residue estimation. On synthetic transfer functions with added noise the shape error is 0.8\% (no noise), 1.7\% (noise 1\% of the peak) and 16\% (3\%, one mode lost); the importer has not been tested on measured FRFs (Figure~\ref{fig:frf}).
+\begin{figure}[t]\centering
+\includegraphics[width=0.95\linewidth]{figures/f_frf_fit.png}
+\caption{FRF import on a synthetic transfer function with 1\% and 3\% noise: noisy input, true and fitted receptance magnitude.}\label{fig:frf}
+\end{figure}
+
+\subsubsection{Negative result: direct calibration of the delay model}\label{sec:neg}
+Fitting 15 physical and sensor parameters to real windows with CMA-ES (MMD, later group means over conditions) plateaued at a loss near 3 (squared errors in real standard deviations) and did not converge in 35--40 generations; we stopped by a pre-set rule. Earlier low-MMD fits had wrong dependence on conditions: real microphone level correlates with spindle speed at $+0.85$, the simulation gave $0.00$; simulated acceleration depended on radial depth ($0.69$), the real one did not ($0.06$). A window-length mismatch (4~s real versus 0.18~s simulated) had inflated simulated variance threefold. The data do not constrain the delay model's absolute levels, hence the use of fault \emph{differences}.
+
+\subsection{Ablation studies}\label{sec:ablation}
+\subsubsection{Graph, node construction and fault gain}
+Table~\ref{tab:ablation} and Figure~\ref{fig:ablation} report $m{=}10$ top-1 accuracy over three seeds, each changing the cut split and the generated data (60 draws per fault).
+\begin{table}[t]\centering\footnotesize
+\caption{Ablation at $m{=}10$: top-1 accuracy $\uparrow$ (mean $\pm$ s.d.\ over 3 seeds); chance $=0.07$.}\label{tab:ablation}
+\input{tables/tab_ablation.tex}
+\end{table}
+\begin{figure}[t]\centering
+\includegraphics[width=0.95\linewidth]{figures/f_ablation.png}
+\caption{Ablation at $m{=}10$ (mean $\pm$ s.d.\ over 3 seeds): the graph does not matter; node construction does.}\label{fig:ablation}
+\end{figure}
+Replacing the physical graph by random edges of equal out-degree or by an empty graph changes no algorithm beyond the seed spread (BRCD $0.92\pm0.01$, $0.92\pm0.02$, $0.92\pm0.00$ shared; $0.60\pm0.05$, $0.60\pm0.05$, $0.58\pm0.06$ shifted). Every root-cause node is a graph root, so in our re-implementations the conditional models cannot add information about it and the methods act as marginal shift detectors on the node estimates, consistent with the observation of \citet{lee2026brcd} on BARO and SimpleRCA. Replacing the supervised soft sensors by label-free spectral summaries reduces accuracy to $0.07$--$0.29$ (shared) and $0.07$--$0.37$ (shifted); the simplest method reaches exactly $0.20$, consistent with only the controller-measured speed node remaining informative (not tested directly). Under shift, a threefold larger fault gain lowers accuracy (BRCD $0.60\to0.27$, Smooth Traversal $0.71\to0.28$) because soft sensors trained on nominal parameters mis-estimate larger, distorted effects. The benchmark therefore measures supervised estimation of the root-cause nodes and its sensitivity to generator mismatch, not causal reasoning.
+
+\subsubsection{Feature normalisation for transfer between machines}
+Normalising features by each machine's healthy baseline did not raise AUROC on unseen machines (gradient boosting: $0.990$ raw, $0.955$ machine-relative, $0.986$ tool-relative) and increased the wear-estimation error (MAE of VB $9.2$, $17.7$, $11.1~\mu$m). Domain adaptation does not improve on gradient boosting, and tool-relative features make DANN unstable (machine 1: $0.79\pm0.13$; Table~\ref{tab:luhbase}, Figure~\ref{fig:luh}).
+
+\subsubsection{Wear threshold and fine-tuning}
+Because heavy wear may be too easy, we repeated the label-free comparison at VB $\ge60$ and $\ge40~\mu$m (thresholds fixed before running; all three are reported). The comparator is the resultant-force rule on the same tool-relative $x,y$ features (Table~\ref{tab:thr}, Figure~\ref{fig:thr}). Averaged over machines, the simulation-only model is higher than the rule at every threshold, but the gain comes from machine~3, where the rule is below chance ($0.42$, $0.40$ and $0.43$) and simulation reaches $0.57$--$0.78$; on machines 1 and 2 the rule is as good as or better than simulation in five of six cases (machine 1 at $60~\mu$m is tied). The evidence for a label-free benefit of simulation is therefore limited to one of three machines, with the sign of the one-feature rule on that machine unexplained.
+\begin{table}[t]\centering\small
+\caption{Label-free wear detection on unseen machines, AUROC $\uparrow$, by wear threshold. Rule: mean resultant force on tool-relative $x,y$ features.}\label{tab:thr}
+\input{tables/tab_thr.tex}
+\end{table}
+\begin{figure}[t]\centering
+\includegraphics[width=0.97\linewidth]{figures/f_wear_threshold.png}
+\caption{Label-free AUROC of the one-feature rule and the simulation-only model per machine and wear threshold.}\label{fig:thr}
+\end{figure}
+Fine-tuning from the simulated solution with $k$ real samples was not better than training from scratch at any $k$ and any threshold (Figure~\ref{fig:ft}; at $k{=}2$, $\lambda{=}1$: $0.83$ vs.\ $0.85$ at $100~\mu$m, $0.90$ vs.\ $0.94$ at $60~\mu$m, $0.87$ vs.\ $0.97$ at $40~\mu$m). On this easy task a few real labels already suffice.
+\begin{figure}[t]\centering
+\includegraphics[width=0.5\linewidth]{figures/f_finetune.png}
+\caption{AUROC versus the number $k$ of real labelled runs (VB $\ge100~\mu$m; mean of three machines).}\label{fig:ft}
+\end{figure}
+
+%% =============================================================================================
+\section{Conclusion, Limitations and Future Work}\label{sec:concl}
+\subsection{Conclusion}
+We asked how far simulation can take root cause diagnosis in milling and measured it against real data in three places.
+Simulated causal-RCA accuracy depends on how diagnostic nodes are built and falls from 0.80--0.98 to 0.35--0.71 under moderate generator mismatch, while the causal graph has no effect.
+The simulated healthy baseline and the signature of a real defective tool remain different from real data, and the nominal simulator operates above its stability limit, which the effect-size gains silently compensate.
+On a public wear dataset simulation-only transfer is below a one-feature rule on two machines and brings no fine-tuning benefit, because the task is too easy to show one.
+Simulation is necessary in principle for causes without real labels, but its value was not demonstrated on any real task we could test; the contribution of this paper is the decomposition of the simulation gap, the measurements and the open pipeline needed to test it on real multi-cause data.
+
+\subsection{Limitations}\label{sec:limits}
 \begin{itemize}
-\item \textbf{No validation of the RCA ranking on real root causes.} The only real comparison (Section~\ref{sec:real}) concerns the signature of one cause on a tool different from the simulated one, and the simulator fails to reproduce its largest components. Clamp-failure and depth cases are single cuts on other tools and were not analysed.
-\item \textbf{The benchmark does not test causal reasoning.} Graph ablations show no effect (Section~\ref{sec:ablation}), and node construction decides the result; a benchmark in which root causes are not graph roots with supervised estimates, or in which the graph carries information, would be needed to compare causal algorithms.
-\item \textbf{Baseline realism.} The healthy baseline is distinguishable from real data (balanced accuracy 0.78--0.90 across variants and splits) and we could not measure a floor.
-\item \textbf{Assumed quantities.} Fault severity ranges, gains, nominal physical parameters and the causal graph are assumptions; force coefficients and tool-tip dynamics for this tool had no verified source.
-\item \textbf{Scope.} One tool, one workpiece material, one machine, 73 cuts, mostly up- versus down-milling as the real abnormal signal.
-\item \textbf{Seeds.} The main causal and classification tables use one cut split and one generation seed; only the ablation (Table~\ref{tab:ablation}) reports spread over three seeds, and the soft-sensor training uses supervision from the simulator.
-\item \textbf{Open hypothesis.} We suspect that the 1.5--2.3~kHz cluster is a tool-structure mode excited when a harmonic of the tooth-passing frequency is close to it; adding a harmonic-proximity feature did not give a clear improvement.
+\item \textbf{No real multi-cause data.} Results are for one tool and material (MSM subset), one defective-tool comparison on a different tool, and force-only wear data (LUH); root-cause ranking has not been validated on real cuts.
+\item \textbf{Simulator.} The nominal simulator is above its stability limit at every real cutting condition; fault severity ranges, gains, nominal physical parameters and the causal graph are assumptions; neither standard fault models nor a chipped-flute runout reproduce the defective-tool signature; the healthy baseline is distinguishable from real data (balanced accuracy $0.82$--$0.95$ over the four variants).
+\item \textbf{RCA algorithms.} The algorithms are simplified re-implementations with unsourced constants, so the finding on the causal graph does not transfer to the original algorithms; the main causal tables use one split and seed, and only the ablation reports three seeds.
+\item \textbf{Data.} The MSM microphone and accelerometer show a machine line near 1.5~kHz that contaminates the 1--3~kHz features; the dynamics-distance test is a weak proxy with nine targets; the FRF importer is tested only on synthetic transfer functions; meta domain generalisation is not implemented as a baseline.
 \end{itemize}
 
-\section{Conclusion}
-A simulator grounded in real healthy spectra lets us run causal RCA algorithms on machining faults with known causes, but the resulting accuracy depends on how much the diagnostic nodes share with the generator, and falls from near 1.0 to 0.35--0.71 under moderate mismatch of the simulator's physical parameters.
-Ablations show that the causal graph plays no role in this benchmark, that label-free node estimates give near-chance accuracy, and that the simulator does not reproduce the low-frequency and tonal signature of a real defective tool.
-This is a measurement of the dependence of a simulated benchmark on its assumptions and on node construction, not a claim about real machining diagnosis.
+\subsection{Future work}\label{sec:future}
+The decisive experiment needs real multi-cause data. We will collect cuts with designed causes (clamp stiffness, overhang, wear, depth or speed outside the stable range, imbalance, chipped flute) on at least two machines with hammer-test FRFs and force-coefficient calibration cuts, and evaluate by leave-one-machine-out and leave-one-configuration-out with simulation only ($k{=}0$), simulation plus $k$ real samples, real only, and real data from other configurations with and without FRF-anchored simulation (Table~\ref{tab:planned}, Figure~\ref{fig:planned}; protocol in \texttt{paper/DATA\_PROTOCOL.md}). Baselines will include standard classifiers, domain-adversarial transfer \citep{wang2020datwear}, meta domain generalisation \citep{li2023metadg}, rule thresholds, FRF-based stability checks, and faithful implementations of BRCD, RCD and RCG. Decision gates: if the simulator with measured FRFs does not reproduce the measured stability boundary within an agreed tolerance, the model is fixed before more data are collected; if no benefit at small $k$ appears, the contribution is positioned as zero-shot transfer, dataset and gap analysis. Further technical work: a stable-regime parameter set learned from measured FRFs, per-tooth force asymmetry and process damping for the defective-tool signature, calibration and abstention for deployment.
+\begin{table}[t]\centering\small
+\caption{\fake{PLACEHOLDER (not real data).} Layout of the planned leave-one-configuration-out evaluation on real multi-cause cuts: top-1 $\uparrow$ and expected calibration error (ECE) $\downarrow$ per training mode, $k{=}8$ real cuts.}\label{tab:planned}
+\begin{tabular}{lcccc}\toprule
+Training mode & Top-1 $\uparrow$ & Top-3 $\uparrow$ & Macro-F1 $\uparrow$ & ECE $\downarrow$\\\midrule
+(a) simulation only ($k{=}0$) & \fake{0.46} & \fake{0.78} & \fake{0.41} & \fake{0.19}\\
+(b) simulation + fine-tune ($k{=}8$) & \best{\fake{0.70}} & \best{\fake{0.93}} & \best{\fake{0.66}} & \best{\fake{0.08}}\\
+(c) real only ($k{=}8$) & \fake{0.58} & \fake{0.84} & \fake{0.52} & \fake{0.14}\\
+(d) real, other configurations, no simulation & \fake{0.52} & \fake{0.81} & \fake{0.47} & \fake{0.12}\\
+(e) (d) + FRF-anchored simulation & \fake{0.66} & \fake{0.90} & \fake{0.61} & \fake{0.10}\\\bottomrule
+\end{tabular}
+\end{table}
+\begin{figure}[t]\centering
+\includegraphics[width=0.5\linewidth]{figures/f_planned_kcurve.png}
+\caption{\fake{PLACEHOLDER (not real data).} Planned learning curve: top-1 versus the number $k$ of real labelled cuts, with and without simulation pre-training.}\label{fig:planned}
+\end{figure}
 
-\paragraph{Code and data.}
-Code: \texttt{cutting\_sim/} in the project repository (branch \texttt{cutting-sim-experiments}); data: MSM \citep{kim2026msm} (CC BY 4.0). \todo{release instructions}
+\section*{Availability}\label{sec:avail}
+\begin{sloppypar}
+\paragraph{Code.} \url{https://github.com/danghaidang04/RCA-for-Chatter-Simulation} (branch \texttt{cutting-sim-experiments}); \texttt{REPRODUCE.md} gives environment, data download, run order, seeds and expected outputs; every table and figure is generated from the result files by \texttt{paper/make\_tables.py} and \texttt{paper/make\_figures.py}. Licence: MIT \fake{(to be confirmed with the university)}. Archival DOI: \fake{to be assigned (Zenodo) at submission}.
+\paragraph{Data.} MSM \citep{kim2026msm} (Kaggle, DOI 10.34740/kaggle/ds/8392825, CC BY 4.0) and LUH \citep{denkena2023luh} are obtained from their original sources and are not redistributed; derived features and all result files are in the repository.
+\end{sloppypar}
 
 \bibliographystyle{plainnat}
 \bibliography{refs}
@@ -225,16 +537,24 @@ Code: \texttt{cutting\_sim/} in the project repository (branch \texttt{cutting-s
 \appendix
 \section{Parameter provenance}\label{app:registry}
 \begin{table}[h]\centering\small
+\caption{Every simulator parameter, its tier (fixed / range / learned / assumed) and verification status.}
 \input{tables/tab_registry.tex}
-\caption{Every simulator parameter, its tier (fixed / learned / assumed) and verification status.}
+\end{table}
+
+\section{Nominal simulator parameters}\label{app:simparams}
+\begin{table}[h]\centering\small
+\caption{Nominal values and numerical search bounds of the 16 simulator parameter groups (\texttt{cutting\_sim/model\_v4.py}). The bounds are numerical, not claims from the literature. Fixed quantities: 2 flutes, $D{=}6.35$~mm, $\beta{=}30^\circ$, $a_p{=}38.1$~mm, $N_z{=}8$, $\Delta t{=}1/25\,600$~s, $h_{\max}{=}0.3$~mm.}
+\input{tables/tab_simparams.tex}
 \end{table}
 
 \section{Methodological pitfalls found along the way}
 \begin{enumerate}
-\item Plain accuracy of a classifier two-sample test with unequal sample sizes has a chance level above 0.5; use balanced accuracy.
-\item Real and simulated features must be computed on windows of identical length; a 20-fold mismatch changed the apparent variance threefold.
+\item Plain accuracy of a classifier two-sample test with unequal sizes has a chance level above 0.5; use balanced accuracy.
+\item Real and simulated features must use windows of identical length; a 20-fold mismatch inflated variance threefold.
 \item Out-of-sample residuals are needed to estimate between-cut variation when the regression can interpolate each cut.
-\item Distribution matching alone did not identify the fault gain; effect-size matching was used instead.
-\item Nodes of a causal graph that are trained on the generator's labels make the benchmark circular.
+\item Distribution matching alone did not identify the fault gain; effect-size matching was used.
+\item Nodes trained on the generator's labels make a causal benchmark circular.
+\item Force-axis sign conventions differ between machines; a signed mean force put zero-shot transfer below chance.
+\item Plotting raw simulator output early would have exposed the stability problem of Section~\ref{sec:regime}; check the operating regime of a simulator against the stability limit before using it.
 \end{enumerate}
 \end{document}

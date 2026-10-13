@@ -157,7 +157,7 @@ def main():
         print("   feature  real mean±sd | synth mean±sd")
         for j, nm in enumerate(["log10 acc", "mic dB", "chat_acc", "chat_mic"]):
             print(f"   {nm:10s} {Rf[te][:, j].mean():7.3f}±{Rf[te][:, j].std():.3f} | {S[:, j].mean():7.3f}±{S[:, j].std():.3f}", flush=True)
-    json.dump({"c2st_heldout": out, "n_test_cuts": len(test_cuts)}, open(f"{OUT}/noise_model_gate.json", "w"), indent=1)
+    json.dump({"c2st_heldout": out, "n_test_cuts": len(test_cuts)}, open(f"{OUT}/noise_model_gate_nonlin{int(NONLIN)}_seed{SEED}.json", "w"), indent=1)
     np.savez(f"{OUT}/noise_model_params.npz", beta=beta, cov=cov, names=np.array(["acc0", "acc1", "mic"]))
 
 

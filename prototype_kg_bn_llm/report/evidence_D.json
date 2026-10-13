@@ -1,0 +1,95 @@
+{
+ "case_id": "D",
+ "variant": "kg_validated",
+ "m": 10,
+ "temperature": 1.4766704681005907,
+ "posterior": [
+  {
+   "cause": "HEALTHY",
+   "prob": 0.9999995176845112,
+   "rank": 1
+  },
+  {
+   "cause": "TOOL_WEAR",
+   "prob": 4.823153481860843e-07,
+   "rank": 2
+  },
+  {
+   "cause": "RPM_MISMATCH",
+   "prob": 1.1987164917047832e-13,
+   "rank": 3
+  },
+  {
+   "cause": "DEPTH_OVERLOAD",
+   "prob": 1.8635105294330514e-14,
+   "rank": 4
+  },
+  {
+   "cause": "STIFFNESS",
+   "prob": 2.0870723334610757e-15,
+   "rank": 5
+  },
+  {
+   "cause": "DAMPING",
+   "prob": 6.803528640889193e-17,
+   "rank": 6
+  }
+ ],
+ "top": "HEALTHY",
+ "node_shifts": {
+  "log10_acc": -0.6952999485928334,
+  "mic_dB": -0.24996338160650203,
+  "chatter_acc": 0.15781963453150655,
+  "chatter_mic": -0.06141574907821303,
+  "acc_low": 0.4856537770839459,
+  "acc_res": 0.651338241260015,
+  "acc_high": 0.6393152764233723,
+  "mic_low": 0.6593403059140971,
+  "mic_high": 0.5050094287012366
+ },
+ "kg_paths": [],
+ "misfit": {
+  "d2": 72.09762344831063,
+  "threshold": 44.31814095207805,
+  "flag": true,
+  "unexplained_nodes": []
+ },
+ "suggested_checks_from_kg": {
+  "TOOL_WEAR": [
+   "Measure flank wear VB under a microscope"
+  ]
+ },
+ "limitations": [
+  "Edge weights and the covariance are learned from simulated windows, so they inherit the simulator's assumptions (nominal parameters above the stability limit, assumed fault severities and gains).",
+  "Knowledge-graph edges and signs are physics reasoning with provenance tier ASSUMED, tested only against simulated data.",
+  "The posterior is temperature-calibrated on simulated validation draws; calibration on real data has not been tested.",
+  "No real multi-cause labelled data exist, so the ranking has not been validated on real cuts."
+ ],
+ "allowed_ids": [
+  "STIFFNESS",
+  "DAMPING",
+  "TOOL_WEAR",
+  "DEPTH_OVERLOAD",
+  "RPM_MISMATCH",
+  "M_STIFF",
+  "M_DAMP",
+  "M_WEAR",
+  "M_DEPTH",
+  "M_SPEED",
+  "log10_acc",
+  "mic_dB",
+  "chatter_acc",
+  "chatter_mic",
+  "acc_low",
+  "acc_res",
+  "acc_high",
+  "mic_low",
+  "mic_high",
+  "A_CLAMP",
+  "A_FRF",
+  "A_VB",
+  "A_CAM",
+  "A_RPM",
+  "HEALTHY"
+ ]
+}

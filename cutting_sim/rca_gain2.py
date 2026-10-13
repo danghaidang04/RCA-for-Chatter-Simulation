@@ -26,13 +26,14 @@ def main():
     faults = [c for c in rd.CLASSES if c != "NORMAL"]; jobs = [(meta[i], c, 777 * r + 10 * int(i) + k, np.zeros(12)) for r in range(2) for i in r1 for k, c in enumerate(faults)]
     with Pool(10, initializer=rd._init, initargs=(gen, fs_a, sr, n_a, n_m, 0.0, 0.0)) as pool:
         BD = pool.map(base_pair, jobs, chunksize=8)
-    ga_grid = 10.0 ** np.arange(-8, -3.4, 0.5); gm_grid = 10.0 ** np.arange(-6, -1.4, 0.5)
+    ext = 2.0 if rd.KSCALE != 1 else 0.0                                          # độ cứng khác danh định -> hiệu ứng lỗi nhỏ hơn, cần lưới gain rộng hơn
+    ga_grid = 10.0 ** np.arange(-8, -3.4 + ext, 0.5); gm_grid = 10.0 ** np.arange(-6, -1.4 + ext, 0.5)
     sa = np.array([shift_vs_gain(BD, jobs, fs_a, sr, g, 0.0)[0] for g in ga_grid]); sm = np.array([shift_vs_gain(BD, jobs, fs_a, sr, 0.0, g)[1] for g in gm_grid])
     for g, s in zip(ga_grid, sa): print(f"  g_acc=1e{np.log10(g):.1f}: mức tăng log10 acc = {s:+.3f}")
     for g, s in zip(gm_grid, sm): print(f"  g_mic=1e{np.log10(g):.1f}: mức tăng mic = {s:+.2f} dB")
     interp = lambda grid, s, t: float(10 ** np.interp(t, s, np.log10(grid))) if (s.max() >= t) else float("nan")
     out = {"g_acc": interp(ga_grid, sa, t_acc), "g_mic": interp(gm_grid, sm, t_mic), "target_acc": float(t_acc), "target_mic": float(t_mic)}
-    json.dump(out, open(f"{rd.OUT}/rca_gain_effect.json", "w"), indent=1); print("GAIN", out)
+    json.dump(out, open(f"{rd.OUT}/rca_gain_effect{rd.TAG}.json", "w"), indent=1); print("GAIN", out)
 
 
 if __name__ == "__main__":

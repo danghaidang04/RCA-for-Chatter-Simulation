@@ -57,7 +57,7 @@ def gen_set(gen, meta, cid, fs_a, sr, n_a, n_m, g, mode, seed0):
 
 
 def main():
-    d, meta, TH, fs_a, sr, n_a, n_m = rd.load(); gen = rd.NoiseGen().fit(meta, TH, fs_a, sr); g = json.load(open(f"{rd.OUT}/rca_gain_effect.json"))
+    d, meta, TH, fs_a, sr, n_a, n_m = rd.load(); gen = rd.NoiseGen().fit(meta, TH, fs_a, sr); g = json.load(open(f"{rd.OUT}/rca_gain_effect{rd.TAG}.json"))
     cid = (meta[:, 0] * 1000 + meta[:, 1]).astype(int); ucut = np.unique(cid); n = len(meta)
     Fn, Ln = gen_set(gen, meta, cid, fs_a, sr, n_a, n_m, g, "nominal", 11); print("sinh nominal", Fn.shape, flush=True)
     Fs, Ls = gen_set(gen, meta, cid, fs_a, sr, n_a, n_m, g, "shift", 22); print("sinh shifted", Fs.shape, flush=True)
@@ -109,12 +109,12 @@ def main():
     s0 = list(scen)[0]; print("thuật toán".ljust(18), *[f.rjust(15) for f in FAULTS])
     for an in algs: print(an.ljust(18), *[f"{np.mean([x[0] for x in results[s0][an][10][f]]):.2f}".rjust(15) for f in FAULTS])
     ser = {s: {a: {str(m): {f: [float(np.mean([x[i] for x in results[s][a][m][f]])) for i in range(3)] for f in FAULTS} for m in ms} for a in algs} for s in scen}
-    json.dump({"soft_sensor_rmse": dict(zip(PROXY, rmse.tolist())), "results": ser, "edges": EDGES, "nodes": NODES}, open(f"{rd.OUT}/rca_causal.json", "w"), indent=1)
+    json.dump({"soft_sensor_rmse": dict(zip(PROXY, rmse.tolist())), "results": ser, "edges": EDGES, "nodes": NODES}, open(f"{rd.OUT}/rca_causal{rd.TAG}.json", "w"), indent=1)
     fig, ax = plt.subplots(1, 2, figsize=(12, 4), sharey=True)
     for a_, s in zip(ax, scen):
         for an in algs: a_.plot(ms, [np.mean([x[0] for f in FAULTS for x in results[s][an][m][f]]) for m in ms], "o-", label=an)
         a_.set_title(s, fontsize=9); a_.set_xlabel("interventional samples m"); a_.axhline(1 / 14, color="k", ls=":", lw=0.8)
-    ax[0].set_ylabel("Top-1 (mean over 5 root causes)"); ax[0].legend(fontsize=7); fig.tight_layout(); fig.savefig(f"{rd.OUT}/rca_causal.png", dpi=130)
+    ax[0].set_ylabel("Top-1 (mean over 5 root causes)"); ax[0].legend(fontsize=7); fig.tight_layout(); fig.savefig(f"{rd.OUT}/rca_causal{rd.TAG}.png", dpi=130)
 
 
 if __name__ == "__main__":

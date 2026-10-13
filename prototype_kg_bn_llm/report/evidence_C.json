@@ -1,0 +1,185 @@
+{
+ "case_id": "C",
+ "variant": "kg_validated",
+ "m": 10,
+ "temperature": 1.4766704681005907,
+ "posterior": [
+  {
+   "cause": "STIFFNESS",
+   "prob": 1.0,
+   "rank": 1
+  },
+  {
+   "cause": "RPM_MISMATCH",
+   "prob": 1.6072253980430766e-50,
+   "rank": 2
+  },
+  {
+   "cause": "DAMPING",
+   "prob": 3.37420876235663e-52,
+   "rank": 3
+  },
+  {
+   "cause": "TOOL_WEAR",
+   "prob": 1.0005961396358615e-66,
+   "rank": 4
+  },
+  {
+   "cause": "DEPTH_OVERLOAD",
+   "prob": 6.054512792021598e-81,
+   "rank": 5
+  },
+  {
+   "cause": "HEALTHY",
+   "prob": 5.365560951956052e-94,
+   "rank": 6
+  }
+ ],
+ "top": "STIFFNESS",
+ "node_shifts": {
+  "log10_acc": 1.9497582249056211,
+  "mic_dB": 3.766031320768851,
+  "chatter_acc": -3.470043415542137,
+  "chatter_mic": -1.1677290436612113,
+  "acc_low": 3.7188822875585545,
+  "acc_res": 6.345912009569784,
+  "acc_high": 1.8109999541954562,
+  "mic_low": 3.992985144956589,
+  "mic_high": 1.7334075780502824
+ },
+ "kg_paths": [
+  {
+   "node": "acc_res",
+   "observed_shift": 6.345912009569784,
+   "llr": 481.4171294102917,
+   "weight": 2.0605051604418883,
+   "ci_lo": 1.818571610313021,
+   "ci_hi": 2.2786678893963024,
+   "in_kg": true,
+   "sign_pred": 1,
+   "sign_agrees": true,
+   "path_text": "Loose clamping / lower modal stiffness -> Lower natural frequency and higher compliance (A looser clamp lowers modal stiffness.; tier ASSUMED, ref: altintas2020 (general theory)) | Lower natural frequency and higher compliance -> Accelerometer 1-3.2 kHz (The structural modes sit in the 1-3.2 kHz band and are excited more.; tier ASSUMED, ref: physics reasoning)",
+   "tier": "ASSUMED"
+  },
+  {
+   "node": "chatter_acc",
+   "observed_shift": -3.470043415542137,
+   "llr": -69.97414168576405,
+   "weight": 0.13992756776215493,
+   "ci_lo": -0.25096706218075815,
+   "ci_hi": 0.48500136003865524,
+   "in_kg": true,
+   "sign_pred": 1,
+   "sign_agrees": false,
+   "path_text": "Loose clamping / lower modal stiffness -> Lower natural frequency and higher compliance (A looser clamp lowers modal stiffness.; tier ASSUMED, ref: altintas2020 (general theory)) | Lower natural frequency and higher compliance -> Non-synchronous index (accelerometer) (A lower stability limit favours non-synchronous (chatter) content.; tier ASSUMED, ref: physics reasoning)",
+   "tier": "ASSUMED"
+  },
+  {
+   "node": "mic_high",
+   "observed_shift": 1.7334075780502824,
+   "llr": -61.644303714955036,
+   "weight": 0.17567831289394584,
+   "ci_lo": 0.1356977347760402,
+   "ci_hi": 0.22260501134458602,
+   "in_kg": false,
+   "sign_pred": 0,
+   "sign_agrees": true,
+   "path_text": "not in the knowledge graph (data-suggested edge; expert review needed)",
+   "tier": "ASSUMED"
+  },
+  {
+   "node": "mic_dB",
+   "observed_shift": 3.766031320768851,
+   "llr": -43.95313268098932,
+   "weight": 1.5540938651341674,
+   "ci_lo": 1.3501091052561094,
+   "ci_hi": 1.730397950586209,
+   "in_kg": false,
+   "sign_pred": 0,
+   "sign_agrees": true,
+   "path_text": "not in the knowledge graph (data-suggested edge; expert review needed)",
+   "tier": "ASSUMED"
+  },
+  {
+   "node": "acc_low",
+   "observed_shift": 3.7188822875585545,
+   "llr": -28.089259854323746,
+   "weight": -0.07203140329328085,
+   "ci_lo": -0.2098165502135385,
+   "ci_hi": 0.07380262624354353,
+   "in_kg": false,
+   "sign_pred": 0,
+   "sign_agrees": true,
+   "path_text": "not in the knowledge graph (data-suggested edge; expert review needed)",
+   "tier": "ASSUMED"
+  }
+ ],
+ "misfit": {
+  "d2": 3471.98476832863,
+  "threshold": 44.31814095207805,
+  "flag": true,
+  "unexplained_nodes": [
+   {
+    "node": "acc_low",
+    "z": 12.41722693554384
+   },
+   {
+    "node": "mic_low",
+    "z": 11.4344356672504
+   },
+   {
+    "node": "chatter_acc",
+    "z": -11.056769646985138
+   },
+   {
+    "node": "acc_res",
+    "z": 10.128302615850785
+   },
+   {
+    "node": "mic_high",
+    "z": 5.118059929957955
+   }
+  ]
+ },
+ "suggested_checks_from_kg": {
+  "STIFFNESS": [
+   "Re-torque the clamp and re-measure the tool-tip FRF"
+  ],
+  "RPM_MISMATCH": [
+   "Compare the controller spindle speed with the programmed value"
+  ]
+ },
+ "limitations": [
+  "Edge weights and the covariance are learned from simulated windows, so they inherit the simulator's assumptions (nominal parameters above the stability limit, assumed fault severities and gains).",
+  "Knowledge-graph edges and signs are physics reasoning with provenance tier ASSUMED, tested only against simulated data.",
+  "The posterior is temperature-calibrated on simulated validation draws; calibration on real data has not been tested.",
+  "No real multi-cause labelled data exist, so the ranking has not been validated on real cuts."
+ ],
+ "allowed_ids": [
+  "STIFFNESS",
+  "DAMPING",
+  "TOOL_WEAR",
+  "DEPTH_OVERLOAD",
+  "RPM_MISMATCH",
+  "M_STIFF",
+  "M_DAMP",
+  "M_WEAR",
+  "M_DEPTH",
+  "M_SPEED",
+  "log10_acc",
+  "mic_dB",
+  "chatter_acc",
+  "chatter_mic",
+  "acc_low",
+  "acc_res",
+  "acc_high",
+  "mic_low",
+  "mic_high",
+  "A_CLAMP",
+  "A_FRF",
+  "A_VB",
+  "A_CAM",
+  "A_RPM",
+  "HEALTHY"
+ ]
+}

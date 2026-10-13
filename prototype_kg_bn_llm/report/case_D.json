@@ -1,0 +1,54 @@
+{
+ "ranking": [
+  {
+   "cause": "HEALTHY",
+   "prob": 0.9999995176845112,
+   "rank": 1
+  },
+  {
+   "cause": "TOOL_WEAR",
+   "prob": 4.823153481860843e-07,
+   "rank": 2
+  },
+  {
+   "cause": "RPM_MISMATCH",
+   "prob": 1.1987164917047832e-13,
+   "rank": 3
+  },
+  {
+   "cause": "DEPTH_OVERLOAD",
+   "prob": 1.8635105294330514e-14,
+   "rank": 4
+  },
+  {
+   "cause": "STIFFNESS",
+   "prob": 2.0870723334610757e-15,
+   "rank": 5
+  },
+  {
+   "cause": "DAMPING",
+   "prob": 6.803528640889193e-17,
+   "rank": 6
+  }
+ ],
+ "explanation": {
+  "summary": "The model ranks HEALTHY first with posterior 1.00 (temperature-calibrated, m=10 windows). The out-of-model check flags this input, so the ranking should be treated as unreliable here.",
+  "supporting_evidence": [
+   "No knowledge-graph edge of the top cause carries a large contribution."
+  ],
+  "conflicts_or_unexplained": [
+   "Out-of-model check: the Mahalanobis residual 72.1 exceeds the reference threshold 44.3; the data are not well explained by any hypothesis."
+  ],
+  "caveats": [
+   "Edge weights and the covariance are learned from simulated windows, so they inherit the simulator's assumptions (nominal parameters above the stability limit, assumed fault severities and gains).",
+   "Knowledge-graph edges and signs are physics reasoning with provenance tier ASSUMED, tested only against simulated data.",
+   "The posterior is temperature-calibrated on simulated validation draws; calibration on real data has not been tested.",
+   "No real multi-cause labelled data exist, so the ranking has not been validated on real cuts."
+  ],
+  "suggested_checks": []
+ },
+ "backend": "template",
+ "llm_violations": [],
+ "final_violations": [],
+ "validated": true
+}

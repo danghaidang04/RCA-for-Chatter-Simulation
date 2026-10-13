@@ -10,3 +10,16 @@ paper/*.log
 paper/*.bbl
 paper/*.blg
 paper/*.out
+__pycache__/
+
+# secrets for the KG+BN+LLM prototype (never commit)
+.env
+*.env
+prototype_kg_bn_llm/.env
+prototype_kg_bn_llm/report/llm_calls/
+
+# Tài liệu có bản quyền người dùng tải về (không commit)
+prototype_kg_bn_llm/documents/raw/
+paper/lit/pdfs/
+prototype_kg_bn_llm/app/*.log
+prototype_kg_bn_llm/data/*.log

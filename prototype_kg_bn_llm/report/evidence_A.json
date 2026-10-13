@@ -1,0 +1,164 @@
+{
+ "case_id": "A",
+ "variant": "kg_validated",
+ "m": 10,
+ "temperature": 1.4766704681005907,
+ "posterior": [
+  {
+   "cause": "DAMPING",
+   "prob": 0.9991390494131207,
+   "rank": 1
+  },
+  {
+   "cause": "DEPTH_OVERLOAD",
+   "prob": 0.000595725137962051,
+   "rank": 2
+  },
+  {
+   "cause": "TOOL_WEAR",
+   "prob": 0.0002534717579416193,
+   "rank": 3
+  },
+  {
+   "cause": "STIFFNESS",
+   "prob": 1.0407686456013045e-05,
+   "rank": 4
+  },
+  {
+   "cause": "RPM_MISMATCH",
+   "prob": 1.3460045110641607e-06,
+   "rank": 5
+  },
+  {
+   "cause": "HEALTHY",
+   "prob": 8.458918250290205e-15,
+   "rank": 6
+  }
+ ],
+ "top": "DAMPING",
+ "node_shifts": {
+  "log10_acc": 3.1395826379563134,
+  "mic_dB": 2.784221494398336,
+  "chatter_acc": -0.04843348779357032,
+  "chatter_mic": -0.1012122258428632,
+  "acc_low": 0.32987463185903393,
+  "acc_res": 1.4996536485145662,
+  "acc_high": 1.7145777789190522,
+  "mic_low": -0.6933259186517161,
+  "mic_high": 0.20456380527730317
+ },
+ "kg_paths": [
+  {
+   "node": "acc_res",
+   "observed_shift": 1.4996536485145662,
+   "llr": 27.708770249866088,
+   "weight": 1.4692653660922597,
+   "ci_lo": 1.1867746590168695,
+   "ci_hi": 1.701269630834882,
+   "in_kg": true,
+   "sign_pred": 1,
+   "sign_agrees": true,
+   "path_text": "Lower damping -> Less damped tool-tip mode (Reduced damping ratio.; tier ASSUMED, ref: altintas2020 (general theory)) | Less damped tool-tip mode -> Accelerometer 1-3.2 kHz (A less damped mode rings more.; tier ASSUMED, ref: physics reasoning)",
+   "tier": "ASSUMED"
+  },
+  {
+   "node": "log10_acc",
+   "observed_shift": 3.1395826379563134,
+   "llr": 27.453401153251537,
+   "weight": 1.8786111331506796,
+   "ci_lo": 1.503263983649057,
+   "ci_hi": 2.1979149826659583,
+   "in_kg": false,
+   "sign_pred": 0,
+   "sign_agrees": true,
+   "path_text": "not in the knowledge graph (data-suggested edge; expert review needed)",
+   "tier": "ASSUMED"
+  },
+  {
+   "node": "mic_high",
+   "observed_shift": 0.20456380527730317,
+   "llr": -5.036524716585815,
+   "weight": 0.16995401353666473,
+   "ci_lo": 0.12034982417632463,
+   "ci_hi": 0.22803667767355024,
+   "in_kg": false,
+   "sign_pred": 0,
+   "sign_agrees": true,
+   "path_text": "not in the knowledge graph (data-suggested edge; expert review needed)",
+   "tier": "ASSUMED"
+  },
+  {
+   "node": "mic_dB",
+   "observed_shift": 2.784221494398336,
+   "llr": 2.9716701342535408,
+   "weight": 1.7370784373177215,
+   "ci_lo": 1.3655610401638973,
+   "ci_hi": 2.091245706014367,
+   "in_kg": false,
+   "sign_pred": 0,
+   "sign_agrees": true,
+   "path_text": "not in the knowledge graph (data-suggested edge; expert review needed)",
+   "tier": "ASSUMED"
+  },
+  {
+   "node": "acc_high",
+   "observed_shift": 1.7145777789190522,
+   "llr": -2.231201233445197,
+   "weight": 1.1018846610064035,
+   "ci_lo": 0.8909696329912191,
+   "ci_hi": 1.298219951583574,
+   "in_kg": false,
+   "sign_pred": 0,
+   "sign_agrees": true,
+   "path_text": "not in the knowledge graph (data-suggested edge; expert review needed)",
+   "tier": "ASSUMED"
+  }
+ ],
+ "misfit": {
+  "d2": 8.068468799628574,
+  "threshold": 44.31814095207805,
+  "flag": false,
+  "unexplained_nodes": []
+ },
+ "suggested_checks_from_kg": {
+  "DAMPING": [
+   "Repeat the hammer test with the current stick-out"
+  ],
+  "DEPTH_OVERLOAD": [
+   "Check the programmed radial depth in the CAM/NC program"
+  ]
+ },
+ "limitations": [
+  "Edge weights and the covariance are learned from simulated windows, so they inherit the simulator's assumptions (nominal parameters above the stability limit, assumed fault severities and gains).",
+  "Knowledge-graph edges and signs are physics reasoning with provenance tier ASSUMED, tested only against simulated data.",
+  "The posterior is temperature-calibrated on simulated validation draws; calibration on real data has not been tested.",
+  "No real multi-cause labelled data exist, so the ranking has not been validated on real cuts."
+ ],
+ "allowed_ids": [
+  "STIFFNESS",
+  "DAMPING",
+  "TOOL_WEAR",
+  "DEPTH_OVERLOAD",
+  "RPM_MISMATCH",
+  "M_STIFF",
+  "M_DAMP",
+  "M_WEAR",
+  "M_DEPTH",
+  "M_SPEED",
+  "log10_acc",
+  "mic_dB",
+  "chatter_acc",
+  "chatter_mic",
+  "acc_low",
+  "acc_res",
+  "acc_high",
+  "mic_low",
+  "mic_high",
+  "A_CLAMP",
+  "A_FRF",
+  "A_VB",
+  "A_CAM",
+  "A_RPM",
+  "HEALTHY"
+ ]
+}

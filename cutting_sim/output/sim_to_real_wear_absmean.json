@@ -1,6 +1,7 @@
 {
  "1": {
   "sim-only": 0.8874115983026875,
+  "rms-rule": 0.8528995756718529,
   "real-source (2 machines, all labels)": 0.8200848656294201,
   "k=2 lam=0.3 scratch": 0.9031764705882354,
   "k=2 lam=0.3 sim->finetune": 0.9273333333333332,
@@ -35,6 +36,7 @@
  },
  "2": {
   "sim-only": 0.8067423230974633,
+  "rms-rule": 0.9355807743658211,
   "real-source (2 machines, all labels)": 0.9953271028037383,
   "k=2 lam=0.3 scratch": 0.9219749502768371,
   "k=2 lam=0.3 sim->finetune": 0.9310326291458366,
@@ -69,6 +71,7 @@
  },
  "3": {
   "sim-only": 0.5710313447927199,
+  "rms-rule": 0.43250758341759354,
   "real-source (2 machines, all labels)": 0.8313953488372093,
   "k=2 lam=0.3 scratch": 0.8594360821251579,
   "k=2 lam=0.3 sim->finetune": 0.8012589651245113,
