@@ -65,7 +65,7 @@ def info():
 @app.post("/api/simulate")
 def simulate(r: Req):
     if r.fault not in live.FAULTS: raise HTTPException(400, "unknown fault")
-    if min(abs(r.ae - a) for a in live.AE_VALUES) > 1e-6: raise HTTPException(400, f"ae must be one of {live.AE_VALUES} (trained range)")
+    if not live.AE_VALUES[0] - 1e-9 <= r.ae <= live.AE_VALUES[-1] + 1e-9: raise HTTPException(400, f"ae must be between {live.AE_VALUES[0]} and {live.AE_VALUES[-1]} (trained range)")
     from llm_reasoner import OpenRouterReasoner, TemplateReasoner
     backend = TemplateReasoner()
     if r.backend == "openrouter":
@@ -125,7 +125,7 @@ def sld(r: SldReq):
 
 @app.post("/api/sim/start")
 def sim_start(r: StartReq):
-    if min(abs(r.ae - a) for a in live.AE_VALUES) > 1e-6: raise HTTPException(400, f"ae must be one of {live.AE_VALUES}")
+    if not live.AE_VALUES[0] - 1e-9 <= r.ae <= live.AE_VALUES[-1] + 1e-9: raise HTTPException(400, f"ae must be between {live.AE_VALUES[0]} and {live.AE_VALUES[-1]} (trained range)")
     if r.backend == "openrouter" and not r.consent: raise HTTPException(400, "consent is required to send the evidence bundle to OpenRouter")
     for k in [k for k, v in stream.SESS.items() if time.time() - v.created > 7200]: stream.SESS.pop(k, None)
     s = stream.Session(r.rpm, r.ae, r.up, r.seed, r.backend, r.consent, r.params); stream.SESS[s.sid] = s; return {"default_machine": s.pj is None, "sid": s.sid, "n_cal": stream.N_CAL, "n_diag": stream.N_DIAG, "params": s.params}
