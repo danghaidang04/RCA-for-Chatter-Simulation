@@ -1,4 +1,4 @@
-"""Protection for a public deployment: per-visitor and daily caps on LLM calls (they spend the owner's credit) and a cap on active sessions (CPU)."""
+"""Protection for a public deployment (a value of 0 switches that limit off): per-visitor and daily caps on LLM calls (they spend the owner's credit) and a cap on active sessions (CPU)."""
 import os
 import time
 from collections import defaultdict, deque
@@ -16,8 +16,8 @@ class LLMLimiter:
         if self.day[0] != d: self.day = (d, 0)
         q = self.ip[ip]
         while q and now - q[0] > 3600: q.popleft()
-        if self.day[1] >= self.per_day: return False, f"the public demo reached its daily limit of {self.per_day} LLM calls; try again tomorrow or use the rule-based text"
-        if len(q) >= self.per_ip_hour: return False, f"you reached the limit of {self.per_ip_hour} LLM calls per hour on this public demo; use the rule-based text meanwhile"
+        if self.per_day > 0 and self.day[1] >= self.per_day: return False, f"the public demo reached its daily limit of {self.per_day} LLM calls; try again tomorrow or use the rule-based text"
+        if self.per_ip_hour > 0 and len(q) >= self.per_ip_hour: return False, f"you reached the limit of {self.per_ip_hour} LLM calls per hour on this public demo; use the rule-based text meanwhile"
         q.append(now); self.day = (d, self.day[1] + 1); return True, ""
 
 

@@ -27,7 +27,7 @@ Needs a Hugging Face account. The backend needs `cutting_sim/output/real_windows
 
 ### Public link (anyone can use it)
 - Create the Space as **Public** (or switch it in Settings → Change visibility). Everyone with the link can then use it without an account.
-- The app protects your credit and the free CPU: each visitor can use the LLM at most `LLM_PER_IP_HOUR` times per hour (default 6) and the whole demo `LLM_PER_DAY` times per day (default 150); after that the page says so and uses the rule-based text. At most `MAX_SESSIONS` machines (default 4) run at once and idle ones are dropped after `SESSION_IDLE_S` seconds (default 600); extra visitors see "The demo is busy". Change them under Space → Settings → Variables.
+- The app protects your credit and the free CPU: each visitor can use the LLM at most `LLM_PER_IP_HOUR` times per hour (default in the Dockerfile: 0 = no limit) and the whole demo `LLM_PER_DAY` times per day (0 = no limit); when a limit is set and reached, the page says so and uses the rule-based text. At most `MAX_SESSIONS` machines (Dockerfile default 8; 0 = no limit) run at once and idle ones are dropped after `SESSION_IDLE_S` seconds (default 600); extra visitors see "The demo is busy". Change them under Space → Settings → Variables.
 - Also put a spending limit on the OpenRouter key itself (openrouter.ai → Keys), because the limits above are in memory and reset when the Space restarts.
 - The packaged data file comes from the MSM dataset; check its licence allows redistribution before making the Space public.
 

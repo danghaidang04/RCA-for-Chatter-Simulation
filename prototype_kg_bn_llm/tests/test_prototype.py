@@ -106,3 +106,7 @@ class TestLimits(unittest.TestCase):
         from app.limits import LLMLimiter
         L = LLMLimiter(per_ip_hour=2, per_day=3); self.assertTrue(L.allow("a", 1000)[0]); self.assertTrue(L.allow("a", 1001)[0]); ok, why = L.allow("a", 1002); self.assertFalse(ok); self.assertIn("per hour", why)
         self.assertTrue(L.allow("b", 1003)[0]); ok, why = L.allow("c", 1004); self.assertFalse(ok); self.assertIn("daily", why); self.assertTrue(L.allow("a", 1000 + 7300)[0] is False)   # new hour for a, but the daily cap still holds
+
+    def test_zero_means_unlimited(self):
+        from app.limits import LLMLimiter
+        L = LLMLimiter(per_ip_hour=0, per_day=0); self.assertTrue(all(L.allow("a", 1000 + i)[0] for i in range(50)))

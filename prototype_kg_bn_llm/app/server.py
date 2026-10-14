@@ -137,7 +137,7 @@ def sim_start(r: StartReq):
     if not live.AE_VALUES[0] - 1e-9 <= r.ae <= live.AE_VALUES[-1] + 1e-9: raise HTTPException(400, f"ae must be between {live.AE_VALUES[0]} and {live.AE_VALUES[-1]} (trained range)")
     if r.backend == "openrouter" and not r.consent: raise HTTPException(400, "consent is required to send the evidence bundle to OpenRouter")
     for k in [k for k, v in stream.SESS.items() if time.time() - getattr(v, "last", v.created) > IDLE_S]: stream.SESS.pop(k, None)
-    if len(stream.SESS) >= MAX_SESSIONS: raise HTTPException(503, f"The demo is busy ({MAX_SESSIONS} machines are running). Try again in a few minutes.")
+    if MAX_SESSIONS > 0 and len(stream.SESS) >= MAX_SESSIONS: raise HTTPException(503, f"The demo is busy ({MAX_SESSIONS} machines are running). Try again in a few minutes.")
     s = stream.Session(r.rpm, r.ae, r.up, r.seed, r.backend, r.consent, r.params); stream.SESS[s.sid] = s; return {"default_machine": s.pj is None, "sid": s.sid, "n_cal": stream.N_CAL, "n_diag": stream.N_DIAG, "params": s.params}
 
 
