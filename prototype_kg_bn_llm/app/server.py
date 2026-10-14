@@ -11,7 +11,16 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, Field
 
+from fastapi import Request
+
 from app import live, stream
+from app.limits import IDLE_S, MAX_SESSIONS, LLMLimiter
+
+LIM = LLMLimiter()
+
+
+def client_ip(req: Request):
+    f = req.headers.get("x-forwarded-for"); return (f.split(",")[0].strip() if f else (req.client.host if req.client else "?"))
 
 HERE = os.path.dirname(os.path.abspath(__file__)); PROTO = os.path.dirname(HERE)
 
@@ -127,12 +136,14 @@ def sld(r: SldReq):
 def sim_start(r: StartReq):
     if not live.AE_VALUES[0] - 1e-9 <= r.ae <= live.AE_VALUES[-1] + 1e-9: raise HTTPException(400, f"ae must be between {live.AE_VALUES[0]} and {live.AE_VALUES[-1]} (trained range)")
     if r.backend == "openrouter" and not r.consent: raise HTTPException(400, "consent is required to send the evidence bundle to OpenRouter")
-    for k in [k for k, v in stream.SESS.items() if time.time() - v.created > 7200]: stream.SESS.pop(k, None)
+    for k in [k for k, v in stream.SESS.items() if time.time() - getattr(v, "last", v.created) > IDLE_S]: stream.SESS.pop(k, None)
+    if len(stream.SESS) >= MAX_SESSIONS: raise HTTPException(503, f"The demo is busy ({MAX_SESSIONS} machines are running). Try again in a few minutes.")
     s = stream.Session(r.rpm, r.ae, r.up, r.seed, r.backend, r.consent, r.params); stream.SESS[s.sid] = s; return {"default_machine": s.pj is None, "sid": s.sid, "n_cal": stream.N_CAL, "n_diag": stream.N_DIAG, "params": s.params}
 
 
 @app.get("/api/sim/{sid}/step")
-def sim_step(sid: str): return JSONResponse(_get(sid).step())
+def sim_step(sid: str):
+    s = _get(sid); s.last = time.time(); return JSONResponse(s.step())
 
 
 @app.post("/api/sim/{sid}/apply")
@@ -153,11 +164,13 @@ class ExplainReq(BaseModel):
 
 
 @app.post("/api/llm/test")
-def llm_test():
+def llm_test(request: Request):
     """Gọi thử OpenRouter bằng một câu cố định (không gửi dữ liệu máy) để biết khóa/mô hình có dùng được không."""
     import urllib.error, urllib.request
     from llm_reasoner import OpenRouterReasoner
     r = OpenRouterReasoner(allow_external=True)
+    ok, why = LIM.allow(client_ip(request))
+    if not ok: return {"ok": False, "model": r.model, "error": why[0].upper() + why[1:]}
     if not r.key: return {"ok": False, "model": r.model, "error": "No OPENROUTER_API_KEY found. Put OPENROUTER_API_KEY=... in prototype_kg_bn_llm/.env (no restart needed)."}
     body = {"model": r.model, "messages": [{"role": "user", "content": "Reply with the single word OK."}], "max_completion_tokens": 8}
     req = urllib.request.Request(r.URL, data=json.dumps(body).encode(), headers={"Content-Type": "application/json", "Authorization": f"Bearer {r.key}"}); t0 = time.time()
@@ -171,13 +184,18 @@ def llm_test():
 
 
 @app.post("/api/sim/{sid}/explain")
-def sim_explain(sid: str, r: ExplainReq | None = None):
+def sim_explain(sid: str, request: Request, r: ExplainReq | None = None):
     s = _get(sid)
     if r is not None and r.backend in ("template", "openrouter"): s.backend = r.backend; s.consent = bool(r.consent)
+    limited = None
+    if s.backend == "openrouter" and s.consent:
+        ok, why = LIM.allow(client_ip(request))
+        if not ok: limited = why; s.backend = "template"
     try: out = s.explain()
     except PermissionError as e: raise HTTPException(400, str(e))
     except RuntimeError as e: raise HTTPException(502, f"LLM call failed: {e}")
     if out is None: raise HTTPException(409, "no diagnosis yet")
+    if limited: out["llm_violations"] = [limited]; out["backend"] = "template (limit reached)"
     return out
 
 

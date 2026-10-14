@@ -7,7 +7,7 @@ WORKDIR /app
 COPY --chown=user . /app
 RUN cd /app/cutting_sim/output && if ls real_windows.npz.part_* >/dev/null 2>&1; then cat real_windows.npz.part_* > real_windows.npz && echo "$(cat real_windows.sha256)  real_windows.npz" | sha256sum -c - && rm real_windows.npz.part_*; fi && chown user real_windows.npz
 USER user
-ENV APP_WORKERS=2 PORT=7860 NUMBA_CACHE_DIR=/tmp/numba MPLCONFIGDIR=/tmp/mpl HOME=/home/user
+ENV APP_WORKERS=2 MAX_SESSIONS=4 LLM_PER_IP_HOUR=6 LLM_PER_DAY=150 SESSION_IDLE_S=600 PORT=7860 NUMBA_CACHE_DIR=/tmp/numba MPLCONFIGDIR=/tmp/mpl HOME=/home/user
 WORKDIR /app/prototype_kg_bn_llm
 EXPOSE 7860
 CMD ["sh","-c","python -m uvicorn app.server:app --host 0.0.0.0 --port ${PORT}"]

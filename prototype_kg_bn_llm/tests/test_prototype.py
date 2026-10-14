@@ -99,3 +99,10 @@ class TestGroupedCitation(unittest.TestCase):
     def test_grouped_citation_with_unknown_id_is_rejected(self):
         ev = evidence(); ev["retrieved"] = [{"id": "R1", "quote": "Minimize overhang", "source": "s", "url": "u", "text_type": "verbatim", "why": "w"}]; good = TemplateReasoner().explain(ev)
         bad = copy.deepcopy(good); bad["evidence"] += " See [R1, R9]."; self.assertTrue(any("R9" in x for x in validate_reasoning(bad, ev)))
+
+
+class TestLimits(unittest.TestCase):
+    def test_llm_limiter_per_ip_and_per_day(self):
+        from app.limits import LLMLimiter
+        L = LLMLimiter(per_ip_hour=2, per_day=3); self.assertTrue(L.allow("a", 1000)[0]); self.assertTrue(L.allow("a", 1001)[0]); ok, why = L.allow("a", 1002); self.assertFalse(ok); self.assertIn("per hour", why)
+        self.assertTrue(L.allow("b", 1003)[0]); ok, why = L.allow("c", 1004); self.assertFalse(ok); self.assertIn("daily", why); self.assertTrue(L.allow("a", 1000 + 7300)[0] is False)   # new hour for a, but the daily cap still holds
