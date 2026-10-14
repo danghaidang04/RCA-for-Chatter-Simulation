@@ -12,6 +12,9 @@ cp "$P/documents/corpus_demo.json" "$OUT/prototype_kg_bn_llm/documents/"
 cp "$P/report/cond24_results_k10.json" "$OUT/prototype_kg_bn_llm/report/"
 cp "$ROOT/cutting_sim/"*.py "$OUT/cutting_sim/"
 REAL="$ROOT/cutting_sim/output/real_windows.npz"
-[ -f "$REAL" ] && cp "$REAL" "$OUT/cutting_sim/output/" || echo "WARNING: $REAL is missing: the backend cannot start without it."
+if [ -f "$REAL" ]; then   # Hugging Face rejects non-LFS files above 10 MiB, so ship it in 3 parts; the Dockerfile joins them
+  split -b 7000000 "$REAL" "$OUT/cutting_sim/output/real_windows.npz.part_"
+  (cd "$ROOT/cutting_sim/output" && shasum -a 256 real_windows.npz | cut -d' ' -f1) > "$OUT/cutting_sim/output/real_windows.sha256"
+else echo "WARNING: $REAL is missing: the backend cannot start without it."; fi
 cp "$ROOT/cutting_sim/output/rca_gain_effect_k10.json" "$OUT/cutting_sim/output/"
 echo "Built $OUT ($(du -sh "$OUT" | cut -f1))"

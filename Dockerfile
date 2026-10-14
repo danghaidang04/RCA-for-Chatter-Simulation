@@ -5,6 +5,7 @@ RUN pip install --no-cache-dir numpy scipy pandas scikit-learn numba networkx ma
 RUN useradd -m -u 1000 user
 WORKDIR /app
 COPY --chown=user . /app
+RUN cd /app/cutting_sim/output && if ls real_windows.npz.part_* >/dev/null 2>&1; then cat real_windows.npz.part_* > real_windows.npz && echo "$(cat real_windows.sha256)  real_windows.npz" | sha256sum -c - && rm real_windows.npz.part_*; fi && chown user real_windows.npz
 USER user
 ENV APP_WORKERS=2 PORT=7860 NUMBA_CACHE_DIR=/tmp/numba MPLCONFIGDIR=/tmp/mpl HOME=/home/user
 WORKDIR /app/prototype_kg_bn_llm

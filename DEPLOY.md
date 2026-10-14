@@ -10,14 +10,15 @@ Two independent options. The static page needs no server; the full app needs Pyt
 ## B. Full live app on a Hugging Face Docker Space (free CPU)
 Needs a Hugging Face account. The backend needs `cutting_sim/output/real_windows.npz` (20 MB, derived from the MSM real-machine dataset, git-ignored). **Check the dataset licence before putting it in a public Space; use a private Space if unsure.**
 
-1. `./deploy/make_space.sh` builds `build/space/` (about 20 MB: code, model tables, the data file, `Dockerfile`, `README.md` with the Space header).
+1. `./deploy/make_space.sh` builds `build/space/` (about 20 MB: code, model tables, the data file split into 3 parts of at most 7 MB because Hugging Face rejects plain git files above 10 MiB; the Dockerfile joins and checks them, `Dockerfile`, `README.md` with the Space header).
 2. On huggingface.co: New Space → SDK **Docker** → name it → Public or **Private**.
 3. Push the folder:
    ```
    cd build/space
    git init -b main && git add . && git commit -m "milling monitor"
    git remote add space https://huggingface.co/spaces/<user>/<space-name>
-   git push space main        # username = your HF user, password = an HF access token with write permission
+   git push --force space main   # --force: the new Space already has its own starter README; ours replaces it
+   # username = your HF user name, password = an HF access token with write permission
    ```
    (Do not paste the token anywhere else. Create it under Settings → Access Tokens.)
 4. Space → Settings → *Variables and secrets* → New secret `OPENROUTER_API_KEY` = your key. Optional variable `OPENROUTER_MODEL`.
