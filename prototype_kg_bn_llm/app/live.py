@@ -35,13 +35,38 @@ def mrow_of(rpm, ae, up):
     return np.array([5, 0, 0, 0, 1 if up else 0, float(rpm), float(ae), FT_MM * Z * float(rpm) / 60.0, Z], float)
 
 
+def nominal_params():
+    """Tham số dao-máy danh định của mô phỏng (đã nhân KSCALE cho độ cứng modal)."""
+    th = rd.X0.copy(); th[7] += np.log(rd.KSCALE)
+    return {"fn": float(th[4]), "zeta": float(th[6]), "k": float(np.exp(th[7])), "Kt": float(np.exp(th[8])), "Kr_ratio": float(np.exp(th[9])), "Z": 2, "D": 6.35, "helix": 30.0, "ap": 38.1}
+
+
+def pj_of(par):
+    """Tham số người dùng nhập -> hệ số nhân so với danh định (None nếu trùng danh định)."""
+    if not par: return None
+    n = nominal_params(); r = {"fn": float(par.get("fn", n["fn"])) / n["fn"], "zeta": float(par.get("zeta", n["zeta"])) / n["zeta"], "k": float(par.get("k", n["k"])) / n["k"], "Kt": float(par.get("Kt", n["Kt"])) / n["Kt"], "Ke": 1.0}
+    return None if all(abs(v - 1.0) < 1e-6 for v in r.values()) else r
+
+
+def sld(par, ae, up=False, rpm_lo=4000, rpm_hi=16000):
+    """Biểu đồ thùy ổn định (Altintas-Budak, ZOA) cho bộ tham số đã nhập: đường bao a_lim(rpm) theo mm."""
+    from milling_model import stability_lobes_zoa, a_lim_at
+    import model_v4
+    n = nominal_params(); par = par or {}; th = rd.X0.copy(); th[7] += np.log(rd.KSCALE)
+    fn = float(par.get("fn", n["fn"])); th[4] = fn; th[5] = fn; th[6] = float(par.get("zeta", n["zeta"])); th[7] = np.log(float(par.get("k", n["k"]))); th[8] = np.log(float(par.get("Kt", n["Kt"]))); th[9] = np.log(float(par.get("Kr_ratio", n["Kr_ratio"])))
+    cut = dict(N=10000.0, ap=n["ap"], ae=float(ae), F=FT_MM * Z * 10000.0 / 60.0, Z=Z, D=n["D"], direction="UP" if up else "DOWN"); p, _ = model_v4.build(cut, th)
+    rpm, a, lobe = stability_lobes_zoa(p, fc_range=(max(200.0, 0.4 * fn), 2.2 * fn), n_fc=4000, n_lobes=80, rpm_max=rpm_hi * 1.2, alim_max=0.5)
+    grid = np.arange(rpm_lo, rpm_hi + 1, 50.0); env = a_lim_at(rpm, a, grid) * 1e3
+    return {"rpm": grid.tolist(), "alim_mm": np.round(env, 3).tolist(), "ap_mm": n["ap"], "ae": float(ae), "min_alim_mm": float(env.min()), "trained_rpm": list(RPM_RANGE)}
+
+
 def _window(args):
     """Một cửa sổ 0.3 s: nền khỏe + g (lỗi - khỏe). Trả về 30 đặc trưng (+ dữ liệu hiển thị nếu show)."""
-    mrow, cls, sev, seed, u, show = args; g = rd._G; rng = np.random.default_rng(seed)
-    b = g["gen"].signals(mrow, u, rng, g["n_a"], g["n_m"]); (d0, sig0) = rd.dde_signals(mrow, "NORMAL", 1.0, seed, g["fs_a"], g["sr"], g["n_a"], g["n_m"], None, True)
+    mrow, cls, sev, seed, u, show = args[:6]; pj = args[6] if len(args) > 6 else None; g = rd._G; rng = np.random.default_rng(seed)
+    b = g["gen"].signals(mrow, u, rng, g["n_a"], g["n_m"]); (d0, sig0) = rd.dde_signals(mrow, "NORMAL", 1.0, seed, g["fs_a"], g["sr"], g["n_a"], g["n_m"], pj, True)
     if cls == "NORMAL": sig, sigF = b, sig0
     else:
-        (d1, sigF) = rd.dde_signals(mrow, cls, sev, seed, g["fs_a"], g["sr"], g["n_a"], g["n_m"], None, True); n = min(len(d1[0]), len(b[0])), min(len(d1[2]), len(b[2]))
+        (d1, sigF) = rd.dde_signals(mrow, cls, sev, seed, g["fs_a"], g["sr"], g["n_a"], g["n_m"], pj, True); n = min(len(d1[0]), len(b[0])), min(len(d1[2]), len(b[2]))
         sig = (b[0][:n[0]] + g["gacc"] * (d1[0][:n[0]] - d0[0][:n[0]]), b[1][:n[0]] + g["gacc"] * (d1[1][:n[0]] - d0[1][:n[0]]), b[2][:n[1]] + g["gmic"] * (d1[2][:n[1]] - d0[2][:n[1]]))
     feat = rd.rca_features(sig[0], sig[1], sig[2], g["fs_a"], g["sr"], mrow)
     if not show: return feat, None

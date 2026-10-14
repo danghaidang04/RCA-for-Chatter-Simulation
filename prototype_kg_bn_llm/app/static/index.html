@@ -3,6 +3,7 @@
 <title>Milling Monitor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>(function(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}if(!t)t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.dataset.theme=t})()</script>
 <style>
 :root{--bg:#f9fafb;--card:#fff;--ink:#101828;--mut:#667085;--line:#e4e7ec;--brand:#465fff;--brand-l:#ecf3ff;--ok:#12b76a;--ok-l:#ecfdf3;--bad:#f04438;--bad-l:#fef3f2;--warn:#f79009;--warn-l:#fffaeb;--shadow:0 1px 3px rgba(16,24,40,.06),0 1px 2px rgba(16,24,40,.04);--blk:#eef2f7;--blkb:#5b6b7b}
@@ -33,7 +34,7 @@ input[type=range]{width:100%;accent-color:var(--brand)}
 .tag{display:inline-block;border-radius:99px;padding:2px 10px;font-size:12.5px;font-weight:600;background:var(--bg);color:var(--mut)}.tag.ok{background:var(--ok-l);color:var(--ok)}.tag.bad{background:var(--bad-l);color:var(--bad)}.tag.warn{background:var(--warn-l);color:var(--warn)}.tag.br{background:var(--brand-l);color:var(--brand)}
 .fgrp{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);margin:12px 0 6px;font-weight:600}.fch{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
 .fch label{display:flex;gap:8px;align-items:center;margin:0;padding:10px 12px;border:1px solid var(--line);border-radius:12px;color:var(--ink);cursor:pointer;font-size:14px}.fch label:has(input:checked){border-color:var(--brand);background:var(--brand-l)}.fch input{accent-color:var(--brand)}
-svg text{font:11px Outfit,system-ui,sans-serif;fill:var(--ink)}svg .blk{fill:var(--blk);stroke:var(--blkb);stroke-width:1.4}svg .blk.hot{fill:#fecdca;stroke:var(--bad);stroke-width:3}svg .bk rect{fill:var(--blk);stroke:var(--blkb);stroke-width:1.3}svg .bk.hot rect{fill:var(--bad-l);stroke:var(--bad);stroke-width:3}svg .flow{fill:none;stroke:#98a2b3;stroke-width:2;stroke-dasharray:6 5;animation:fl 1s linear infinite}@keyframes fl{to{stroke-dashoffset:-11}}svg .small{font-size:9.5px;fill:var(--mut)}
+svg text{font:11px Outfit,system-ui,sans-serif;fill:var(--ink)}svg .blk{fill:var(--blk);stroke:var(--blkb);stroke-width:1.4}svg .blk.hot{fill:#fecdca;stroke:var(--bad);stroke-width:3}svg .bk text.v{font-size:10.5px;fill:var(--mut)}svg .bk rect{fill:var(--blk);stroke:var(--blkb);stroke-width:1.3}svg .bk.hot rect{fill:var(--bad-l);stroke:var(--bad);stroke-width:3}svg .flow{fill:none;stroke:#98a2b3;stroke-width:2;stroke-dasharray:6 5;animation:fl 1s linear infinite}@keyframes fl{to{stroke-dashoffset:-11}}svg .small{font-size:9.5px;fill:var(--mut)}
 .small{font-size:13px;color:var(--mut)}.mono{font-family:ui-monospace,Menlo,monospace;font-size:12.5px}[hidden]{display:none!important}
 table{border-collapse:collapse;width:100%;font-size:13.5px}th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}th{color:var(--mut);font-weight:500}
 .top3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}@media(max-width:800px){.top3{grid-template-columns:1fr}}.cs{border:1px solid var(--line);border-radius:14px;padding:14px}.cs.first{border-color:var(--bad);background:var(--bad-l)}.cs .rk{font-size:12px;color:var(--mut);font-weight:600}.cs .nm{font-size:18px;font-weight:600}.cs .pc{font-size:30px;font-weight:700}
@@ -43,6 +44,9 @@ table{border-collapse:collapse;width:100%;font-size:13.5px}th,td{border-bottom:1
 .leg{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--mut);margin-top:8px}.leg i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:5px;vertical-align:-1px}
 #modal,.ov{position:fixed;inset:0;background:rgba(16,24,40,.55);z-index:50;display:flex;align-items:center;justify-content:center;padding:24px}#modal .box,.ov .box{background:var(--card);border-radius:18px;width:min(1100px,100%);max-height:94vh;overflow:auto;padding:22px}#modal h2{margin:0}
 .dotgrid{background-image:radial-gradient(rgba(128,128,128,.28) 1px,transparent 1px);background-size:14px 14px;border-radius:10px}
+#c3d canvas{display:block;cursor:grab}.gh{font-weight:600;font-size:15px;margin:2px 0 8px;display:flex;gap:10px;align-items:center}.fgrp{margin-top:0}
+.info{display:inline-flex;width:16px;height:16px;border-radius:50%;background:var(--line);color:var(--mut);font-size:10.5px;font-weight:700;align-items:center;justify-content:center;margin-left:4px;cursor:help;position:relative;font-style:normal;vertical-align:1px}.info:hover,.info:focus{background:var(--brand);color:#fff;outline:none}
+.info .tip{display:none;position:absolute;left:-6px;top:22px;width:270px;background:var(--ink);color:var(--card);padding:9px 11px;border-radius:10px;font-size:12.5px;font-weight:400;line-height:1.4;z-index:40;text-align:left;box-shadow:0 8px 24px rgba(0,0,0,.25)}.info:hover .tip,.info:focus .tip{display:block}
 details summary{cursor:pointer;font-weight:600}.sw{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--mut)}
 </style></head><body>
 <div class="app">
@@ -53,18 +57,25 @@ details summary{cursor:pointer;font-weight:600}.sw{display:flex;align-items:cent
 <header class="top"><h1>Milling machine monitor</h1><span class="tag" id="topstate">Stopped</span><span class="sp"></span><button class="btn sm" id="aopen2" type="button">ⓘ About</button><button class="btn sm" id="theme" type="button" title="Switch light / dark mode">🌙 Dark</button><label class="sw"><input type="checkbox" id="mute"> mute alarm</label><button class="btn" id="stop" disabled>Stop</button><button class="btn pri" id="start">Start machine</button></header>
 <div class="content">
 
-<section class="card" id="sec-setup"><h2>1 · Setup</h2><div class="sub">Type the cutting condition and choose how the explanation is written, then press <b>Start machine</b> (top right).</div>
+<section class="card" id="sec-setup"><h2>1 · Setup</h2><div class="sub">Enter the tool and machine parameters, look at the stability lobe diagram, choose the two cutting settings (spindle speed and radial depth), then press <b>Start machine</b>.</div>
+ <div class="gh">Tool and machine parameters <span class="tag" id="parstat"></span></div>
+ <div class="grid g4" id="pgrid"></div>
+ <div class="gh" style="margin-top:18px">Stability lobe diagram</div>
+ <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn" id="sldbtn" type="button">Show stability lobe diagram</button><span class="small" id="sldnote">Computed from the parameters above (Altintas–Budak zero-order method) for the radial depth chosen below.</span></div>
+ <div id="sldwrap" hidden style="margin-top:10px"><div id="sld" class="dotgrid" style="height:360px"></div><div class="small" id="sldread" style="margin-top:6px"></div></div>
+ <div class="gh" style="margin-top:18px">Cutting settings (the two you choose)</div>
  <div class="grid g4" id="setup">
-  <div><label for="rpm">Spindle speed (rpm, 9000 to 12000)</label><input type="number" id="rpm" min="9000" max="12000" step="100" value="10500"></div>
-  <div><label for="ae">Radial depth a<sub>e</sub> (mm)</label><input type="number" id="ae" list="aes" step="0.0001" value="0.1905"><datalist id="aes"><option>0.0635</option><option>0.1905</option><option>0.3175</option></datalist><div class="small" id="aenote">Trained values: 0.0635, 0.1905, 0.3175. Other values snap to the nearest.</div></div>
-  <div><label for="up">Milling direction</label><select id="up"><option value="0" selected>Down milling</option><option value="1">Up milling</option></select></div>
-  <div><label for="seed">Random seed</label><input type="number" id="seed" value="0"></div></div>
- <hr style="border:none;border-top:1px solid var(--line);margin:18px 0">
+  <div><label for="rpm">Spindle speed (rpm) <i class="info" tabindex="0">i<span class="tip">Spindle speed. Click on the stability diagram or type a value. Allowed 9000 to 12000 rpm, the range of the training data. Together with the number of teeth it sets the tooth-passing frequency Z·rpm/60.</span></i></label><input type="number" id="rpm" min="9000" max="12000" step="100" value="10500"></div>
+  <div><label for="ae">Radial depth a<sub>e</sub> (mm) <i class="info" tabindex="0">i<span class="tip">Radial depth of cut: how far the tool cuts sideways into the material. It sets the immersion angle, which reshapes the stability lobes. Only the three values of the training data are allowed.</span></i></label><select id="ae"><option>0.0635</option><option selected>0.1905</option><option>0.3175</option></select></div>
+  <div hidden><label for="up">Milling direction <i class="info" tabindex="0">i<span class="tip">Down milling: the tooth enters the cut at full chip thickness. Up milling: it starts thin. Changes the cutting force direction.</span></i></label><select id="up"><option value="0" selected>Down milling</option><option value="1">Up milling</option></select></div>
+  <div><label for="seed">Random seed <i class="info" tabindex="0">i<span class="tip">Seed of the random noise. The same seed repeats the same run.</span></i></label><input type="number" id="seed" value="0"></div></div>
+ <div class="gh" style="margin-top:18px">Explanation</div>
  <div class="grid g3" style="align-items:start">
-  <div><label for="backend">Who writes the explanation</label><select id="backend"><option value="template">Rule-based text (nothing leaves this computer)</option><option value="openrouter">LLM through OpenRouter</option></select>
+  <div><label for="backend">Who writes the explanation</label><select id="backend"><option value="template">Rule-based</option><option value="openrouter">LLM</option></select>
    <label style="display:flex;gap:8px;margin-top:10px;color:var(--ink)" id="consentrow" hidden><input type="checkbox" id="consent"><span>I agree to send the evidence summary (simulation numbers and knowledge-graph text, no key) to OpenRouter</span></label></div>
   <div><label>OpenRouter connection</label><div id="keystat" class="tag">checking…</div> <button class="btn sm" id="llmtest" type="button">Test connection</button><div class="small" id="llmres" style="margin-top:6px"></div></div>
-  <div class="small"><b>Where is the key?</b> In the file <span class="mono">prototype_kg_bn_llm/.env</span> as <span class="mono">OPENROUTER_API_KEY=...</span> (the browser never sees it). The model is set by <span class="mono">OPENROUTER_MODEL</span> (default <span class="mono" id="mname">google/gemma-3-4b-it</span>). The LLM only explains the ranking; it never changes it. If the LLM fails or breaks the rules, the page says so and uses the rule-based text.</div></div>
+  <div class="small"><b>Where is the key?</b> In <span class="mono">prototype_kg_bn_llm/.env</span> as <span class="mono">OPENROUTER_API_KEY=...</span> (the browser never sees it). Model: <span class="mono" id="mname">google/gemma-3-4b-it</span>. The LLM only explains the ranking; it never changes it. If it fails, the page says why and uses the rule-based text.</div></div>
+ <div style="margin-top:16px"><button class="btn pri" id="start2" type="button">Start machine</button></div>
 </section>
 
 <section id="sec-live"><div class="hero" id="hero"><div class="lamp"></div><div style="flex:1"><h2 id="h1">Stopped</h2><p id="h2">Press <b>Start machine</b>. The monitor first learns what this machine looks like when healthy.</p><div class="bar" id="hbar" hidden><i id="hbari"></i></div></div>
@@ -73,41 +84,22 @@ details summary{cursor:pointer;font-weight:600}.sw{display:flex;align-items:cent
  <div class="small" style="margin:8px 0 20px">Click a sensor to enlarge it. Change is measured against this machine's own healthy level (the first 10 windows).</div>
  <details class="card" style="padding:14px 20px"><summary>Detector details (technical)</summary><div class="small" style="margin:8px 0">The detector adds up how far the relative tool-workpiece vibration drifts above its healthy level (CUSUM of the log RMS). The alarm sounds when the line crosses the dashed level.</div><div id="pdet" class="dotgrid" style="height:180px"></div></details></section>
 
-<section class="grid" id="sec-fault" style="align-items:start;grid-template-columns:minmax(0,3fr) minmax(0,2fr)">
- <div class="card"><h2>2 · Machine</h2><div class="sub" id="sidetxt">Healthy machine</div>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start"><svg id="side" viewBox="0 0 330 300" style="flex:1;min-width:300px" role="img" aria-label="Schematic side view of the milling machine">
-      <rect id="m_base" x="20" y="262" width="290" height="22" rx="3" class="blk"/><text x="165" y="277" text-anchor="middle" class="small">bed / table</text>
-      <rect id="m_col" x="236" y="40" width="48" height="222" rx="3" class="blk"/><text x="260" y="150" text-anchor="middle" class="small" transform="rotate(-90 260 150)">column</text>
-      <rect id="m_head" x="96" y="40" width="188" height="46" rx="4" class="blk"/><text x="190" y="66" text-anchor="middle">spindle head + motor</text>
-      <rect id="m_spindle" x="150" y="86" width="40" height="36" class="blk"/><text x="170" y="108" text-anchor="middle" class="small">spindle</text>
-      <g id="g_tool"><rect id="m_holder" x="153" y="122" width="34" height="34" class="blk"/><text x="170" y="143" text-anchor="middle" class="small">holder</text>
-      <rect id="m_tool" x="164" y="156" width="12" height="78" class="blk"/><text x="196" y="200" class="small">end mill</text>
-      <path id="m_tip" d="M164 234 H176 V240 H164 Z" class="blk"/></g>
-      <g id="g_wp"><rect id="m_wp" x="92" y="226" width="164" height="36" class="blk"/><text x="174" y="253" text-anchor="middle" class="small">workpiece</text>
-      <rect id="m_clamp1" x="64" y="228" width="30" height="34" class="blk"/><rect id="m_clamp2" x="254" y="228" width="30" height="34" class="blk"/><text x="48" y="248" text-anchor="end" class="small">clamp</text></g></svg>
-   <div style="flex:1;min-width:300px"><canvas id="top" width="460" height="300" style="width:100%;border:1px solid var(--line);border-radius:12px;background:var(--card)"></canvas>
-    <div class="sw" style="margin-top:4px">vibration ×<b id="exv">60</b><input id="ex" type="range" min="1" max="200" value="60" style="max-width:140px"></div></div></div>
-  <div class="small" style="margin:10px 0 4px"><b>Block model</b> (the simulator is this loop; blocks light up for the fault you apply, numbers are live RMS values)</div>
-  <svg id="bd" viewBox="0 0 900 170" width="100%" role="img" aria-label="Block diagram of the cutting simulation">
-   <defs><marker id="bda" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#98a2b3"/></marker></defs>
-   <g class="bk" id="b_f"><rect x="10" y="30" width="150" height="62" rx="10"/><text x="85" y="56" text-anchor="middle">Cutting force</text><text x="85" y="74" text-anchor="middle" class="small" id="bv_f">F(t) = K·h(t)·ap</text></g>
-   <g class="bk" id="b_s"><rect x="215" y="30" width="170" height="62" rx="10"/><text x="300" y="56" text-anchor="middle">Machine structure</text><text x="300" y="74" text-anchor="middle" class="small">modal stiffness, damping</text></g>
-   <g class="bk" id="b_x"><rect x="440" y="30" width="150" height="62" rx="10"/><text x="515" y="56" text-anchor="middle">Tool-tip motion</text><text x="515" y="74" text-anchor="middle" class="small" id="bv_x">x(t)</text></g>
-   <g class="bk" id="b_a"><rect x="660" y="8" width="150" height="44" rx="10"/><text x="735" y="26" text-anchor="middle">Accelerometer</text><text x="735" y="42" text-anchor="middle" class="small" id="bv_a">–</text></g>
-   <g class="bk" id="b_m"><rect x="660" y="64" width="150" height="44" rx="10"/><text x="735" y="82" text-anchor="middle">Microphone</text><text x="735" y="98" text-anchor="middle" class="small" id="bv_m">–</text></g>
-   <g class="bk" id="b_d"><rect x="215" y="116" width="370" height="46" rx="10"/><text x="400" y="135" text-anchor="middle">Delay τ = 60 / (2 · rpm): wavy surface left by the previous tooth</text><text x="400" y="152" text-anchor="middle" class="small" id="bv_d">–</text></g>
-   <path class="flow" d="M160 61 H213" marker-end="url(#bda)"/><path class="flow" d="M385 61 H438" marker-end="url(#bda)"/><path class="flow" d="M590 61 H625 V30 H658" marker-end="url(#bda)"/><path class="flow" d="M625 61 V86 H658" marker-end="url(#bda)"/>
-   <path class="flow" d="M515 92 V139 H587" marker-end="url(#bda)"/><path class="flow" d="M215 139 H85 V94" marker-end="url(#bda)"/></svg>
-  <div class="small" style="margin-top:6px">Top view: the tool turns at the programmed speed (slowed down). Blue: simulated tool-centre orbit. Red and grey lines at the workpiece edge: surface waviness now and for a healthy machine. Schematic, not CAD.</div></div>
- <div class="card"><h2>3 · Break something</h2><div class="sub" id="breakhint">Available once the healthy level is learned. One fault at a time (the diagnosis model assumes a single cause).</div>
-  <div class="fgrp">Faults the diagnosis model knows</div><div class="fch">
+<section class="card" id="sec-fault"><h2>2 · Machine</h2><div class="sub" id="sidetxt">Healthy machine</div>
+ <div class="grid g2" style="align-items:start"><div><div id="c3d" style="height:400px;border:1px solid var(--line);border-radius:14px;overflow:hidden;position:relative;background:linear-gradient(var(--card),var(--bg))"></div><div class="small" style="margin-top:4px">3D view: drag to rotate, wheel to zoom. The tool bends and the workpiece shakes with the simulated vibration (exaggerated); parts of a faulty machine turn red.</div></div>
+  <div><canvas id="top" width="560" height="400" style="width:100%;border:1px solid var(--line);border-radius:14px;background:var(--card)"></canvas>
+   <div class="sw" style="margin-top:4px">vibration ×<b id="exv">60</b><input id="ex" type="range" min="1" max="200" value="60" style="max-width:160px"><span class="small">Top view: tool orbit (blue) and surface waviness (red), slowed down.</span></div></div></div>
+ <div class="small" style="margin:14px 0 4px"><b>Block model</b>: the simulator is this chain; blocks light up for the fault you apply, numbers are live.</div>
+ <svg id="bd" viewBox="0 0 900 440" width="100%" role="img" aria-label="Block diagram of the cutting simulation"></svg>
+</section>
+<section class="card" id="sec-break"><h2>3 · Break something</h2><div class="sub" id="breakhint">Available once the healthy level is learned. One fault at a time (the diagnosis model assumes a single cause).</div>
+ <div class="grid g2"><div><div class="fgrp">Faults the diagnosis model knows</div><div class="fch">
    <label><input type="checkbox" class="fb" value="STIFFNESS">Loose clamp</label><label><input type="checkbox" class="fb" value="DAMPING">Lower damping (long overhang)</label><label><input type="checkbox" class="fb" value="TOOL_WEAR">Tool wear</label><label><input type="checkbox" class="fb" value="DEPTH_OVERLOAD">Too much radial depth</label><label><input type="checkbox" class="fb" value="RPM_MISMATCH">Spindle speed error</label></div>
-  <div class="fgrp">Faults outside the model</div><div class="fch"><label><input type="checkbox" class="fb" value="IMBALANCE">Spindle imbalance</label><label><input type="checkbox" class="fb" value="RUNOUT">Tool run-out</label></div>
-  <div class="grid g3" style="margin-top:14px"><div><label>Severity: <b id="sevv">70</b> %</label><input id="sev" type="range" min="0" max="100" value="70"></div>
-   <div><label>Onset (windows to full severity)</label><select id="ramp"><option>3</option><option selected>6</option><option>10</option></select></div>
+  <div class="fgrp">Faults outside the model</div><div class="fch"><label><input type="checkbox" class="fb" value="IMBALANCE">Spindle imbalance</label><label><input type="checkbox" class="fb" value="RUNOUT">Tool run-out</label></div></div>
+  <div><div class="grid g3"><div><label for="sev">Severity (0 to 100 %) <i class="info" tabindex="0">i<span class="tip">How strong the fault becomes at the end of the onset. 100 % is the most severe fault in the range the diagnosis model was trained on.</span></i></label><input type="number" id="sev" min="0" max="100" step="5" value="70"></div>
+   <div><label for="ramp">Onset (windows) <i class="info" tabindex="0">i<span class="tip">Number of 0.3 s windows over which the fault grows from nothing to full severity.</span></i></label><select id="ramp"><option>3</option><option selected>6</option><option>10</option></select></div>
    <div id="signbox" hidden><label>Speed error</label><select id="sign"><option value="1">too fast</option><option value="-1">too slow</option></select></div></div>
-  <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap"><button class="btn dan" id="apply" disabled>Apply fault</button><button class="btn" id="repair" disabled>Repair (clear fault)</button></div>
-  <div class="small" id="applystat" style="margin-top:8px"></div></div>
+   <div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap"><button class="btn dan" id="apply" disabled>Apply fault</button><button class="btn" id="repair" disabled>Repair (clear fault)</button></div>
+   <div class="small" id="applystat" style="margin-top:8px"></div></div></div>
 </section>
 
 <section class="card" id="sec-diag" hidden><h2>4 · Root cause</h2><div class="sub" id="diagsub"></div>
@@ -129,7 +121,7 @@ details summary{cursor:pointer;font-weight:600}.sw{display:flex;align-items:cent
  <div class="small">Waveform, last windows</div><div id="mwave" class="dotgrid" style="height:300px"></div><div class="small" style="margin-top:12px">Level over time (RMS per window). Blue band: learning. Dotted orange: fault applied. Red: alarm.</div><div id="mrms" class="dotgrid" style="height:240px"></div></div></div>
 
 <script>
-const $=id=>document.getElementById(id);const KEYS=['vib','acc','mic','force'];
+let M3=null;const $=id=>document.getElementById(id);const KEYS=['vib','acc','mic','force'];
 const SEN={vib:{name:'Tool-workpiece vibration',unit:'µm',color:'#465fff',ic:'V',use:'Used by the anomaly detector (simulator output).'},acc:{name:'Accelerometer',unit:'g',color:'#f04438',ic:'A',use:'Used by the diagnosis (baseline plus fault effect).'},mic:{name:'Microphone',unit:'Pa',color:'#12b76a',ic:'M',use:'Used by the diagnosis (baseline plus fault effect).'},force:{name:'Force dynamometer',unit:'N',color:'#7a5af8',ic:'F',use:'Display only (simulator output, not used for diagnosis).'}};
 const PARTS={STIFFNESS:['m_clamp1','m_clamp2','m_wp'],DAMPING:['m_holder','m_tool'],TOOL_WEAR:['m_tip','m_tool'],DEPTH_OVERLOAD:['m_wp'],RPM_MISMATCH:['m_spindle','m_head'],IMBALANCE:['m_spindle'],RUNOUT:['m_holder','m_tool','m_tip']};
 const LABEL={HEALTHY:'Healthy machine',STIFFNESS:'Loose clamp: fixture less stiff',DAMPING:'Lower damping: long overhang',TOOL_WEAR:'Tool wear at the cutting edge',DEPTH_OVERLOAD:'Too much radial depth',RPM_MISMATCH:'Spindle speed error',IMBALANCE:'Spindle imbalance (outside the model)',RUNOUT:'Tool run-out (outside the model)'};
@@ -137,14 +129,22 @@ const NICE={STIFFNESS:'Loose clamp',DAMPING:'Low damping',TOOL_WEAR:'Tool wear',
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));const nice=c=>NICE[c]||c;
 let S={sid:null,running:false,tick:0,ncal:10,ndiag:10,buf:{vib:[],acc:[],mic:[],force:[]},rms:{vib:[],acc:[],mic:[],force:[]},det:{t:[],c:[]},h:1,applied:null,alarmTick:null,lastTip:null,cond:null,fault:'HEALTHY',diag:false,audio:null,modal:null,info:null,diagData:null};
 const AES=[0.0635,0.1905,0.3175];
-const BHOT={STIFFNESS:['b_s'],DAMPING:['b_s'],TOOL_WEAR:['b_f'],DEPTH_OVERLOAD:['b_f'],RPM_MISMATCH:['b_d'],IMBALANCE:['b_f','b_s'],RUNOUT:['b_f','b_x']};
-function sideHot(f){document.querySelectorAll('#bd .bk').forEach(e=>e.classList.remove('hot'));(BHOT[f]||[]).forEach(i=>$(i).classList.add('hot'));document.querySelectorAll('#side .blk').forEach(e=>e.classList.remove('hot'));(PARTS[f]||[]).forEach(i=>$(i).classList.add('hot'));$('sidetxt').textContent=LABEL[f]||''}
+const BHOT={STIFFNESS:['b_k','b_fn'],DAMPING:['b_zeta'],TOOL_WEAR:['b_Kt'],DEPTH_OVERLOAD:['b_ae'],RPM_MISMATCH:['b_rpm'],IMBALANCE:['b_d'],RUNOUT:['b_d']};
+const BD_IN=[['fn','Natural frequency fn','Hz'],['zeta','Damping ratio ζ',''],['k','Modal stiffness k','N/m'],['Kt','Cutting coeff. Kt','N/m²'],['Kr_ratio','Force ratio Kr/Kt',''],['Z','Number of teeth Z',''],['D','Tool diameter D','mm'],['helix','Helix angle','°'],['ap','Axial depth ap','mm'],['rpm','Spindle speed','rpm'],['ae','Radial depth ae','mm']];
+const BD_OUT=[['vib','Relative vibration','tool–workpiece'],['acc','Accelerometer',''],['mic','Microphone',''],['frc','Force dynamometer','']];
+function buildBD(){let s='<defs><marker id="bda" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0L10 5L0 10z" fill="#98a2b3"/></marker></defs>';
+ const n=BD_IN.length,y0=8,dy=38;BD_IN.forEach((r,i)=>{const y=y0+i*dy;s+='<g class="bk" id="b_'+r[0]+'"><rect x="8" y="'+y+'" width="190" height="32" rx="8"/><text x="16" y="'+(y+14)+'" style="font-size:11.5px">'+r[1]+'</text><text class="v" x="16" y="'+(y+27)+'" id="bv_'+r[0]+'">–</text></g>';const ty=140+(i/(n-1))*190;s+='<path class="flow" d="M198 '+(y+16)+' H250 V'+ty+' H318" marker-end="url(#bda)"/>'});
+ s+='<g class="bk" id="b_d"><rect x="320" y="110" width="210" height="250" rx="14"/><text x="425" y="225" text-anchor="middle" style="font-size:18px;font-weight:700">DDE Simulation</text><text x="425" y="248" text-anchor="middle" class="small">regenerative milling model</text><text x="425" y="266" text-anchor="middle" class="small">+ sensor chain</text></g>';
+ BD_OUT.forEach((r,i)=>{const y=40+i*105,ty=150+i*60;s+='<path class="flow" d="M530 '+ty+' H600 V'+(y+28)+' H648" marker-end="url(#bda)"/><g class="bk" id="b_'+r[0]+'"><rect x="650" y="'+y+'" width="240" height="56" rx="10"/><text x="662" y="'+(y+22)+'" style="font-size:13.5px;font-weight:600">'+r[1]+'</text><text class="v" x="662" y="'+(y+42)+'" id="bv_'+r[0]+'">'+r[2]+'</text></g>'});
+ $('bd').innerHTML=s}
+function setBD(){const P=curPar(),n=S.nom||{};const set=(k,t)=>{const e=$('bv_'+k);if(e)e.textContent=t};set('fn',fmt(P.fn)+' Hz');set('zeta',fmt(P.zeta));set('k',P.k.toExponential(2)+' N/m');set('Kt',P.Kt.toExponential(2)+' N/m²');set('Kr_ratio',fmt(P.Kr_ratio));set('Z',n.Z||2);set('D',(n.D||6.35)+' mm');set('helix',(n.helix||30)+'°');set('ap',(n.ap||38.1)+' mm');set('rpm',(+$('rpm').value)+' rpm');set('ae',(+$('ae').value)+' mm')}
+function sideHot(f){document.querySelectorAll('#bd .bk').forEach(e=>e.classList.remove('hot'));(BHOT[f]||[]).forEach(i=>{const e=$(i);if(e)e.classList.add('hot')});$('sidetxt').textContent=LABEL[f]||'';hot3d(f)}
 function hero(cls,h,p,top){$('hero').className='hero '+cls;$('h1').textContent=h;$('h2').innerHTML=p;const t=$('topstate');t.textContent=top||h;t.className='tag '+({ok:'ok',alarm:'bad',cal:'br'}[cls]||'')}
-$('sev').oninput=()=>$('sevv').textContent=$('sev').value;$('ex').oninput=()=>$('exv').textContent=$('ex').value;
+$('ex').oninput=()=>$('exv').textContent=$('ex').value;
 $('backend').onchange=()=>{$('consentrow').hidden=$('backend').value!='openrouter'};
 document.querySelectorAll('.fb').forEach(c=>c.onchange=()=>{if(c.checked)document.querySelectorAll('.fb').forEach(o=>{if(o!==c)o.checked=false});$('signbox').hidden=!(c.checked&&c.value=='RPM_MISMATCH')});
-function snapAe(){const v=parseFloat($('ae').value);if(isNaN(v))return AES[1];const s=AES.reduce((a,b)=>Math.abs(b-v)<Math.abs(a-v)?b:a);$('ae').value=s;$('aenote').textContent=(Math.abs(s-v)>1e-6?('Snapped to '+s+' (the trained value nearest to '+v+'). '):'')+'Trained values: 0.0635, 0.1905, 0.3175.';return s}
-$('ae').onchange=snapAe;
+function snapAe(){return parseFloat($('ae').value)}
+
 function beep(){if($('mute').checked||!S.audio)return;try{const a=S.audio;for(let k=0;k<4;k++){const o=a.createOscillator(),g=a.createGain();o.type='square';o.frequency.value=k%2?740:988;g.gain.value=0.06;o.connect(g);g.connect(a.destination);const t=a.currentTime+k*0.28;o.start(t);o.stop(t+0.2)}}catch(e){}}
 const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const lay=(t,y,mini)=>({margin:mini?{l:0,r:0,t:2,b:0}:{l:48,r:10,t:6,b:34},xaxis:mini?{visible:false}:{title:t,gridcolor:'rgba(128,128,128,.2)'},yaxis:mini?{visible:false}:{title:y,gridcolor:'rgba(128,128,128,.2)'},showlegend:false,paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:'rgba(0,0,0,0)',font:{size:12,color:css('--ink')}});
@@ -168,7 +168,7 @@ function drawTop(ts){const c=$('top'),g=c.getContext('2d'),W=c.width,H=c.height;
  if(T&&C&&S.running){const n=T.x.length;const ph=(ts/1000/80)%0.1;const idx=Math.floor(ph/0.1*n)%n;ox=T.x[idx]/1000*pxmm*ex;oy=-T.y[idx]/1000*pxmm*ex;ang=2*Math.PI*(C.rpm/60)*ph;
   g.strokeStyle='#f04438';g.lineWidth=1.3;g.beginPath();for(let k=0;k<n;k++){const j=(idx-n+1+k+n)%n;const X=cx+R+10+k*0.9,Y=edgeY+22-T.y[j]/1000*pxmm*ex;k?g.lineTo(X,Y):g.moveTo(X,Y)}g.stroke();
   g.strokeStyle='#465fff';g.lineWidth=1.2;g.beginPath();for(let k=0;k<n;k++){const X=cx+T.x[k]/1000*pxmm*ex,Y=edgeY-(R-C.ae*pxmm)-T.y[k]/1000*pxmm*ex;k?g.lineTo(X,Y):g.moveTo(X,Y)}g.stroke()}
- {const gt=$('g_tool'),gw=$('g_wp');if(T&&C&&S.running){const n=T.x.length,ph=(ts/1000/80)%0.1,i2=Math.floor(ph/0.1*n)%n,k=(+$('ex').value/30)*0.12;const dx=T.x[i2]*k,dy=T.y[i2]*k;gt.setAttribute('transform','rotate('+(Math.atan2(dx,112)*57.3)+' 170 122) translate(0 '+(dy*0.2)+')');gw.setAttribute('transform','translate('+(dx*0.12)+' '+(-dy*0.12)+')')}else{gt.removeAttribute('transform');gw.removeAttribute('transform')}}
+ update3d(ts);
  const tcy=edgeY-(R-(C?C.ae:0.19)*pxmm);g.save();g.translate(cx+ox,tcy+oy);g.fillStyle=dark?'#3c4a5a':'#d0d5dd';g.strokeStyle=ink;g.lineWidth=1.4;g.beginPath();g.arc(0,0,R,0,2*Math.PI);g.fill();g.stroke();g.rotate(ang);
  const wear=S.fault=='TOOL_WEAR';for(let k=0;k<2;k++){g.rotate(Math.PI*k);g.strokeStyle=wear?'#f04438':ink;g.lineWidth=wear?4:2.4;g.beginPath();g.moveTo(0,0);g.lineTo(R-3,0);g.stroke()}g.restore();
  g.fillStyle=ink;g.fillText(C?('Ø6.35 mm, 2 flutes · '+C.rpm+' rpm · a_e '+C.ae+' mm · slowed 80×'):'machine stopped',8,16);requestAnimationFrame(drawTop)}
@@ -176,18 +176,19 @@ requestAnimationFrame(drawTop);sideHot('HEALTHY');buildTiles();
 const API=(new URLSearchParams(location.search).get('api')||'').replace(/\/$/,'');
 async function api(path,opt){const r=await fetch(API+path,opt);const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.detail||r.statusText);return j}
 const POST=b=>({method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b||{})});
-function lock(on){document.querySelectorAll('#setup input,#setup select').forEach(e=>e.disabled=on)}
-$('start').onclick=async()=>{try{S.audio=S.audio||new (window.AudioContext||window.webkitAudioContext)();S.audio.resume&&S.audio.resume()}catch(e){}
- const ae=snapAe();const rpm=Math.min(12000,Math.max(9000,+$('rpm').value||10500));$('rpm').value=rpm;if($('backend').value=='openrouter'&&!$('consent').checked){hero('','Consent needed','Tick the consent box in Setup to use the LLM, or choose the rule-based text.','Consent needed');location.hash='#sec-setup';return}
- const body={rpm:rpm,ae:ae,up:$('up').value=='1',seed:+$('seed').value||0,backend:$('backend').value,consent:$('consent').checked};
+function lock(on){document.querySelectorAll('#setup input,#setup select,#pgrid input,#sldbtn').forEach(e=>e.disabled=on)}
+async function startMachine(){try{S.audio=S.audio||new (window.AudioContext||window.webkitAudioContext)();S.audio.resume&&S.audio.resume()}catch(e){}
+ const ae=+$('ae').value;const rpm=Math.min(12000,Math.max(9000,+$('rpm').value||10500));$('rpm').value=rpm;if($('backend').value=='openrouter'&&!$('consent').checked){hero('','Consent needed','Tick the consent box in Setup to use the LLM, or choose the rule-based text.','Consent needed');location.hash='#sec-setup';return}
+ const body={rpm:rpm,ae:ae,up:$('up').value=='1',seed:+$('seed').value||0,backend:$('backend').value,consent:$('consent').checked,params:curPar()};
  try{const j=await api('/api/sim/start',POST(body));Object.assign(S,{sid:j.sid,running:true,tick:0,ncal:j.n_cal,ndiag:j.n_diag,buf:{vib:[],acc:[],mic:[],force:[]},rms:{vib:[],acc:[],mic:[],force:[]},det:{t:[],c:[]},h:1,applied:null,alarmTick:null,lastTip:null,cond:{rpm:body.rpm,ae:body.ae},fault:'HEALTHY',diag:false,diagData:null});
-  $('start').disabled=true;$('stop').disabled=false;lock(true);$('sec-diag').hidden=true;$('sec-expl').hidden=true;sideHot('HEALTHY');$('applystat').textContent='';$('ktop').textContent='';buildTiles();loop()}catch(e){hero('','Could not start',esc(e.message),'Error')}};
-$('stop').onclick=()=>{S.running=false;$('start').disabled=false;$('stop').disabled=true;$('apply').disabled=true;$('repair').disabled=true;lock(false);hero('','Stopped','Press <b>Start machine</b>.','Stopped');$('hbar').hidden=true};
+  setStart(true);$('stop').disabled=false;lock(true);$('sec-diag').hidden=true;$('sec-expl').hidden=true;sideHot('HEALTHY');$('applystat').textContent='';$('ktop').textContent='';buildTiles();loop()}catch(e){hero('','Could not start',esc(e.message),'Error')}}
+$('start').onclick=startMachine;$('start2').onclick=startMachine;function setStart(d){$('start').disabled=d;$('start2').disabled=d}
+$('stop').onclick=()=>{S.running=false;setStart(false);$('stop').disabled=true;$('apply').disabled=true;$('repair').disabled=true;lock(false);hero('','Stopped','Press <b>Start machine</b>.','Stopped');$('hbar').hidden=true};
 $('apply').onclick=async()=>{const f=[...document.querySelectorAll('.fb')].find(c=>c.checked);if(!f){$('applystat').textContent='Tick one fault first.';return}
  try{await api('/api/sim/'+S.sid+'/apply',POST({fault:f.value,severity:$('sev').value/100,ramp:+$('ramp').value,sign:+$('sign').value}));S.applied=S.tick;S.fault=f.value;S.alarmTick=null;S.diag=false;$('sec-diag').hidden=true;$('sec-expl').hidden=true;sideHot(f.value);$('apply').disabled=true;$('repair').disabled=false;
   $('applystat').textContent='Fault applied at window '+S.tick+' ('+LABEL[f.value]+'), growing over '+$('ramp').value+' windows. The detector sees only the sensors, not the fault name.'}catch(e){$('applystat').textContent='Error: '+e.message}};
 $('repair').onclick=async()=>{await api('/api/sim/'+S.sid+'/clear',POST());S.fault='HEALTHY';S.applied=null;S.alarmTick=null;S.diag=false;sideHot('HEALTHY');document.querySelectorAll('.fb').forEach(c=>c.checked=false);$('apply').disabled=false;$('repair').disabled=true;$('applystat').textContent='Fault cleared.';hero('ok','Normal','Running normally.','Normal')};
-async function loop(){while(S.running){const t0=performance.now();try{const o=await api('/api/sim/'+S.sid+'/step');handle(o)}catch(e){hero('','Connection lost',esc(e.message),'Offline');S.running=false;$('start').disabled=false;break}
+async function loop(){while(S.running){const t0=performance.now();try{const o=await api('/api/sim/'+S.sid+'/step');handle(o)}catch(e){hero('','Connection lost',esc(e.message),'Offline');S.running=false;setStart(false);break}
  await new Promise(r=>setTimeout(r,Math.max(50,850-(performance.now()-t0))))}}
 function handle(o){S.tick=o.tick+1;KEYS.forEach(k=>{S.buf[k].push({tick:o.tick,y:o.signals[k].y});if(S.buf[k].length>7)S.buf[k].shift();S.rms[k].push({tick:o.tick,v:rmsOf(o.signals[k].y)})});S.lastTip=o.tip;S.det.t.push(o.tick);S.det.c.push(o.cusum);S.h=o.h||1;
  $('ktime').textContent=((o.tick+1)*0.3).toFixed(1)+' s';
@@ -197,7 +198,7 @@ function handle(o){S.tick=o.tick+1;KEYS.forEach(k=>{S.buf[k].push({tick:o.tick,y
  if(o.alarm&&S.alarmTick===null){S.alarmTick=o.alarm_tick;beep()}
  if(o.alarm&&!o.diagnosis&&!S.diag)hero('alarm','Problem detected','The sensors show abnormal behaviour. Collecting evidence to find the cause… '+(o.collecting||0)+' of '+S.ndiag,'Problem');
  if(o.diagnosis&&!S.diag){S.diag=true;hero('alarm','Problem detected','Likely root cause: <b>'+esc(nice(o.diagnosis.posterior[0].cause))+'</b>. Details below.','Problem');showDiag(o.diagnosis)}
- {const g=k=>S.rms[k].length?fmt(S.rms[k][S.rms[k].length-1].v):'–';$('bv_f').textContent='force rms '+g('force')+' N';$('bv_x').textContent='rms '+g('vib')+' µm';$('bv_a').textContent=g('acc')+' g rms';$('bv_m').textContent=g('mic')+' Pa rms';if(S.cond)$('bv_d').textContent='τ = '+(30/S.cond.rpm*1000).toFixed(2)+' ms at '+S.cond.rpm+' rpm'}
+ {const g=k=>S.rms[k].length?fmt(S.rms[k][S.rms[k].length-1].v):'–';const set=(k,t)=>{const e=$('bv_'+k);if(e)e.textContent=t};set('vib','rms '+g('vib')+' µm');set('acc','rms '+g('acc')+' g');set('mic','rms '+g('mic')+' Pa');set('frc','rms '+g('force')+' N')}
  drawTiles()}
 function showDiag(d){S.diagData=d;const mf=d.misfit,P=d.posterior,top=P[0];$('ktop').innerHTML='Top suspect: <b>'+esc(nice(top.cause))+'</b>';$('sec-diag').hidden=false;$('sec-expl').hidden=false;
  const badge=mf.flag?'<span class="tag bad">outside the model: ranking unreliable</span>':'<span class="tag ok">within the model</span>';
@@ -233,7 +234,7 @@ function drawGraph(G){const svg=$('graph'),tip=$('gtip'),W=960,H=560;const byId=
   svg.querySelectorAll('.eh').forEach(p=>{const e=edges[+p.dataset.e];p.onmousemove=ev=>{const bb=$('gwrap').getBoundingClientRect();tip.textContent=(e.kind=='data'?'Found in the data, not in the knowledge graph':'Knowledge-graph link')+(e.weight?' · learned weight '+e.weight.toFixed(2):'')+(e.on_top?' · path of the top suspect':'');tip.style.left=(ev.clientX-bb.left+14)+'px';tip.style.top=(ev.clientY-bb.top+10)+'px';tip.style.opacity=1};p.onmouseleave=()=>tip.style.opacity=0})}
  render()}
 /* ---------- explanation ---------- */
-function setExpBar(){const i=S.info||{};$('expbar').innerHTML='<label style="margin:0">Written by</label><select id="expb" style="width:auto"><option value="template">Rule-based text</option><option value="openrouter">LLM via OpenRouter ('+esc(i.openrouter_model||'')+')</option></select><label style="display:flex;gap:6px;margin:0;color:var(--ink)" id="expc" hidden><input type="checkbox" id="expcc"> I agree to send the evidence summary to OpenRouter</label><button class="btn sm" id="expgo">Write explanation</button>';
+function setExpBar(){const i=S.info||{};$('expbar').innerHTML='<label style="margin:0">Written by</label><select id="expb" style="width:auto"><option value="template">Rule-based</option><option value="openrouter">LLM</option></select><label style="display:flex;gap:6px;margin:0;color:var(--ink)" id="expc" hidden><input type="checkbox" id="expcc"> I agree to send the evidence summary to OpenRouter</label><button class="btn sm" id="expgo">Write explanation</button>';
  $('expb').value=$('backend').value;$('expcc').checked=$('consent').checked;$('expc').hidden=$('expb').value!='openrouter';$('expb').onchange=()=>$('expc').hidden=$('expb').value!='openrouter';$('expgo').onclick=()=>explain(true)}
 async function explain(manual){const tx=$('exptxt');const b=manual?$('expb').value:$('backend').value,c=manual?$('expcc').checked:$('consent').checked;if(b=='openrouter'&&!c){tx.innerHTML='<span class="tag warn">LLM not used</span> You chose the LLM but did not tick the consent box, so nothing was sent. Tick it above and press <b>Write explanation</b>.';return}
  tx.textContent=b=='openrouter'?'Calling the LLM through OpenRouter… (a few seconds)':'Preparing the explanation…';
@@ -249,8 +250,62 @@ async function boot(){let i={},d={};try{i=await api('/api/info');d=await api('/a
  if(i.eval_matrix){const m=i.eval_matrix;a+='<p><b>Scripted ranking check (same generator for training and testing)</b>: top-1 over the five modelled causes '+(100*m.top1_modelled).toFixed(0)+' % (chance 20 %); healthy runs diagnosed as healthy '+(100*(1-m.healthy_false_alarm)).toFixed(0)+' %; out-of-model flag rate: modelled faults '+(100*m.modelled_flag_rate).toFixed(0)+' %, imbalance '+(100*m.imbalance_flag_rate).toFixed(0)+' %, run-out '+(100*m.runout_flag_rate).toFixed(0)+' % (these two are not recognised as unknown).</p>'}
  $('about').innerHTML=a}
 const showAbout=e=>{if(e)e.preventDefault();$('amodal').hidden=false};$('aopen').onclick=showAbout;$('aopen2').onclick=showAbout;$('aclose').onclick=()=>$('amodal').hidden=true;$('amodal').onclick=e=>{if(e.target.id=='amodal')$('amodal').hidden=true};
+
+/* ---------- tool-machine parameters, stability lobe diagram ---------- */
+const PAR=[
+ {k:'fn',l:'Natural frequency fn (Hz)',g:'System dynamics',step:10,i:'Frequency at which the tool tip rings when tapped: a resonance of the tool, holder and spindle together. It decides where the stability lobes sit. Measured with a tap test (hammer on the tool tip, accelerometer, frequency response function).'},
+ {k:'zeta',l:'Damping ratio ζ',g:'System dynamics',step:0.005,i:'How quickly the vibration dies out (0.03 = 3 %). More damping allows deeper cuts without chatter. Comes from the same tap test.'},
+ {k:'k',l:'Modal stiffness k (N/m)',g:'System dynamics',step:1000000,i:'Force needed to deflect the tool tip by one metre: a stiffer system has a larger stable depth of cut. From the tap test (height of the FRF peak). This simulation uses the dataset value ×10 to be in the stable regime.'},
+ {k:'Kt',l:'Cutting coefficient Kt (N/m²)',g:'Cutting mechanics',step:10000000,i:'Tangential cutting force per unit chip area. Depends on the workpiece material (aluminium, steel, titanium) and the tool. A larger Kt means more force and a smaller stable depth.'},
+ {k:'Kr_ratio',l:'Force ratio Kr/Kt',g:'Cutting mechanics',step:0.05,i:'Radial over tangential cutting force: how much of the cutting force pushes the tool sideways. Typically 0.2 to 0.5.'},
+ {k:'Z',l:'Number of teeth Z',g:'Tool geometry (fixed)',fixed:1,i:'Number of cutting teeth. With spindle speed it sets the tooth-passing frequency Z·rpm/60. Fixed by the tool (2-flute end mill).'},
+ {k:'D',l:'Tool diameter D (mm)',g:'Tool geometry (fixed)',fixed:1,i:'Diameter of the end mill, fixed by the tool.'},
+ {k:'helix',l:'Helix angle (°)',g:'Tool geometry (fixed)',fixed:1,i:'Angle of the flutes around the tool. Fixed by the tool (30° from the catalogue).'},
+ {k:'ap',l:'Axial depth ap (mm)',g:'Tool geometry (fixed)',fixed:1,i:'How deep the tool is engaged along its axis. In this dataset the whole flute length is engaged (38.1 mm).'}];
+function curPar(){const o={};['fn','zeta','k','Kt','Kr_ratio'].forEach(k=>{const e=$('p_'+k);o[k]=e?+e.value:(S.nom||{})[k]});return o}
+async function buildParams(){let n;try{n=await api('/api/params')}catch(e){$('pgrid').textContent='Could not load parameters: '+e.message;return}S.nom=n;
+ $('pgrid').innerHTML=PAR.map(r=>'<div><div class="small" style="margin-bottom:2px">'+r.g+'</div><label for="p_'+r.k+'">'+r.l+' <i class="info" tabindex="0">i<span class="tip">'+r.i+'</span></i></label><input type="number" id="p_'+r.k+'" value="'+Number(n[r.k].toPrecision(6))+'" '+(r.fixed?'disabled':'step="any"')+'></div>').join('');
+ document.querySelectorAll('#pgrid input').forEach(e=>e.oninput=()=>{parState();setBD();if(!$('sldwrap').hidden)S.sldDirty=true});buildBD();parState();setBD()}
+function parState(){const P=curPar(),n=S.nom||{};const ch=['fn','zeta','k','Kt','Kr_ratio'].some(k=>Math.abs(P[k]/n[k]-1)>0.005);$('parstat').className='tag '+(ch?'warn':'ok');$('parstat').textContent=ch?'custom machine: diagnosis model not validated for it':'default machine (matches the training data)'}
+async function showSld(){const ae=+$('ae').value;$('sldwrap').hidden=false;$('sldread').textContent='Computing…';try{S.sld=await api('/api/sld',POST({params:curPar(),ae:ae,up:$('up').value=='1'}));S.sldDirty=false;drawSld()}catch(e){$('sldread').textContent='Could not compute: '+e.message}}
+function alimAt(r){const j=S.sld;if(!j)return null;const x=j.rpm,y=j.alim_mm;let i=Math.min(x.length-2,Math.max(0,Math.floor((r-x[0])/(x[1]-x[0]))));const t=(r-x[i])/(x[i+1]-x[i]);return y[i]+(y[i+1]-y[i])*Math.min(1,Math.max(0,t))}
+function sldRead(){const j=S.sld;if(!j)return;const r=+$('rpm').value,a=alimAt(r),ap=j.ap_mm;$('sldread').innerHTML='At <b>'+r+' rpm</b> and a<sub>e</sub> = '+j.ae+' mm the theoretical limit depth is <b>'+a.toFixed(1)+' mm</b>; the cut depth is '+ap+' mm. '+(ap<a?'<span class="tag ok">stable: cut is below the limit</span>':'<span class="tag bad">chatter expected: cut is above the limit</span>')+' <span class="small">Click the diagram to choose the spindle speed (only 9000 to 12000 rpm, the shaded band, can be simulated).</span>'}
+function drawSld(){const j=S.sld,r=+$('rpm').value;const ymax=Math.min(Math.max(...j.alim_mm)*1.05,j.ap_mm*4);const L=lay('Spindle speed (rpm)','Limit depth a_lim (mm)');L.yaxis.range=[0,ymax];L.xaxis.range=[j.rpm[0],j.rpm[j.rpm.length-1]];L.margin.r=14;
+ L.shapes=[{type:'rect',xref:'x',x0:j.trained_rpm[0],x1:j.trained_rpm[1],yref:'paper',y0:0,y1:1,fillcolor:'rgba(70,95,255,.10)',line:{width:0}},{type:'line',xref:'paper',x0:0,x1:1,y0:j.ap_mm,y1:j.ap_mm,line:{color:'#f04438',dash:'dash',width:2}},{type:'line',x0:r,x1:r,yref:'paper',y0:0,y1:1,line:{color:'#f79009',width:2.5}}];
+ L.annotations=[{xref:'paper',x:0.01,y:j.ap_mm,yref:'y',text:'cut depth ap = '+j.ap_mm+' mm',showarrow:false,yanchor:'bottom',xanchor:'left',font:{color:'#f04438',size:12}},{x:(j.trained_rpm[0]+j.trained_rpm[1])/2,y:ymax*0.97,yref:'y',text:'simulated range',showarrow:false,font:{color:'#465fff',size:12}}];
+ Plotly.react('sld',[{x:j.rpm,y:j.alim_mm,type:'scatter',mode:'lines',fill:'tozeroy',fillcolor:'rgba(18,183,106,.13)',line:{color:'#12b76a',width:2.5},hovertemplate:'%{x} rpm: limit %{y:.1f} mm<extra></extra>'}],L,{displayModeBar:false,responsive:true});sldRead();
+ const gd=$('sld');if(!gd._clk){gd._clk=1;gd.addEventListener('click',e=>{const xa=gd._fullLayout&&gd._fullLayout.xaxis,dr=gd.querySelector('.nsewdrag');if(!xa||!dr)return;const bb=dr.getBoundingClientRect();if(e.clientX<bb.left||e.clientX>bb.right)return;let x=xa.p2d(e.clientX-bb.left);x=Math.round(Math.min(12000,Math.max(9000,x))/50)*50;$('rpm').value=x;setBD();drawSld()})}}
+$('sldbtn').onclick=showSld;$('rpm').oninput=()=>{setBD();if(S.sld&&!$('sldwrap').hidden)drawSld()};$('ae').onchange=()=>{setBD();if(!$('sldwrap').hidden)showSld()};$('up').onchange=()=>{setBD();if(!$('sldwrap').hidden)showSld()};
+document.addEventListener('input',e=>{if(e.target.closest&&e.target.closest('#pgrid')&&!$('sldwrap').hidden){clearTimeout(S._t);S._t=setTimeout(showSld,500)}});
+/* ---------- 3D machine (three.js) ---------- */
+function init3d(){const el=$('c3d');if(!window.THREE){el.innerHTML='<div class="small" style="padding:20px">The 3D view needs the three.js library (internet connection).</div>';return}
+ const W=el.clientWidth||600,H=el.clientHeight||400;const R=new THREE.WebGLRenderer({antialias:true,alpha:true});R.setSize(W,H);R.setPixelRatio(Math.min(2,devicePixelRatio||1));el.appendChild(R.domElement);
+ const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(38,W/H,0.1,100);
+ sc.add(new THREE.AmbientLight(0xffffff,0.75));const dl=new THREE.DirectionalLight(0xffffff,0.9);dl.position.set(4,7,5);sc.add(dl);const dl2=new THREE.DirectionalLight(0x8899ff,0.3);dl2.position.set(-5,2,-3);sc.add(dl2);
+ const mat=(c)=>new THREE.MeshStandardMaterial({color:c,metalness:0.35,roughness:0.5});const mesh={};
+ const add=(name,geo,c,x,y,z,parent)=>{const m=new THREE.Mesh(geo,mat(c));m.position.set(x,y,z);m.userData.base=c;(parent||sc).add(m);if(name)mesh[name]=m;return m};
+ const B=THREE.BoxGeometry,C=THREE.CylinderGeometry;
+ add(null,new B(5,0.3,3.2),0x5b6b7b,0,0.15,0);add(null,new B(3.4,0.25,2.2),0x7c8ea3,0,0.425,0.1);
+ add('m_col',new B(1.1,4,0.8),0x8a9bb0,0,2.2,-1.25);add('m_head',new B(1.3,0.85,1.7),0x93a4b8,0,3.65,-0.3);
+ add('m_spindle',new C(0.26,0.26,0.55,32),0xb8c4d2,0,3.0,0.1);
+ const tg=new THREE.Group();tg.position.set(0,2.72,0.1);sc.add(tg);
+ add('m_holder',new C(0.23,0.11,0.45,32),0xc8a24a,0,-0.22,0,tg);
+ const spin=new THREE.Group();spin.position.set(0,-0.45,0);tg.add(spin);
+ add('m_tool',new C(0.07,0.07,1.3,24),0xd7dde5,0,-0.65,0,spin);add('m_tip',new C(0.075,0.075,0.12,24),0xe8edf3,0,-1.34,0,spin);
+ [0,Math.PI/2*2].forEach(a=>{const f=new THREE.Mesh(new B(0.03,1.1,0.03),new THREE.MeshStandardMaterial({color:0x465fff}));f.position.set(0.07*Math.cos(a),-0.65,0.07*Math.sin(a));spin.add(f)});
+ const wg=new THREE.Group();wg.position.set(0,0.55,0.1);sc.add(wg);
+ add('m_wp',new B(2.2,0.5,1.2),0x9fb0c4,0,0.25,0,wg);add('m_clamp1',new B(0.3,0.42,1.3),0x4b5a6b,-1.25,0.21,0,wg);add('m_clamp2',new B(0.3,0.42,1.3),0x4b5a6b,1.25,0.21,0,wg);
+ const grid=new THREE.GridHelper(10,20,0x98a2b3,0x98a2b3);grid.material.opacity=0.25;grid.material.transparent=true;grid.position.y=0;sc.add(grid);
+ M3={R:R,sc:sc,cam:cam,tg:tg,spin:spin,wg:wg,mesh:mesh,th:0.75,ph:1.25,d:9.5,tgt:new THREE.Vector3(0,1.9,0),w:W,h:H};
+ const c=R.domElement;let drag=null;c.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};c.setPointerCapture(e.pointerId);c.style.cursor='grabbing'});c.addEventListener('pointerup',()=>{drag=null;c.style.cursor='grab'});
+ c.addEventListener('pointermove',e=>{if(!drag)return;M3.th-=(e.clientX-drag.x)*0.008;M3.ph=Math.min(1.5,Math.max(0.25,M3.ph-(e.clientY-drag.y)*0.006));drag={x:e.clientX,y:e.clientY}});c.addEventListener('wheel',e=>{e.preventDefault();M3.d=Math.min(16,Math.max(4,M3.d+e.deltaY*0.01))},{passive:false});
+ new ResizeObserver(()=>{const w=el.clientWidth;if(w&&M3){M3.R.setSize(w,el.clientHeight);M3.cam.aspect=w/el.clientHeight;M3.cam.updateProjectionMatrix()}}).observe(el);hot3d(S.fault||'HEALTHY')}
+function hot3d(f){if(!M3)return;const hot=PARTS[f]||[];Object.keys(M3.mesh).forEach(k=>{const m=M3.mesh[k];const on=hot.includes(k);m.material.color.setHex(on?0xf04438:m.userData.base);m.material.emissive.setHex(on?0x6b0f0a:0x000000)})}
+function update3d(ts){if(!M3)return;const T=S.lastTip,C=S.cond;let ax=0,az=0;if(T&&C&&S.running){const n=T.x.length,ph=(ts/1000/80)%0.1,i=Math.floor(ph/0.1*n)%n,k=(+$('ex').value)*5e-5;az=Math.max(-0.28,Math.min(0.28,-T.x[i]*k));ax=Math.max(-0.28,Math.min(0.28,T.y[i]*k));M3.spin.rotation.y=2*Math.PI*(C.rpm/60)*ph}else M3.spin.rotation.y=ts/1000*3;
+ M3.tg.rotation.z=az;M3.tg.rotation.x=ax;M3.wg.position.x=-az*0.5;M3.wg.position.z=0.1+ax*0.5;
+ const r=M3.d,th=M3.th,ph=M3.ph;M3.cam.position.set(M3.tgt.x+r*Math.sin(ph)*Math.sin(th),M3.tgt.y+r*Math.cos(ph),M3.tgt.z+r*Math.sin(ph)*Math.cos(th));M3.cam.lookAt(M3.tgt);M3.R.render(M3.sc,M3.cam)}
 function themeLabel(){$('theme').textContent=document.documentElement.dataset.theme=='dark'?'☀ Light':'🌙 Dark'}
 $('theme').onclick=()=>{const t=document.documentElement.dataset.theme=='dark'?'light':'dark';document.documentElement.dataset.theme=t;try{localStorage.setItem('theme',t)}catch(e){}themeLabel();if(S.rms.vib.length)drawTiles();if(S.diagData)drawGraph(S.diagData.graph)};themeLabel();
-boot();
+buildParams().then(()=>{if(window.THREE)init3d();else addEventListener('load',init3d)});boot();
 document.querySelectorAll('.side a[href^="#sec"]').forEach(a=>a.onclick=()=>{document.querySelectorAll('.side a').forEach(x=>x.classList.remove('on'));a.classList.add('on')});
 </script></body></html>

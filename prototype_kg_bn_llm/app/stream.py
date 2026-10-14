@@ -34,8 +34,8 @@ def dec(y, n):
 
 
 class Session:
-    def __init__(s, rpm, ae, up, seed, backend, consent):
-        s.sid = uuid.uuid4().hex[:12]; s.rpm, s.ae, s.up = rpm, ae, up; s.rng = np.random.default_rng(seed); s.seed = seed; s.tick = 0; s.fault = None; s.xs = []; s.cusum = 0.0; s.alarm_tick = None; s.diag = None; s.ev = None
+    def __init__(s, rpm, ae, up, seed, backend, consent, par=None):
+        s.par = par; s.pj = live.pj_of(par); s.sid = uuid.uuid4().hex[:12]; s.rpm, s.ae, s.up = rpm, ae, up; s.rng = np.random.default_rng(seed); s.seed = seed; s.tick = 0; s.fault = None; s.xs = []; s.cusum = 0.0; s.alarm_tick = None; s.diag = None; s.ev = None
         s.xref = None; s.cusum_l = 0.0; s.mm = live.S['model'].at(live.S['ex'].cond_design([live.mrow_of(rpm, ae, up)[5]], [live.mrow_of(rpm, ae, up)[6]], [live.mrow_of(rpm, ae, up)[7]], [live.mrow_of(rpm, ae, up)[4]])[0]); s.backend, s.consent = backend, consent; s.mrow = live.mrow_of(rpm, ae, up); s.a = live.S["ex"].cond_design([s.mrow[5]], [s.mrow[6]], [s.mrow[7]], [s.mrow[4]])[0]; s.created = time.time(); s.params = detector_params()
 
     def apply(s, label, sev01, ramp, sign=1):
@@ -49,7 +49,7 @@ class Session:
     def step(s):
         f = s.fault; cls = "NORMAL"; val = 1.0; frac = 0.0
         if f: frac = float(np.clip((s.tick - f["t0"] + 1) / f["ramp"], 0, 1)); cls = f["cls"]; val = 1.0 + frac * (f["final"] - 1.0)
-        u = s.rng.normal(0, np.sqrt(live.S["gen"].between), 12); feat, show = live._window((s.mrow, cls, val, 1000 * s.seed + s.tick + 11, u, True)); x = window_stat(feat, s.a); P = s.params; s.xs.append(x); d2 = 0.0; z = 0.0
+        u = s.rng.normal(0, np.sqrt(live.S["gen"].between), 12); feat, show = live._window((s.mrow, cls, val, 1000 * s.seed + s.tick + 11, u, True, s.pj)); x = window_stat(feat, s.a); P = s.params; s.xs.append(x); d2 = 0.0; z = 0.0
         fd_ = show["fs_dde"]; k0_ = int(0.50 * fd_); vx = show["vib"][k0_:]; vy = show["vib_y"][k0_:]; vr = float(np.sqrt(np.var(vx) + np.var(vy)) + 1e-9); s.vlog = getattr(s, "vlog", []) + [float(np.log(vr))]; zv = 0.0
         if s.tick < N_CAL: s.cal = getattr(s, "cal", []) + [x]
         if s.tick == N_CAL - 1: s.xref = np.mean(s.cal, axis=0); s.vmean = float(np.mean(s.vlog[:N_CAL])); s.vsd = float(max(np.std(s.vlog[:N_CAL]), P.get("v_floor", 0.05))); s.cusum_v = 0.0

@@ -27,13 +27,14 @@ def main():
         r, s = rec(f); R["faults"][f] = r; R["in_model"][f] = live.FAULTS[f][2]; det = next((i for i, o in enumerate(r["steps"]) if o.get("diagnosis")), None)
         print(f, "diagnosis at step", det, "top", (r["steps"][det]["diagnosis"]["top"] if det is not None else None), "alarm_tick", s.alarm_tick, flush=True)
     R["info"] = {"faults": {k: {"in_model": v[2], "range": v[1]} for k, v in live.FAULTS.items()}, "openrouter_key_present": False, "openrouter_model": "google/gemma-3-4b-it", "static": True}
+    R["params0"] = live.nominal_params(); R["sld"] = {str(a): live.sld(None, a) for a in live.AE_VALUES}
     R["detector"] = json.load(open(os.path.join(HERE, "report", "detector.json")))
     os.makedirs(OUT, exist_ok=True); json.dump(R, open(os.path.join(OUT, "replay.json"), "w"), separators=(",", ":"))
     h = open(os.path.join(HERE, "static", "index.html")).read()
     api_old = h[h.index("async function api(path,opt)"):h.index("\n", h.index("async function api(path,opt)"))]
     api_new = """let REPLAY=null,ST={t:0,h:0,f:null,j:0,last:null};
 async function api(path,opt){const R=REPLAY||(REPLAY=await (await fetch('replay.json')).json());
- if(path=='/api/info')return R.info;if(path=='/api/detector')return R.detector;if(path=='/api/llm/test')return {ok:false,model:'',error:'Not available in the static demo. Run the app locally or on a server to use the LLM.'};
+ if(path=='/api/info')return R.info;if(path=='/api/params')return R.params0;if(path=='/api/sld'){const b=JSON.parse(opt.body);const n=R.params0;if(['fn','zeta','k','Kt','Kr_ratio'].some(k=>Math.abs(b.params[k]/n[k]-1)>0.005))throw new Error('parameters are fixed in the static demo; run the app locally to change them');return R.sld[String(b.ae)]};if(path=='/api/detector')return R.detector;if(path=='/api/llm/test')return {ok:false,model:'',error:'Not available in the static demo. Run the app locally or on a server to use the LLM.'};
  if(path.endsWith('/start')){ST={t:0,h:0,f:null,j:0,last:null};return {sid:'static',n_cal:R.n_cal,n_diag:R.n_diag,params:R.params}}
  if(path.endsWith('/apply')){const b=JSON.parse(opt.body);if(ST.t<R.n_cal)throw new Error('wait until the healthy baseline is learned ('+R.n_cal+' windows)');ST.f=b.fault;ST.last=b.fault;ST.j=0;return {ok:true,tick:ST.t,final_value:0,in_model:R.in_model[b.fault]}}
  if(path.endsWith('/clear')){ST.f=null;return {ok:true}}

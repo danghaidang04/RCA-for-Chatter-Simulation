@@ -90,6 +90,13 @@ class StartReq(BaseModel):
     seed: int = 0
     backend: str = "template"
     consent: bool = False
+    params: dict | None = None
+
+
+class SldReq(BaseModel):
+    params: dict | None = None
+    ae: float = 0.1905
+    up: bool = False
 
 
 class ApplyReq(BaseModel):
@@ -105,12 +112,23 @@ def _get(sid):
     return s
 
 
+@app.get("/api/params")
+def params(): return live.nominal_params()
+
+
+@app.post("/api/sld")
+def sld(r: SldReq):
+    if not 0.01 <= r.ae <= 3.0: raise HTTPException(400, "ae out of range")
+    try: return live.sld(r.params, r.ae, r.up)
+    except Exception as e: raise HTTPException(400, f"stability lobes could not be computed for these parameters: {type(e).__name__}: {str(e)[:100]}")
+
+
 @app.post("/api/sim/start")
 def sim_start(r: StartReq):
     if min(abs(r.ae - a) for a in live.AE_VALUES) > 1e-6: raise HTTPException(400, f"ae must be one of {live.AE_VALUES}")
     if r.backend == "openrouter" and not r.consent: raise HTTPException(400, "consent is required to send the evidence bundle to OpenRouter")
     for k in [k for k, v in stream.SESS.items() if time.time() - v.created > 7200]: stream.SESS.pop(k, None)
-    s = stream.Session(r.rpm, r.ae, r.up, r.seed, r.backend, r.consent); stream.SESS[s.sid] = s; return {"sid": s.sid, "n_cal": stream.N_CAL, "n_diag": stream.N_DIAG, "params": s.params}
+    s = stream.Session(r.rpm, r.ae, r.up, r.seed, r.backend, r.consent, r.params); stream.SESS[s.sid] = s; return {"default_machine": s.pj is None, "sid": s.sid, "n_cal": stream.N_CAL, "n_diag": stream.N_DIAG, "params": s.params}
 
 
 @app.get("/api/sim/{sid}/step")
