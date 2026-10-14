@@ -21,7 +21,7 @@ def main():
     if diag is None: print("no alarm/diagnosis within 80 windows"); return
     print("ranking:", [(p["cause"], round(p["prob"], 2)) for p in diag["posterior"][:3]], "| misfit flag", diag["misfit"]["flag"], "| injected", diag["injected"])
     g = diag["graph"]; print("graph:", len(g["nodes"]), "nodes", len(g["edges"]), "edges; top", g["top"], "| data edges", sum(e["kind"] == "data" for e in g["edges"]))
-    ex = call(f"/api/sim/{sid}/explain", method="POST"); print("explanation backend:", ex["backend"], "validated:", ex["validated"], "violations:", ex["llm_violations"]); print("summary:", ex["explanation"]["summary"][:300])
+    ex = call(f"/api/sim/{sid}/explain", method="POST"); print("explanation backend:", ex["backend"], "validated:", ex["validated"], "violations:", ex["llm_violations"]); print("summary:", ex["explanation"]["ranking"][:300])
     print("seconds", round(time.time() - t0, 1))
 
 

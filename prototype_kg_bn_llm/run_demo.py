@@ -51,8 +51,7 @@ def build_evidence(model, kg, D, case_id, variant, consts, edges, retriever=None
 def md(case, ev, out):
     L = [f"# Case {case['id']}: {case['title']}", "", f"Model variant `{ev['variant']}`, m={ev['m']} windows, temperature T={ev['temperature']:.1f}. Truth: {case['truth']}.", "", "## Ranking (from the Bayesian network; final)", "", "| rank | state | posterior |", "|---|---|---|"]
     L += [f"| {r['rank']} | {r['cause']} | {r['prob']:.3f} |" for r in ev["posterior"]]
-    mf = ev["misfit"]; L += ["", f"Out-of-model check: d²={mf['d2']:.1f} vs threshold {mf['threshold']:.1f} -> {'FLAGGED' if mf['flag'] else 'within the reference range'}.", "", f"## Explanation (backend: {out['backend']}; validated: {out['validated']})", "", out["explanation"]["summary"], "", "**Supporting evidence**", ""]
-    L += [f"- {s}" for s in out["explanation"]["supporting_evidence"]] + ["", "**Conflicts or unexplained**", ""] + [f"- {s}" for s in out["explanation"]["conflicts_or_unexplained"]] + ["", "**Caveats**", ""] + [f"- {s}" for s in out["explanation"]["caveats"]] + ["", "**Suggested checks (from the KG)**", ""] + [f"- {s}" for s in out["explanation"]["suggested_checks"]]
+    mf = ev["misfit"]; L += ["", f"Out-of-model check: d²={mf['d2']:.1f} vs threshold {mf['threshold']:.1f} -> {'FLAGGED' if mf['flag'] else 'within the reference range'}.", "", f"## Explanation (backend: {out['backend']}; validated: {out['validated']})", "", out["explanation"]["ranking"], "", out["explanation"]["evidence"], "", out["explanation"]["conflicts"], "", out["explanation"]["checks"], "", out["explanation"]["caveats"]]
     if out["llm_violations"]: L += ["", f"LLM output rejected: {out['llm_violations']}"]
     return "\n".join(L) + "\n"
 

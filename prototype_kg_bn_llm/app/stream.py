@@ -82,7 +82,7 @@ class Session:
         if s.backend == "openrouter":
             if not s.consent: raise PermissionError("consent not given")
             backend = OpenRouterReasoner(allow_external=True)
-        out = reason(s.ev, backend, case_id=s.sid); return {"explanation": out["explanation"], "backend": out["backend"], "validated": out["validated"], "llm_violations": out["llm_violations"]}
+        out = reason(s.ev, backend, case_id=s.sid); return {"explanation": out["explanation"], "backend": out["backend"], "validated": out["validated"], "llm_violations": out["llm_violations"], "sources": s.ev.get("retrieved", [])}
 
 
 def graph_spec(ev):

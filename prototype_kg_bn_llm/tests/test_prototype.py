@@ -53,13 +53,13 @@ class TestReasoning(unittest.TestCase):
 
     def test_validator_rejects_fabricated_number_cause_and_decision(self):
         ev = evidence(); good = TemplateReasoner().explain(ev); self.assertEqual(validate_reasoning(good, ev), [])
-        bad = copy.deepcopy(good); bad["summary"] += " The posterior is 0.9137 and CHIPPED_FLUTE is definitely present, so shut down the machine."
+        bad = copy.deepcopy(good); bad["ranking"] += " The posterior is 0.9137 and CHIPPED_FLUTE is definitely present, so shut down the machine."
         v = validate_reasoning(bad, ev); self.assertTrue(any("0.9137" in x for x in v)); self.assertTrue(any("CHIPPED_FLUTE" in x for x in v)); self.assertTrue(any("decision" in x for x in v))
 
     def test_bad_backend_falls_back_to_template(self):
         class Evil:
             name = "evil"
-            def explain(self, ev): return {"summary": "Nothing to see.", "supporting_evidence": [], "conflicts_or_unexplained": [], "caveats": [], "suggested_checks": []}
+            def explain(self, ev): return {"ranking": "Nothing to see.", "evidence": "", "conflicts": "", "checks": "", "caveats": ""}
         out = reason(evidence(), Evil()); self.assertTrue(out["validated"]); self.assertIn("fallback", out["backend"]); self.assertTrue(out["llm_violations"])
 
     def test_openrouter_refuses_without_permission_or_key(self):
@@ -92,4 +92,10 @@ class TestKGBuild(unittest.TestCase):
 
     def test_retrieved_citations_and_quotes_are_validated(self):
         ev = evidence(); ev["retrieved"] = [{"id": "R1", "quote": "Minimize overhang", "source": "s", "url": "u", "text_type": "verbatim", "why": "w"}]; good = TemplateReasoner().explain(ev); self.assertEqual(validate_reasoning(good, ev), [])
-        bad = copy.deepcopy(good); bad["summary"] += " See [R9] and «invented words»."; v = validate_reasoning(bad, ev); self.assertTrue(any("R9" in x for x in v)); self.assertTrue(any("invented" in x for x in v))
+        bad = copy.deepcopy(good); bad["evidence"] += " See [R9] and «invented words»."; v = validate_reasoning(bad, ev); self.assertTrue(any("R9" in x for x in v)); self.assertTrue(any("invented" in x for x in v))
+
+
+class TestGroupedCitation(unittest.TestCase):
+    def test_grouped_citation_with_unknown_id_is_rejected(self):
+        ev = evidence(); ev["retrieved"] = [{"id": "R1", "quote": "Minimize overhang", "source": "s", "url": "u", "text_type": "verbatim", "why": "w"}]; good = TemplateReasoner().explain(ev)
+        bad = copy.deepcopy(good); bad["evidence"] += " See [R1, R9]."; self.assertTrue(any("R9" in x for x in validate_reasoning(bad, ev)))
