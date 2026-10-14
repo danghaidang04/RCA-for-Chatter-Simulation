@@ -25,6 +25,12 @@ Needs a Hugging Face account. The backend needs `cutting_sim/output/real_windows
 5. Wait for the build (a few minutes). The app is at `https://<user>-<space-name>.hf.space`.
 6. Optional: use the GitHub Pages front end with this backend: `https://<user>.github.io/RCA-for-Chatter-Simulation/live.html?api=https://<user>-<space-name>.hf.space` (the backend allows the `github.io` origin by default; set `ALLOWED_ORIGINS` for another domain).
 
+### If the Docker SDK asks for payment: use the Gradio SDK instead (free CPU)
+`./deploy/make_space.sh` also builds `build/space_gradio/`. Create the Space with SDK **Gradio** (template *Blank*), then push that folder the same way (`cd build/space_gradio`, `git remote add space ...`, `git push --force space main`). Its `README.md` sets `app_file: main_space.py`, which joins the data file and starts the FastAPI app on port 7860. This uses the Gradio SDK only as a launcher; it was run locally but not on Hugging Face.
+
+### No account at all: a temporary public link from your own computer
+Install `cloudflared` (`brew install cloudflared`), run `./run_app.sh`, and in another terminal `cloudflared tunnel --url http://127.0.0.1:8000`. It prints a `https://....trycloudflare.com` link that works while your computer and the app are running.
+
 ### Public link (anyone can use it)
 - Create the Space as **Public** (or switch it in Settings → Change visibility). Everyone with the link can then use it without an account.
 - The app protects your credit and the free CPU: each visitor can use the LLM at most `LLM_PER_IP_HOUR` times per hour (default in the Dockerfile: 0 = no limit) and the whole demo `LLM_PER_DAY` times per day (0 = no limit); when a limit is set and reached, the page says so and uses the rule-based text. At most `MAX_SESSIONS` machines (Dockerfile default 8; 0 = no limit) run at once and idle ones are dropped after `SESSION_IDLE_S` seconds (default 600); extra visitors see "The demo is busy". Change them under Space → Settings → Variables.

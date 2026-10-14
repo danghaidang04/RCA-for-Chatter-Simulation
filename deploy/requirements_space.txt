@@ -1,0 +1,12 @@
+numpy
+scipy
+pandas
+scikit-learn
+numba
+networkx
+matplotlib
+cma
+fastapi
+uvicorn[standard]
+pydantic
+requests
