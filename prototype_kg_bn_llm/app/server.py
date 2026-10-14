@@ -129,9 +129,33 @@ def sim_apply(sid: str, r: ApplyReq):
 def sim_clear(sid: str): _get(sid).clear(); return {"ok": True}
 
 
+class ExplainReq(BaseModel):
+    backend: str | None = None
+    consent: bool | None = None
+
+
+@app.post("/api/llm/test")
+def llm_test():
+    """Gọi thử OpenRouter bằng một câu cố định (không gửi dữ liệu máy) để biết khóa/mô hình có dùng được không."""
+    import urllib.error, urllib.request
+    from llm_reasoner import OpenRouterReasoner
+    r = OpenRouterReasoner(allow_external=True)
+    if not r.key: return {"ok": False, "model": r.model, "error": "No OPENROUTER_API_KEY found. Put OPENROUTER_API_KEY=... in prototype_kg_bn_llm/.env (no restart needed)."}
+    body = {"model": r.model, "messages": [{"role": "user", "content": "Reply with the single word OK."}], "max_completion_tokens": 8}
+    req = urllib.request.Request(r.URL, data=json.dumps(body).encode(), headers={"Content-Type": "application/json", "Authorization": f"Bearer {r.key}"}); t0 = time.time()
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp: j = json.loads(resp.read())
+        return {"ok": True, "model": j.get("model", r.model), "latency_s": round(time.time() - t0, 2), "reply": (j["choices"][0]["message"]["content"] or "")[:40]}
+    except urllib.error.HTTPError as e:
+        msg = {401: "The key was rejected (401). Check the key.", 402: "No credit on the OpenRouter account (402).", 404: "This model name was not found or is not available for your account (404). Change OPENROUTER_MODEL.", 429: "Rate limited (429). Try again shortly."}.get(e.code, f"OpenRouter returned HTTP {e.code}.")
+        return {"ok": False, "model": r.model, "error": msg}
+    except Exception as e: return {"ok": False, "model": r.model, "error": f"Could not reach OpenRouter: {type(e).__name__}: {str(e)[:100]}"}
+
+
 @app.post("/api/sim/{sid}/explain")
-def sim_explain(sid: str):
+def sim_explain(sid: str, r: ExplainReq | None = None):
     s = _get(sid)
+    if r is not None and r.backend in ("template", "openrouter"): s.backend = r.backend; s.consent = bool(r.consent)
     try: out = s.explain()
     except PermissionError as e: raise HTTPException(400, str(e))
     except RuntimeError as e: raise HTTPException(502, f"LLM call failed: {e}")

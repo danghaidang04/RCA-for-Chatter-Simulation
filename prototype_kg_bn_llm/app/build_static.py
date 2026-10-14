@@ -33,6 +33,7 @@ def main():
     api_old = h[h.index("async function api(path,opt)"):h.index("\n", h.index("async function api(path,opt)"))]
     api_new = """let REPLAY=null,ST={t:0,h:0,f:null,j:0,last:null};
 async function api(path,opt){const R=REPLAY||(REPLAY=await (await fetch('replay.json')).json());
+ if(path=='/api/info')return R.info;if(path=='/api/detector')return R.detector;if(path=='/api/llm/test')return {ok:false,model:'',error:'Not available in the static demo. Run the app locally or on a server to use the LLM.'};
  if(path.endsWith('/start')){ST={t:0,h:0,f:null,j:0,last:null};return {sid:'static',n_cal:R.n_cal,n_diag:R.n_diag,params:R.params}}
  if(path.endsWith('/apply')){const b=JSON.parse(opt.body);if(ST.t<R.n_cal)throw new Error('wait until the healthy baseline is learned ('+R.n_cal+' windows)');ST.f=b.fault;ST.last=b.fault;ST.j=0;return {ok:true,tick:ST.t,final_value:0,in_model:R.in_model[b.fault]}}
  if(path.endsWith('/clear')){ST.f=null;return {ok:true}}
@@ -42,8 +43,7 @@ async function api(path,opt){const R=REPLAY||(REPLAY=await (await fetch('replay.
   o.tick=ST.t++;await new Promise(r=>setTimeout(r,200));return o}
  throw new Error('not available in the static demo')}"""
     h = h.replace(api_old, api_new)
-    h = h.replace("Promise.all([fetch('/api/info').then(r=>r.json()),fetch('/api/detector').then(r=>r.json())])", "fetch('replay.json').then(r=>r.json()).then(R=>[R.info,R.detector]).then(x=>x).then(x=>Promise.resolve(x))")
-    h = h.replace("<body>", '<body><div style="background:#fff7e0;color:#5c4400;padding:8px 16px;font:13px system-ui;border-bottom:1px solid #e6d28a">Static demo: this page replays <b>recorded simulator sessions</b> (10 500 rpm, a<sub>e</sub> = 0.1905 mm, fault severity 90 %, onset over 6 windows). Cutting condition, severity and the LLM backend are fixed here; run the Python server from the repository for live simulation and OpenRouter. Simulated data only, not real machine data.</div>', 1)
+    h = h.replace("<body>", '<body><div style="background:#fff7e0;color:#5c4400;padding:8px 16px;font:13px system-ui;border-bottom:1px solid #e6d28a">Static demo: this page replays <b>recorded simulator sessions</b> (10 500 rpm, a<sub>e</sub> = 0.1905 mm, fault severity 90 %, onset over 6 windows). Cutting condition, severity and the LLM backend are fixed here, and the LLM is not available; run the Python server from the repository for live simulation and OpenRouter. Simulated data only, not real machine data.</div>', 1)
     open(os.path.join(OUT, "live.html"), "w").write(open(os.path.join(HERE, "static", "index.html")).read())
     open(os.path.join(OUT, "index.html"), "w").write(h); print("written", OUT)
 

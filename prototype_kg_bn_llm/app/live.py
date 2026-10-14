@@ -82,7 +82,7 @@ def build_evidence_groups(mm, D, case_id, consts, edges, kg, retriever, T):
     from kg import CAUSES
     from run_demo import LIMITS
     from retrieval import FEATURE_THEMES
-    c24 = S["cond24"]; STATES = ["HEALTHY"] + CAUSES; m = len(D); idx, p = mm.posterior(D); order = np.argsort(-p); post = [{"cause": STATES[idx[i]], "prob": float(p[i]), "rank": r + 1} for r, i in enumerate(order)]
+    c24 = S["cond24"]; STATES = ["HEALTHY"] + CAUSES; m = len(D); idx, p = mm.posterior(D); order = np.argsort(-p); post = [{"cause": STATES[idx[i]], "prob": round(float(p[i]), 4), "rank": r + 1} for r, i in enumerate(order)]
     top = post[0]["cause"]; ct = STATES.index(top); xbar = D.mean(0); gi = {g: [i for i, f in enumerate(c24.FEATS) if c24.GROUP[f] == g] for g in c24.GROUPS}; kge = kg.compile_edges(); paths = []
     if ct > 0:
         llr = mm.contributions(D, ct, ref=0); lg = {g: float(llr[ix].sum()) for g, ix in gi.items()}

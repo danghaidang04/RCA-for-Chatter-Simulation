@@ -69,9 +69,9 @@ def validate_reasoning(out, evidence):
     for tok in set(re.findall(r"\b[A-Z][A-Z_0-9]{3,}\b", text)):
         if tok not in allowed_ids and tok not in {"KG", "BN", "LLM", "RCA", "FRF", "PSD", "ASSUMED", "FIXED", "RANGE", "LEARNED", "CI", "SD", "HEALTHY"}: v.append(f"unknown identifier: {tok}")
     for tok in NUM.findall(text):
-        pct = tok.endswith("%"); x = float(tok.rstrip("%")); cand = [f * 100 for f in facts] if pct else facts
+        pct = tok.endswith("%"); x = float(tok.rstrip("%")); cand = [f * 100 for f in facts] if pct else facts + [f * 100 for f in facts if 0 <= abs(f) <= 1]       # chấp nhận cả phần trăm viết không kèm dấu %
         if tok in ev_strings: continue                                    # số xuất hiện nguyên văn trong chuỗi của bằng chứng (nhãn KG, đường truy vết)
-        if not any(abs(abs(x) - abs(c)) <= (0.51 if pct else 0.006 + 0.006 * abs(c)) for c in cand) and not (float(x).is_integer() and 0 <= abs(x) <= 20): v.append(f"number not in evidence: {tok}")
+        if not any(abs(abs(x) - abs(c)) <= (0.51 if (pct or abs(c) > 1.5) else 0.006 + 0.006 * abs(c)) for c in cand) and not (float(x).is_integer() and 0 <= abs(x) <= 20): v.append(f"number not in evidence: {tok}")
     rid = {r["id"] for r in evidence.get("retrieved", [])}; rq = [r["quote"] for r in evidence.get("retrieved", [])]
     for c in set(re.findall(r"\[(R\d+)\]", text)):
         if c not in rid: v.append(f"citation to an unretrieved passage: {c}")
