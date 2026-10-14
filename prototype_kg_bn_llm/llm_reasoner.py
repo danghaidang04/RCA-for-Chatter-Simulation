@@ -23,7 +23,7 @@ SYSTEM_PROMPT = (
     "conflicts = say explicitly whether anything conflicts with the top cause or is unexplained (use the misfit block and the sign agreement of each path); if there is nothing, say that no conflict was found; "
     "checks = write the suggested checks as a short paragraph, using ONLY 'suggested_checks_from_kg'; if there are none, say so; "
     "caveats = state the limitations given in the evidence. "
-    "Rules: the ranking and probabilities are final, never change or contradict them; use ONLY facts and numbers present in the evidence JSON, no new numbers, causes or mechanisms; "
+    "Style: make it easy to scan. Use short sentences (under 25 words), put the conclusion first, name each sensor band exactly as in the evidence (for example acc_res), write probabilities as percentages with a % sign, avoid long parentheses and jargon, and do not repeat the same fact in two sections. Rules: the ranking and probabilities are final, never change or contradict them; use ONLY facts and numbers present in the evidence JSON, no new numbers, causes or mechanisms; "
     "do not give maintenance orders or say 'definitely'/'certainly'; cite only ids that exist in 'retrieved', each in its own brackets like [R1][R2], never grouped. Return JSON matching the schema.")
 DECISION_WORDS = re.compile(r"\b(definitely|certainly|must replace|shut down|stop the machine|guaranteed|is certain)\b", re.I)
 
@@ -95,11 +95,11 @@ class TemplateReasoner:
         if len(post) > 2: r += f" and {nm(post[2]['cause'])} at {100 * post[2]['prob']:.0f}%"
         r += f". The probabilities are temperature-calibrated on m={ev['m']} windows from the same cutting condition. The ranking is final and comes from the Bayesian network, not from the text writer."
         if mf["flag"]: r += " The out-of-model check flags this input, so the ranking should be treated as unreliable here."
-        sup = []
+        sents = []
         for e in sorted(ev["kg_paths"], key=lambda e: -abs(e["llr"]))[:3]:
-            sg = ("the knowledge graph predicts no sign for it" if e["sign_pred"] == 0 else ("its sign agrees with the knowledge graph" if e["sign_agrees"] else "its sign conflicts with the knowledge graph")) if e["in_kg"] else "this link is not in the knowledge graph and was suggested by the data"
-            sup.append(f"the {e['node']} band moved {e['observed_shift']:+.2f} sd (contribution {e['llr']:+.1f}, learned weight {e['weight']:+.2f} with interval {e['ci_lo']:+.2f} to {e['ci_hi']:+.2f}), and {sg}")
-        ev_p = ("The strongest support for the top cause is that " + "; ".join(sup[:2]) + (f"; in addition, {sup[2]}" if len(sup) > 2 else "") + ".") if sup else "No sensor band carries a large contribution for the top cause."
+            sg = ("no sign is predicted by the knowledge graph" if e["sign_pred"] == 0 else ("its sign agrees with the knowledge graph" if e["sign_agrees"] else "its sign conflicts with the knowledge graph")) if e["in_kg"] else "this link is not in the knowledge graph and was suggested by the data"
+            sents.append(f"The {e['node']} band moved {e['observed_shift']:+.2f} sd (learned weight {e['weight']:+.2f}, interval {e['ci_lo']:+.2f} to {e['ci_hi']:+.2f}); {sg}.")
+        ev_p = " ".join(sents) if sents else "No sensor band carries a large contribution for the top cause."
         top_edges = [e for e in ev["kg_paths"] if e["in_kg"] and e["path_text"]]
         if top_edges:
             chain = []
@@ -107,13 +107,11 @@ class TemplateReasoner:
                 for part in seg.split(" -> "):
                     part = part.split(" (")[0].strip()
                     if part and part not in chain: chain.append(part)
-            ev_p += f" The knowledge graph reads this as: {' -> '.join(chain)} (provenance tier {top_edges[0]['tier']})."
+            ev_p += f" The knowledge graph links them as: {' -> '.join(chain)} (provenance tier {top_edges[0]['tier']})."
         rt = ev.get("retrieved", [])
         if rt:
-            cites = []
-            for x in rt[:3]:
-                cites.append(f"{x['source']} [{x['id']}] " + (f"states «{x['quote']}»" if x["text_type"] != "paraphrase" else f"gives related guidance (paraphrased: {x['quote']})"))
-            ev_p += " Document support: " + "; ".join(cites) + ". These passages are generic guidance retrieved for this symptom pattern, not evidence that the cause occurred."
+            for x in rt[:3]: ev_p += f" Source [{x['id']}], {x['source']}, " + (f"states «{x['quote']}»." if x["text_type"] != "paraphrase" else f"gives related guidance (paraphrased: {x['quote']}).")
+            ev_p += " These passages are generic guidance retrieved for this symptom pattern, not evidence that the cause occurred."
         else: ev_p += " No document passage was retrieved for this pattern, so there are no citations."
         conf = []
         if mf["flag"]: conf.append(f"the out-of-model residual {mf['d2']:.1f} exceeds the reference threshold {mf['threshold']:.1f}, so no hypothesis explains the data well")
@@ -122,7 +120,7 @@ class TemplateReasoner:
         if bad: conf.append("the observed sign of " + ", ".join(bad[:3]) + " conflicts with what the knowledge graph predicts")
         c_p = ("Conflicts found: " + "; ".join(conf) + ".") if conf else "No conflict was found: no band is left unexplained by the top hypothesis, the out-of-model check is within its reference range, and every band with a predicted sign agrees with the knowledge graph."
         chk = ev["suggested_checks_from_kg"].get(top, [])
-        k_p = ("Based on the knowledge graph, the suggested checks for this cause are: " + "; ".join(chk) + ".") if chk else "The knowledge graph records no specific check for this cause, so none is suggested here."
+        k_p = ("Suggested checks from the knowledge graph. " + " ".join(f"Check {i + 1}: {c.rstrip('.')}." for i, c in enumerate(chk))) if chk else "The knowledge graph records no specific check for this cause, so none is suggested here."
         return {"ranking": r, "evidence": ev_p, "conflicts": c_p, "checks": k_p, "caveats": " ".join(ev["limitations"][:2])}
 
 
