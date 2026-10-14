@@ -7,12 +7,12 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__)); OUTD = os.path.join(HERE, "cutting_sim", "output"); REAL = os.path.join(OUTD, "real_windows.npz")
 if not os.path.exists(REAL):
-    parts = sorted(glob.glob(REAL + ".part_*"))
-    with open(REAL, "wb") as w:
-        for p in parts: w.write(open(p, "rb").read())
+    import base64
+    parts = sorted(glob.glob(os.path.join(OUTD, "real_windows.b64.part_*")))
+    raw = base64.b64decode("".join(open(p).read().replace("\n", "") for p in parts))
     want = open(os.path.join(OUTD, "real_windows.sha256")).read().split()[0]
-    got = hashlib.sha256(open(REAL, "rb").read()).hexdigest()
-    if got != want: raise SystemExit(f"data file checksum mismatch: {got} != {want}")
+    if hashlib.sha256(raw).hexdigest() != want: raise SystemExit("data file checksum mismatch after joining the parts")
+    open(REAL, "wb").write(raw)
     for p in parts: os.remove(p)
 for k, v in {"APP_WORKERS": "2", "MAX_SESSIONS": "8", "LLM_PER_IP_HOUR": "0", "LLM_PER_DAY": "0", "NUMBA_CACHE_DIR": "/tmp/numba", "MPLCONFIGDIR": "/tmp/mpl"}.items(): os.environ.setdefault(k, v)
 sys.path.insert(0, os.path.join(HERE, "prototype_kg_bn_llm")); os.chdir(os.path.join(HERE, "prototype_kg_bn_llm"))
