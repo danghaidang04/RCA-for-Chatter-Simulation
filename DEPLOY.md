@@ -1,11 +1,34 @@
 # Deploy
 
-**Static demo (GitHub Pages)** – `docs/index.html` replays recorded simulator sessions (fixed condition, severity 90 %). Enable: repo Settings → Pages → Branch `cutting-sim-experiments` (or main after merge), folder `/docs`. URL: https://danghaidang04.github.io/RCA-for-Chatter-Simulation/
+Two independent options. The static page needs no server; the full app needs Python.
 
-**Full app** – needs Python (numba), so not GitHub Pages. Run the Docker image on a free host (Hugging Face Space of type Docker, Render, Fly). Set the secret `OPENROUTER_API_KEY` (and optionally `OPENROUTER_MODEL`) in the host's secret settings, never in the repo. Then open
-`https://danghaidang04.github.io/RCA-for-Chatter-Simulation/live.html?api=https://<your-backend-url>`
-to use the GitHub page as the front end with live simulation. Set `ALLOWED_ORIGINS` if the front end is on another domain.
+## A. Static demo on GitHub Pages (recorded sessions, no LLM)
+1. Repo → Settings → Pages → Source: *Deploy from a branch* → branch `cutting-sim-experiments` (or `main` after merging), folder `/docs` → Save.
+2. After about a minute: `https://<user>.github.io/RCA-for-Chatter-Simulation/`.
+3. After changing the app, rebuild the page: `cd prototype_kg_bn_llm && python -m app.build_static`, commit `docs/`, push.
 
-**Data the backend needs** (git-ignored): `cutting_sim/output/real_windows.npz` (20 MB, derived from the MSM real-machine dataset: check its licence before publishing) and `prototype_kg_bn_llm/data/*.npz` is NOT needed at run time. Public hosting means anyone can spend your OpenRouter credit: keep the model cheap, set a spending cap on the key.
+## B. Full live app on a Hugging Face Docker Space (free CPU)
+Needs a Hugging Face account. The backend needs `cutting_sim/output/real_windows.npz` (20 MB, derived from the MSM real-machine dataset, git-ignored). **Check the dataset licence before putting it in a public Space; use a private Space if unsure.**
 
-**Known limits shown in the demo**: top-1 root-cause ranking ~0.6 on the simulator (see README); the vibration detector misses IMBALANCE and RUNOUT; detector calibration is deferred (OPEN_ITEMS.md).
+1. `./deploy/make_space.sh` builds `build/space/` (about 20 MB: code, model tables, the data file, `Dockerfile`, `README.md` with the Space header).
+2. On huggingface.co: New Space → SDK **Docker** → name it → Public or **Private**.
+3. Push the folder:
+   ```
+   cd build/space
+   git init -b main && git add . && git commit -m "milling monitor"
+   git remote add space https://huggingface.co/spaces/<user>/<space-name>
+   git push space main        # username = your HF user, password = an HF access token with write permission
+   ```
+   (Do not paste the token anywhere else. Create it under Settings → Access Tokens.)
+4. Space → Settings → *Variables and secrets* → New secret `OPENROUTER_API_KEY` = your key. Optional variable `OPENROUTER_MODEL`.
+5. Wait for the build (a few minutes). The app is at `https://<user>-<space-name>.hf.space`.
+6. Optional: use the GitHub Pages front end with this backend: `https://<user>.github.io/RCA-for-Chatter-Simulation/live.html?api=https://<user>-<space-name>.hf.space` (the backend allows the `github.io` origin by default; set `ALLOWED_ORIGINS` for another domain).
+
+### Things to know
+- A public Space lets anyone press the LLM button and spend your OpenRouter credit. Use a cheap model, put a spending cap on the key, or keep the Space private.
+- Free Spaces may sleep when idle; the first request then takes about a minute (the model loads in about 15 to 25 s).
+- The Docker image and the packaged folder were checked locally (clean Python environment, server start, `/api/sld`, a simulation step), but the Docker build itself has not been run on a Hugging Face builder.
+- Other hosts (Render, Fly, a VPS): build the root `Dockerfile` the same way; it listens on `$PORT` (default 7860).
+
+## Local
+`./run_app.sh` then http://127.0.0.1:8000. Key in `prototype_kg_bn_llm/.env`.
